@@ -16,6 +16,21 @@
         <junit.version>4.10</junit.version>
     </properties>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    
     <repositories>
         <repository>
             <id>mavenNatives</id>
@@ -31,8 +46,17 @@
             <name>slick</name>
             <url>http://slick.cokeandcode.com/mavenrepo</url>
         </repository>
+        
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
-
 
     <dependencies>
         <dependency>
@@ -63,7 +87,6 @@
             <version>${lwjgl.version}</version>
             <type>pom</type>
         </dependency>
-
 
     </dependencies>
 
