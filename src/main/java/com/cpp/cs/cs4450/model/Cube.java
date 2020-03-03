@@ -88,7 +88,7 @@ public class Cube implements Renderable {
 
     @Override
     public void render(){
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glBegin(GL11.GL_QUADS);
         renderTopSide();
         renderBottomSide();
         renderLeftSide();
