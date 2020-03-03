@@ -63,6 +63,12 @@
             <version>${lwjgl.version}</version>
             <type>pom</type>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slick2d/slick2d-core -->
+        <dependency>
+            <groupId>org.slick2d</groupId>
+            <artifactId>slick2d-core</artifactId>
+            <version>1.0.2</version>
+        </dependency>
 
 
     </dependencies>
