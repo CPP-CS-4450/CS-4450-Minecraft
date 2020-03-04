@@ -1,10 +1,13 @@
-package com.cpp.cs.cs4450.model;
+package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
+import com.cpp.cs.cs4450.util.VertexUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.ReadableVector3f;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.Color;
+import java.util.List;
 
 public class Cube implements Renderable {
     private static final Color DEFAULT_TOP_SIDE_COLOR = Color.BLUE;

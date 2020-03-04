@@ -12,6 +12,10 @@ public class FirstPersonCameraController implements CameraController, Movable {
     private float yaw;
     private float pitch;
 
+    public FirstPersonCameraController(){
+        this(0,0,0);
+    }
+
     public FirstPersonCameraController(final ReadableVector3f vector){
         this(vector.getX(), vector.getY(), vector.getZ());
     }

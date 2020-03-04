@@ -1,10 +1,36 @@
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.model.Chunk;
+import com.cpp.cs.cs4450.model.CubeChunk;
 import com.cpp.cs.cs4450.model.block.Block;
+import com.cpp.cs.cs4450.model.cube.Cube;
+import com.cpp.cs.cs4450.model.cube.CubeBlock;
 import com.cpp.cs.cs4450.noise.SimplexNoise;
 
+import java.awt.Color;
+
 public class ChunkFactory {
+
+    public static CubeChunk createCubeChunk(int size, float blockSize, double persistence, Color ...colors){
+        SimplexNoise noise = new SimplexNoise(32, persistence, (int) System.currentTimeMillis());
+
+        Cube[][][] blocks = new Cube[size][size][size];
+        for(int i = 0; i < size; ++i){
+            for(int k = 0; k < size; ++k){
+                final float x = (i * blockSize);
+                final float z = (k * blockSize);
+
+                final int max = (int) (((noise.getNoise(i,k) + 1) >= size) ? (size - 1) : (noise.getNoise(i,k) + 1));
+                for(int j = 0; j < max; ++j){
+                    final float y = (j * blockSize);
+
+                    blocks[i][j][k] = CubeFactory.create(x, y, z, blockSize, colors);
+                }
+            }
+        }
+
+        return new CubeChunk(blocks, noise);
+    }
 
     public static Chunk create(int size, int blockSize, double persistence){
         SimplexNoise noise = new SimplexNoise(32, persistence, (int) System.currentTimeMillis());
@@ -19,7 +45,7 @@ public class ChunkFactory {
                 for(int j = 0; j < max; ++j){
                     final float y = (j * blockSize);
 
-
+                    blocks[i][j][k] = BlockFactory.createRandom(x, y, z, blockSize);
                 }
             }
         }
