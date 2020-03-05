@@ -12,7 +12,7 @@ import java.util.List;
 public class LWJGLGraphicsEngine implements GraphicsEngine {
     private static final String DEFAULT_TITLE = "LWJGL Computer Graphics Program";
     private static final Color INIT_COLOR = Color.BLACK;
-    private static final int FPS = 60;
+    private static final int FPS = 120;
 
 
     private final DisplayMode displayMode;
@@ -62,6 +62,10 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         GLU.gluPerspective(100.0f, ((float)displayMode.getWidth() / ( float) displayMode.getHeight()), 0.1f, 300.0f);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+        GL11.glDepthFunc(GL11.GL_LESS);
     }
+
+
+
 
 }
