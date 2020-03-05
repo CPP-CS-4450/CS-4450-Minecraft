@@ -37,22 +37,22 @@ public final class CubeFactory {
         BACK
     }
 
-    public static Cube create(float size, Color ...colors){
+    public static Cube create(final float size, final Color ...colors){
         return create(0,0,0, size, colors);
     }
 
-    public static Cube create(ReadableVector3f center, float size, Color ...colors){
+    public static Cube create(final ReadableVector3f center, final float size, final Color ...colors){
         return create(center.getX(), center.getY(), center.getZ(), size, colors);
     }
 
-    public static Cube create(float x, float y, float z, float size, Color ...colors){
+    public static Cube create(final float x, final float y, final float z, final float size, final Color ...colors){
         return create(x, y, z, size, size, size, colors);
     }
 
-    public static Cube create(float x, float y, float z, float l, float h, float d, Color ...colors){
-        Queue<Color> colorQueue = generateColors(colors);
+    public static Cube create(final float x, final float y, final float z, final float l, final float h, final float d, final Color ...colors){
+        final Queue<Color> colorQueue = generateColors(colors);
 
-        List<CubeSide> sides = new ArrayList<>(CUBE_SIDES);
+        final List<CubeSide> sides = new ArrayList<>(CUBE_SIDES);
         for(CubeSideType type : CubeSideType.values()){
             sides.add(new CubeSide(type, calculateSideVertices(type, x, y, z, l, h, d), colorQueue.poll()));
         }
@@ -60,12 +60,12 @@ public final class CubeFactory {
         return new CubeImpl(sides);
     }
 
-    private static List<ReadableVector3f> calculateSideVertices(CubeSideType type, float x, float y, float z, float l, float h, float d){
-        float a = l / 2;
-        float b = h / 2;
-        float c = d / 2;
+    private static List<ReadableVector3f> calculateSideVertices(final CubeSideType type, float x, float y, float z, float l, float h, float d){
+        final float a = l / 2;
+        final float b = h / 2;
+        final float c = d / 2;
 
-        List<Vector3f> vertices;
+        final List<Vector3f> vertices;
         switch (type){
             case TOP: vertices = calculateTopSideVertices(x, y, z, a, b, c);
                 break;
@@ -87,7 +87,7 @@ public final class CubeFactory {
     }
 
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y + h, z - d),
@@ -96,7 +96,7 @@ public final class CubeFactory {
     }
 
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y - h, z - d),
@@ -104,7 +104,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x - l, y + h, z - d),
@@ -112,7 +112,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y - h, z + d),
@@ -120,7 +120,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x - l, y + h, z + d),
@@ -128,7 +128,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y - h, z - d),
                 new Vector3f(x - l, y - h, z - d),
@@ -136,7 +136,7 @@ public final class CubeFactory {
         );
     }
 
-    private static Queue<Color> generateColors(Color ...colors){
+    private static Queue<Color> generateColors(final Color ...colors){
         if(colors == null || colors.length < 1){
             return generateUniqueColors();
         }
@@ -145,7 +145,7 @@ public final class CubeFactory {
             return generateSingleColor(colors[0]);
         }
 
-        Queue<Color> queue = new ArrayDeque<>(Arrays.asList(colors));
+        final Queue<Color> queue = new ArrayDeque<>(Arrays.asList(colors));
         while(queue.size() <= CUBE_SIDES){
             for(Color color : COLORS){
                 if(queue.size() > CUBE_SIDES){
@@ -163,39 +163,39 @@ public final class CubeFactory {
             return generateColors(COLORS.toArray(new Color[0]));
         }
 
-        List<Color> colors = new ArrayList<>(COLORS);
+        final List<Color> colors = new ArrayList<>(COLORS);
 
-        Set<Color> set = new LinkedHashSet<>(CUBE_SIDES);
-        while(set.size() <= CUBE_SIDES){
+        final Set<Color> set = new LinkedHashSet<>(CUBE_SIDES);
+        while(set.size() < CUBE_SIDES){
             Collections.shuffle(colors);
             for(Color color : colors){
-                if(set.size() > CUBE_SIDES){
+                set.add(color);
+                if(set.size() >= CUBE_SIDES){
                     break;
                 }
-                set.add(color);
             }
         }
 
         return new ArrayDeque<>(set);
     }
 
-    private static Queue<Color> generateSingleColor(Color color){
+    private static Queue<Color> generateSingleColor(final Color color){
         return IntStream.range(0, CUBE_SIDES).mapToObj(i -> color).collect(Collectors.toCollection(ArrayDeque::new));
     }
 
-    private static class CubeImpl extends Cube {
-        private CubeImpl(List<CubeSide> sides) {
+    private static final class CubeImpl extends Cube {
+        private CubeImpl(final List<CubeSide> sides) {
             super(sides);
         }
     }
 
-    public static final class CubeSide {
+    public static class CubeSide {
         private final CubeSideType type;
         private final List<ReadableVector3f> vertices;
         private final Color color;
 
 
-        private CubeSide(CubeSideType type, List<ReadableVector3f> vertices, Color color) {
+        private CubeSide(final CubeSideType type, final List<ReadableVector3f> vertices, final Color color) {
             this.type = type;
             this.vertices = vertices;
             this.color = color;
