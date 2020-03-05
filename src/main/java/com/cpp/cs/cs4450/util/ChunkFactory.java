@@ -5,6 +5,7 @@ import com.cpp.cs.cs4450.model.CubeChunk;
 import com.cpp.cs.cs4450.model.block.Block;
 import com.cpp.cs.cs4450.model.cube.Cube;
 import com.cpp.cs.cs4450.model.cube.CubeBlock;
+import com.cpp.cs.cs4450.model.cube.CubeBoxType;
 import com.cpp.cs.cs4450.noise.SimplexNoise;
 
 import java.awt.Color;
@@ -24,7 +25,8 @@ public class ChunkFactory {
                 for(int j = 0; j < max; ++j){
                     final float y = (j * blockSize);
 
-                    blocks[i][j][k] = CubeFactory.create(x, y, z, blockSize, colors);
+                    //blocks[i][j][k] = CubeFactory.create(x, y, z, blockSize, colors);
+                    blocks[i][j][k] = CubeFactory.createRandomTexturedCube(x, y, z, blockSize);
                 }
             }
         }

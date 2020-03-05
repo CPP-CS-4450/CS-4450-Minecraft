@@ -7,6 +7,9 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class VertexUtils {
@@ -14,6 +17,7 @@ public final class VertexUtils {
     private static final int CUBE_TEXTURE_MATRIX_ROWS = 6;
     private static final int CUBE_TEXTURE_MATRIX_COL = 4;
     private static final int[] textureGrid = new int[]{0, 1, 0, 2, 0, 0};
+    private static final Comparator<ReadableVector3f> VECTOR_COMPARATOR = new VertexComparator();
 
 
     private VertexUtils(){}
@@ -33,7 +37,7 @@ public final class VertexUtils {
                         final float b = (y + (j * height));
                         final float c = (z + (i * depth));
 
-                        vertices.add(new Vector3f(a, b, c));
+                        vertices.add(new Vector3f(c, b, a));
                     }
                 }
             }
@@ -46,6 +50,45 @@ public final class VertexUtils {
 
        return null;
     }
+
+    public static void calculateTextureVertices(){
+
+    }
+
+    public static List<ReadableVector3f> getSorted(Collection<ReadableVector3f> vertices){
+        List<ReadableVector3f> list = new ArrayList<>(vertices);
+        sort(list);
+        return list;
+    }
+
+    public static void sort(List<ReadableVector3f> vertices){
+        vertices.sort(VECTOR_COMPARATOR);
+    }
+
+
+
+    private static class VertexComparator implements Comparator<ReadableVector3f> {
+
+        @Override
+        public int compare(ReadableVector3f v1, ReadableVector3f v2) {
+            if(v1.getX() < v2.getX()){
+                return -1;
+            } else if(v1.getX() == v2.getX()){
+                if(v1.getY() < v2.getY()){
+                    return -1;
+                } else if(v1.getY() == v2.getY()){
+                    return Float.compare(v1.getZ(), v2.getZ());
+                } else {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
+        }
+    }
+
+
+
 
 /*
     public static Vector2f[][] calculateCubeTextureVertices(Texture texture, BlockType type, int size){

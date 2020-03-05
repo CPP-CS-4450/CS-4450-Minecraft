@@ -8,6 +8,7 @@ import com.cpp.cs.cs4450.graphics.LWJGLGraphicsEngine;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.model.CubeChunk;
 import com.cpp.cs.cs4450.model.cube.Cube;
+import com.cpp.cs.cs4450.model.cube.CubeBoxType;
 import com.cpp.cs.cs4450.ui.LWJGLUserInterface;
 import com.cpp.cs.cs4450.ui.UserInterface;
 import com.cpp.cs.cs4450.util.ChunkFactory;
@@ -26,8 +27,9 @@ public abstract class GraphicsApplication {
     public static void launch(final String ...args){
         //final Cube cube = new Cube(0,0,0);
         //final Cube cube = CubeFactory.create(0,0,0,2);
-        CubeChunk chunk = ChunkFactory.createCubeChunk(SIZE, CUBE_SIZE, PERSISTENCE);
-        final List<Renderable> renders = Arrays.asList(chunk);
+        CubeChunk chunk = ChunkFactory.createCubeChunk(1, CUBE_SIZE, PERSISTENCE);
+        Cube text = CubeFactory.createTexturedCube(CubeBoxType.GRASS,0,0,0, 1);
+        final List<Renderable> renders = Arrays.asList(text);
         final DisplayMode displayMode = new DisplayMode(Configuration.DISPLAY_WINDOW_WIDTH, Configuration.DISPLAY_WINDOW_HEIGHT);
 
         final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(displayMode, renders, Configuration.DISPLAY_WINDOW_TITLE);

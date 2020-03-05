@@ -44,4 +44,9 @@ public class Block implements Renderable, Textured {
     public void setTexture(Texture texture, int size) {
         this.texture = texture;
     }
+
+    @Override
+    public String getPath() {
+        return null;
+    }
 }

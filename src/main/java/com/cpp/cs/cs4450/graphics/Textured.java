@@ -8,4 +8,6 @@ public interface Textured {
 
     void setTexture(Texture texture, int size);
 
+    String getPath();
+
 }

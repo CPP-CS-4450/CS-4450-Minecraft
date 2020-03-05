@@ -27,4 +27,7 @@ public class CubeChunk implements Renderable {
             }
         }
     }
+
+    public Cube[][][] getCubes(){ return cubes; }
+
 }
