@@ -1,17 +1,10 @@
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.model.cube.Cube;
-import com.cpp.cs.cs4450.model.cube.CubeBlock;
-import com.cpp.cs.cs4450.model.cube.CubeBoxType;
-import com.cpp.cs.cs4450.model.cube.TexturedCubeBlock;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,23 +12,20 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Queue;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class CubeFactory {
     private static final int CUBE_SIDES = CubeSideType.values().length;
-    private static final List<Color> COLORS = Collections.unmodifiableList(
-            Arrays.asList(
-                    Color.BLUE,
-                    Color.GREEN,
-                    Color.RED,
-                    Color.YELLOW,
-                    Color.MAGENTA,
-                    Color.CYAN,
-                    Color.ORANGE
-            )
+    private static final List<Color> COLORS = List.of(
+            Color.BLUE,
+            Color.GREEN,
+            Color.RED,
+            Color.YELLOW,
+            Color.MAGENTA,
+            Color.CYAN,
+            Color.ORANGE
     );
 
     public enum CubeSideType {
@@ -45,29 +35,6 @@ public final class CubeFactory {
         RIGHT,
         FRONT,
         BACK
-    }
-
-    public static Cube createRandomTexturedCube(float x, float y, float z, float size){
-        Random random = new Random();
-
-        CubeBoxType type = CubeBoxType.values()[random.nextInt(CubeBoxType.values().length)];
-
-        return createTexturedCube(type, x, y, z, size);
-    }
-
-    public static Cube createTexturedCube(CubeBoxType type, float x, float y, float z, float size){
-        return createTexturedCube(type, x, y, z, size, size, size);
-    }
-
-
-    public static Cube createTexturedCube(CubeBoxType type, float x, float y, float z, float l, float h, float d){
-        List<CubeSide> sides = new ArrayList<>(CUBE_SIDES);
-        for(CubeSideType side : CubeSideType.values()){
-            sides.add(new CubeSide(side, calculateSideVertices(side, x, y, z, l, h, d), Color.BLUE));
-        }
-
-
-        return new TexturedCubeBlock(x, y, z, sides, type.getPath());
     }
 
     public static Cube create(float size, Color ...colors){
@@ -90,7 +57,7 @@ public final class CubeFactory {
             sides.add(new CubeSide(type, calculateSideVertices(type, x, y, z, l, h, d), colorQueue.poll()));
         }
 
-        return new CubeBlockImpl(x, y, z, sides);
+        return new CubeImpl(sides);
     }
 
     private static List<ReadableVector3f> calculateSideVertices(CubeSideType type, float x, float y, float z, float l, float h, float d){
@@ -216,9 +183,9 @@ public final class CubeFactory {
         return IntStream.range(0, CUBE_SIDES).mapToObj(i -> color).collect(Collectors.toCollection(ArrayDeque::new));
     }
 
-    private static class CubeBlockImpl extends CubeBlock {
-        private CubeBlockImpl(float x, float y, float z, List<CubeSide> sides) {
-            super(x, y, z, sides);
+    private static class CubeImpl extends Cube {
+        private CubeImpl(List<CubeSide> sides) {
+            super(sides);
         }
     }
 
