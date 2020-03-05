@@ -167,7 +167,6 @@ public final class CubeFactory {
 
         final Set<Color> set = new LinkedHashSet<>(CUBE_SIDES);
         while(set.size() < CUBE_SIDES){
-            Collections.shuffle(colors);
             for(Color color : colors){
                 set.add(color);
                 if(set.size() >= CUBE_SIDES){
