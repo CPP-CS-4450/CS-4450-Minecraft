@@ -1,4 +1,15 @@
-package com.cpp.cs.cs4450.model.cube;
+/***************************************************************
+ * file: Cube.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 1
+ * date last modified: 3/05/2020
+ *
+ * purpose: Model class for cube
+ *
+ ****************************************************************/package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;

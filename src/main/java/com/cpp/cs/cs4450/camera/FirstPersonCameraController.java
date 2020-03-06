@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: FirstPersonCameraController.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 1
+ * date last modified: 3/05/2020
+ *
+ * purpose: Class that controls a first person view camera
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.camera;
 
 import com.cpp.cs.cs4450.model.Movable;
@@ -29,25 +41,25 @@ public class FirstPersonCameraController implements CameraController, Movable {
     @Override
     public void yaw(final float change) {
         yaw += change;
-    }
+    }//Changes the yaw
 
     @Override
     public void pitch(final float change) {
         pitch -= change;
-    }
+    }//Changes the pitch
 
     @Override
     public void moveUp(final float distance) {
         position.setY(position.y - distance);
-    }
+    }//Moves up
 
     @Override
     public void moveDown(final float distance) {
         position.setY(position.y + distance);
-    }
+    }//Moves down
 
     @Override
-    public void moveLeft(final float distance) {
+    public void moveLeft(final float distance) {//Moves left
         final float xOffset = calculateXOffset(distance, yaw - HORIZONTAL_DYAW);
         final float zOffset = calculateZOffset(distance, yaw - HORIZONTAL_DYAW);
 
@@ -56,7 +68,7 @@ public class FirstPersonCameraController implements CameraController, Movable {
     }
 
     @Override
-    public void moveRight(final float distance) {
+    public void moveRight(final float distance) {//Moves right
         final float xOffset = calculateXOffset(distance, yaw + HORIZONTAL_DYAW);
         final float zOffset = calculateZOffset(distance, yaw + HORIZONTAL_DYAW);
 
@@ -65,7 +77,7 @@ public class FirstPersonCameraController implements CameraController, Movable {
     }
 
     @Override
-    public void moveForward(final float distance) {
+    public void moveForward(final float distance) {//Moves Forward
         final float xOffset = calculateXOffset(distance, yaw);
         final float zOffset = calculateZOffset(distance, yaw);
 
@@ -74,7 +86,7 @@ public class FirstPersonCameraController implements CameraController, Movable {
     }
 
     @Override
-    public void moveBackwards(final float distance) {
+    public void moveBackwards(final float distance) {//Moves Back
         final float xOffset = calculateXOffset(distance, yaw);
         final float zOffset = calculateZOffset(distance, yaw);
 
@@ -83,7 +95,7 @@ public class FirstPersonCameraController implements CameraController, Movable {
     }
 
     @Override
-    public void look() {
+    public void look() {//Sets up camera to look
         GL11.glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         GL11.glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         GL11.glTranslatef(position.getX(), position.getY(), position.getZ());
@@ -92,27 +104,29 @@ public class FirstPersonCameraController implements CameraController, Movable {
     @Override
     public float getXPosition() {
         return position.getX();
-    }
+    }//Returns camera x position
 
     @Override
     public float getYPosition() {
         return position.getY();
-    }
+    }//Returns camera y position
 
     @Override
     public float getZPosition() {
         return position.getZ();
-    }
+    }//Returns camera z position
 
     @Override
     public ReadableVector3f getPositionVector() {
         return position;
-    }
+    }//Returns camera position
 
+    //calulates x axis offset
     private static float calculateXOffset(final float distance, final float offset){
         return (float) (distance * Math.sin(Math.toRadians(offset)));
     }
 
+    //Calculates z axis offset
     private static float calculateZOffset(final float distance, final float offset){
         return (float) (distance * Math.cos(Math.toRadians(offset)));
     }

@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: CubeFactory.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 1
+ * date last modified: 3/05/2020
+ *
+ * purpose: Factory class to create cubes
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.model.cube.Cube;

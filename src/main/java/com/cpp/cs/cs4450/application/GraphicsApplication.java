@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: GraphicsApplication.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 1
+ * date last modified: 3/05/2020
+ *
+ * purpose: To configure and instatiate the program
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.application;
 
 import com.cpp.cs.cs4450.camera.CameraController;
@@ -16,6 +28,7 @@ import java.util.List;
 
 public abstract class GraphicsApplication {
 
+    //Launches the program
     public static void launch(final String ...args){
         final Cube cube = CubeFactory.create(0,0,0,2);
         final List<Renderable> renders = List.of(cube);

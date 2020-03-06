@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: Engine.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 1
+ * date last modified: 3/05/2020
+ *
+ * purpose: Class responsible for running the game loop
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.application;
 
 import com.cpp.cs.cs4450.camera.CameraController;
@@ -20,7 +32,7 @@ public final class Engine {
         this.camera = camera;
     }
 
-
+    //Runs the games loop so that the cube is rendered
     public void run(){
         while(!ui.quit()){
             final float dx = ui.getMouseHorizontalChange();
@@ -61,6 +73,7 @@ public final class Engine {
         shutdown();
     }
 
+    //Shuts down the program
     public void shutdown(){
         ui.shutdown();
         graphicsEngine.shutdown();
