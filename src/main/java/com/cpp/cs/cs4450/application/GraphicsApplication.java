@@ -1,15 +1,3 @@
-/***************************************************************
- * file: GraphicsApplication.java
- * team: Team Dood
- * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
- * class: CS 4450 – Computer Graphics
- *
- * assignment: Semester Project - Checkpoint 1
- * date last modified: 3/05/2020
- *
- * purpose: To configure and instatiate the program
- *
- ****************************************************************/
 package com.cpp.cs.cs4450.application;
 
 import com.cpp.cs.cs4450.camera.CameraController;
@@ -18,28 +6,78 @@ import com.cpp.cs.cs4450.config.Configuration;
 import com.cpp.cs.cs4450.graphics.GraphicsEngine;
 import com.cpp.cs.cs4450.graphics.LWJGLGraphicsEngine;
 import com.cpp.cs.cs4450.graphics.Renderable;
-import com.cpp.cs.cs4450.model.cube.Cube;
+import com.cpp.cs.cs4450.model.Chunk;
 import com.cpp.cs.cs4450.ui.LWJGLUserInterface;
 import com.cpp.cs.cs4450.ui.UserInterface;
-import com.cpp.cs.cs4450.util.CubeFactory;
+import com.cpp.cs.cs4450.util.ChunkFactory;
+import com.cpp.cs.cs4450.util.CollisionDetector;
+
 import org.lwjgl.opengl.DisplayMode;
 
 import java.util.List;
 
 public abstract class GraphicsApplication {
+    private static final int SIZE = 30;
+    private static final double PERSISTENCE = .25;
+    private static final float CUBE_SIZE = 0.1f;
+    private static final boolean DEFAULT_LIGHTING = true;
+    private static final boolean DEFAULT_TEXTURE_MODE = false;
+    private static final String FLAG_PREFIX = "--";
+    private static final String YES_FLAG_OPTION = "Y";
+    private static final String NO_FLAG_OPTION = "N";
+    private static final String ENABLE_LIGHTING_FLAG = "--l";
+    private static final String DISABLE_LIGHTING_FLAG = "--dl";
+    private static final String ENABLE_RANDOM_FLAG = "--r";
+    private static final String INVALID_ARG_ERROR_MESSAGE_FORMAT = "[%s] is an invalid option for arg flag [%s]";
 
-    //Launches the program
+
     public static void launch(final String ...args){
-        final Cube cube = CubeFactory.create(0,0,0,2);
-        final List<Renderable> renders = List.of(cube);
+        launch(List.of(args));
+    }
+
+    public static void launch(final List<String> args){
+        final boolean lighting = !parseArgs(args, DISABLE_LIGHTING_FLAG);
+        final boolean random = parseArgs(args, ENABLE_RANDOM_FLAG);
+
+        launch(lighting, random);
+    }
+
+    private static void launch(boolean lighting, boolean random){
+        final Chunk chunk = ChunkFactory.createChunk(SIZE, CUBE_SIZE, PERSISTENCE, random);
+        final List<Renderable> renders = List.of(chunk);
         final DisplayMode displayMode = new DisplayMode(Configuration.DISPLAY_WINDOW_WIDTH, Configuration.DISPLAY_WINDOW_HEIGHT);
 
-        final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(displayMode, renders, Configuration.DISPLAY_WINDOW_TITLE);
+        final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(displayMode, renders, Configuration.DISPLAY_WINDOW_TITLE, lighting);
         final UserInterface ui = new LWJGLUserInterface();
-        final CameraController camera = new FirstPersonCameraController();
+        final CameraController camera = new FirstPersonCameraController(-1.5f, -1.5f, -1.5f);
+        final CollisionDetector collisionDetector = new CollisionDetector(chunk.getBounds());
 
-        final Engine engine = new Engine(ui, graphicsEngine, camera);
+        final Engine engine = new Engine(ui, graphicsEngine, camera, collisionDetector);
         engine.run();
+    }
+
+    private static boolean parseArgs(List<String> args, String flag){
+        final int index = args.indexOf(flag);
+        if(index == -1){
+            return false;
+        }
+
+        try {
+            final String config = args.get(index + 1);
+            if(!config.startsWith(FLAG_PREFIX)){
+                if(config.equalsIgnoreCase(YES_FLAG_OPTION)){
+                    return true;
+                } else if (config.equalsIgnoreCase(NO_FLAG_OPTION)){
+                    return false;
+                } else {
+                    throw new RuntimeException(String.format(INVALID_ARG_ERROR_MESSAGE_FORMAT, config, flag));
+                }
+            } else {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException e){
+            return true;
+        }
     }
 
 }

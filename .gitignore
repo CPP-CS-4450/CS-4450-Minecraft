@@ -1,7 +1,7 @@
 !/.gitignore
 
 !/libs/
-
+!/assets/
 # Created by https://www.gitignore.io/api/java,linux,macos,windows,eclipse,java-web,intellij,netbeans,code-java,intellij+all,intellij+iml,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=java,linux,macos,windows,eclipse,java-web,intellij,netbeans,code-java,intellij+all,intellij+iml,visualstudio,visualstudiocode
 

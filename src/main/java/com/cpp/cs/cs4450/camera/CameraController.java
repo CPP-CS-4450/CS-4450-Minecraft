@@ -1,43 +1,39 @@
-/***************************************************************
- * file: CameraController.java
- * team: Team Dood
- * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
- * class: CS 4450 – Computer Graphics
- *
- * assignment: Semester Project - Checkpoint 1
- * date last modified: 3/05/2020
- *
- * purpose: Interface for a movable camera
- *
- ****************************************************************/
 package com.cpp.cs.cs4450.camera;
 
+import com.cpp.cs.cs4450.model.GameAreaEntity;
 import com.cpp.cs.cs4450.model.Movable;
-import org.lwjgl.util.vector.ReadableVector3f;
+import com.cpp.cs.cs4450.util.Bounded;
 
-public interface CameraController extends Movable {
+public interface CameraController extends GameAreaEntity, Movable, Cloneable, Bounded {
+    float DEFAULT_DYAW = 90.0f;
 
-    //Changes the yaw
-    void yaw(float change);
 
-    //Changes the pitch
-    void pitch(float change);
+    float yaw(float change);
 
-    //Sets up camera to look
+    float pitch(float change);
+
     void look();
 
-    //Returns camera x position
-    float getXPosition();
+    float getPitch();
 
-    //Returns camera y position
-    float getYPosition();
+    float getYaw();
 
+    Object clone();
 
-    //Returns camera z position
-    float getZPosition();
+    default float xHorizontalOffset(float distance, int direction){
+        return (float) (distance * Math.sin(Math.toRadians(getYaw() + (direction * DEFAULT_DYAW))));
+    }
 
+    default float zHorizontalOffset(float distance, int direction){
+        return (float) (distance * Math.cos(Math.toRadians(getYaw() + (direction * DEFAULT_DYAW))));
+    }
 
-    //Returns camera position
-    ReadableVector3f getPositionVector();
+    default float xApplicateOffset(float distance, int direction){
+        return (float) (direction * (distance * Math.sin(Math.toRadians(getYaw()))));
+    }
+
+    default float zApplicateOffset(float distance, int direction){
+        return (float) (direction * (distance * Math.cos(Math.toRadians(getYaw()))));
+    }
 
 }
