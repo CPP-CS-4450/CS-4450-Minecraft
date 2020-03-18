@@ -15,67 +15,34 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class TextureInverter {
-
+public final class TextureInverter {
     private static final InternalTextureLoader loader = InternalTextureLoader.get();
 
+    private TextureInverter(){}
 
-    public static void invert(List<Invertible> invertibles){
+    public static void invert(final List<Invertible> invertibles){
+        final Map<Object, InvertTextureWrapper> cache = new HashMap<>();
 
-        Map<Object, InvertTextureWrapper> cache = new HashMap<>();
-
-        for(Invertible invertible : invertibles){
-            Object key = invertible.getInvertKey();
-            Map<?, ? extends Texture> textures = invertible.getTextures();
-
-            Map<?, ? extends Texture> inverts = cache.computeIfAbsent(key, k -> wrap(textures)).getInvertsMap();
-            invertible.setInverts(inverts);
+        for(final Invertible invertible : invertibles){
+            final Object key = invertible.getInvertKey();
+            final Map<?, ? extends Texture> textures = invertible.getTextures();
+            invertible.setInverts(cache.computeIfAbsent(key, k -> wrap(textures)).getInvertsMap());
         }
 
     }
 
-    public static Texture invertOpt(Texture texture){
+    public static Texture invert(final Texture texture){
         try {
-            List<Color> colors = bytesToColors(texture.getTextureData());
-
-            Map<Color, Color> cache = new HashMap<>();
-
-            List<Color> inverted = new ArrayList<>(colors.size());
-            for (Color color : colors) {
-                inverted.add(cache.computeIfAbsent(color, TextureInverter::invert));
-            }
-
-
-            int w = texture.getImageWidth(), h = texture.getImageHeight();
-
-            ImageBuffer buffer = new ImageBuffer(w, h);
-
-            for (int x = 0; x < w; ++x) {
-                for (int y = 0; y < h; ++y) {
-                    Color invert = inverted.get(x + (y * w));
-                    buffer.setRGBA(x, y, invert.getRed(), invert.getGreen(), invert.getBlue(), invert.getAlpha());
-                }
-            }
-
-            return loader.getTexture(buffer, GL11.GL_LINEAR);
-        } catch (IOException e){
-            throw new RuntimeException(e.getLocalizedMessage());
-        }
-    }
-
-    public static Texture invert(Texture texture){
-        try {
-            List<Color> invertedColors = bytesToColors(texture.getTextureData()).stream()
+            final List<Color> invertedColors = bytesToColors(texture.getTextureData()).stream()
                     .map(TextureInverter::invert)
                     .collect(Collectors.toList());
 
-            int w = texture.getImageWidth(), h = texture.getImageHeight();
+            final int w = texture.getImageWidth(), h = texture.getImageHeight();
 
-            ImageBuffer buffer = new ImageBuffer(w, h);
-
+            final ImageBuffer buffer = new ImageBuffer(w, h);
             for(int x = 0; x < w; ++x){
                 for(int y = 0; y < h; ++y){
-                    Color inverted = invertedColors.get(x + (y * w));
+                    final Color inverted = invertedColors.get(x + (y * w));
                     buffer.setRGBA(x, y, inverted.getRed(), inverted.getGreen(), inverted.getBlue(), inverted.getAlpha());
                 }
             }
@@ -86,17 +53,17 @@ public class TextureInverter {
         }
     }
 
-    public static Color invert(Color color){
+    public static Color invert(final Color color){
         return new Color(1 - color.getRed(), 1 - color.getGreen(), 1 - color.getBlue(), color.getAlpha());
     }
 
-    public static byte[] invert(byte[] bytes){
-        List<Color> invertedColors = bytesToColors(bytes).parallelStream()
+    public static byte[] invert(final byte[] bytes){
+        final List<Color> invertedColors = bytesToColors(bytes).stream()
                 .map(TextureInverter::invert)
                 .collect(Collectors.toList());
 
-        List<Byte> invertedBytes = new ArrayList<>(invertedColors.size() * 4);
-        for(Color invertedColor : invertedColors){
+        final List<Byte> invertedBytes = new ArrayList<>(invertedColors.size() * 4);
+        for(final Color invertedColor : invertedColors){
             invertedBytes.addAll(colorToByte(invertedColor));
         }
 
@@ -104,26 +71,25 @@ public class TextureInverter {
     }
 
 
-    private static List<Color> bytesToColors(byte[] bytes){
-        List<Color> colors = new ArrayList<>(bytes.length / 4);
+    private static List<Color> bytesToColors(final byte[] bytes){
+        final List<Color> colors = new ArrayList<>(bytes.length / 4);
 
-        int n = bytes.length;
+        final int n = bytes.length;
         for(int i = 0; i < n; i += 4){
             colors.add(new Color(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]));
         }
 
-
         return colors;
     }
 
-    private static List<Byte> colorToByte(Color color){
+    private static List<Byte> colorToByte(final Color color){
         return List.of(color.getRedByte(), color.getGreenByte(), color.getBlueByte(), color.getAlphaByte());
     }
 
-    private static byte[] listToArray(List<Byte> list){
-        int n = list.size();
+    private static byte[] listToArray(final List<Byte> list){
+        final int n = list.size();
 
-        byte[] array = new byte[n];
+        final byte[] array = new byte[n];
         for(int i = 0; i < n; ++i){
             array[i] = list.get(i);
         }
@@ -131,7 +97,7 @@ public class TextureInverter {
         return array;
     }
 
-    public static Map<?, ? extends Texture> invert(Map<?, ? extends Texture> textures){
+    public static Map<?, ? extends Texture> invert(final Map<?, ? extends Texture> textures){
         return textures.entrySet().stream().collect(Collectors.toMap(
                 Entry::getKey,
                 e -> invert(e.getValue()),
@@ -139,14 +105,14 @@ public class TextureInverter {
         ));
     }
 
-    private static InvertTextureWrapper wrap(Map<?, ? extends Texture> textures){
+    private static InvertTextureWrapper wrap(final Map<?, ? extends Texture> textures){
         return new InvertTextureWrapper(invert(textures));
     }
 
     private static final class InvertTextureWrapper {
         private final Map<?, ? extends Texture> inverts;
 
-        private InvertTextureWrapper(Map<?, ? extends Texture> inverts){
+        private InvertTextureWrapper(final Map<?, ? extends Texture> inverts){
             this.inverts = inverts;
         }
 

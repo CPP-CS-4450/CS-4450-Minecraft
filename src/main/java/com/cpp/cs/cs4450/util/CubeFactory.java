@@ -38,6 +38,8 @@ public final class CubeFactory {
         BACK
     }
 
+    private CubeFactory(){}
+
     public static Cube createRandomTexturedCube(final float x, final float y, final float z, final float size){
         return createTexturedCube(BlockType.values()[random.nextInt(BlockType.values().length)], x, y, z, size);
     }
@@ -102,15 +104,15 @@ public final class CubeFactory {
                 break;
             case BACK: vertices = calculateBackSideVertices(x, y, z, a, b, c);
                 break;
-            default: vertices = new ArrayList<>();
+            default: vertices = Collections.emptyList();
                 break;
         }
 
-        return Collections.unmodifiableList(vertices);
+        return List.copyOf(vertices);
     }
 
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y + h, z - d),
@@ -119,7 +121,7 @@ public final class CubeFactory {
     }
 
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y - h, z - d),
@@ -127,7 +129,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x - l, y + h, z - d),
@@ -135,7 +137,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y - h, z + d),
@@ -143,7 +145,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x - l, y + h, z + d),
@@ -151,7 +153,7 @@ public final class CubeFactory {
         );
     }
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
-        return Arrays.asList(
+        return List.of(
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y - h, z - d),
                 new Vector3f(x - l, y - h, z - d),
@@ -168,9 +170,9 @@ public final class CubeFactory {
             return generateSingleColor(colors[0]);
         }
 
-        Queue<Color> queue = new ArrayDeque<>(Arrays.asList(colors));
+        final Queue<Color> queue = new ArrayDeque<>(Arrays.asList(colors));
         while(queue.size() <= CUBE_SIDES){
-            for(Color color : COLORS){
+            for(final Color color : COLORS){
                 if(queue.size() > CUBE_SIDES){
                     break;
                 }
@@ -191,7 +193,7 @@ public final class CubeFactory {
         final Set<Color> set = new LinkedHashSet<>(CUBE_SIDES);
         while(set.size() <= CUBE_SIDES){
             Collections.shuffle(colors);
-            for(Color color : colors){
+            for(final Color color : colors){
                 if(set.size() > CUBE_SIDES){
                     break;
                 }
@@ -212,7 +214,7 @@ public final class CubeFactory {
         private final float d;
         private final Bounds b;
 
-        private BlockImpl(float x, float y, float z, float w, float h, float d, List<CubeSide> sides) {
+        private BlockImpl(final float x, final float y, final float z, final float w, final float h, final float d, final List<CubeSide> sides) {
             super(x, y, z, sides);
             this.w = w;
             this.h = h;
@@ -258,7 +260,7 @@ public final class CubeFactory {
         }
 
         public List<ReadableVector3f> getVertices() {
-            return vertices;
+            return List.copyOf(vertices);
         }
 
         public Color getColor() {

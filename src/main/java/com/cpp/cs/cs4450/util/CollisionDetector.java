@@ -13,6 +13,7 @@ import java.util.List;
 public class CollisionDetector {
     private static final double VERTICAL_COLLISION_DETECTING_LIMIT = 6.0 * .1;
     private static final double INBOUNDS = 10;
+
     private static final Bounds inbounds = new BoundingBox(-(INBOUNDS / 2),-(INBOUNDS / 2),-(INBOUNDS / 2), INBOUNDS, INBOUNDS, INBOUNDS);
     private static final Comparator<Bounds> comparator = new BoundsComparator(Point3D.ZERO);
 
@@ -29,7 +30,7 @@ public class CollisionDetector {
 
         double minX = Double.MAX_VALUE, minY = Double.MIN_VALUE, minZ = Double.MAX_VALUE;
         double maxX = Double.MAX_VALUE, maxY = Double.MIN_VALUE, maxZ = Double.MAX_VALUE;
-        for(Bounds bound : this.bounds){
+        for(final Bounds bound : this.bounds){
             minX = Math.min(minX, bound.getMinX());
             minY = Math.min(minY, bound.getMinY());
             minZ = Math.min(minZ, bound.getMinZ());
@@ -45,6 +46,14 @@ public class CollisionDetector {
         this.minZ = minZ;
         this.maxZ = maxZ;
 
+    }
+
+    public boolean noCollision(final double x, final double y, final double z, final double w, final double h, final double d){
+        return !collision(new BoundingBox(x, y, z, w, h, d));
+    }
+
+    public boolean noCollision(final Bounds obj){
+        return !collision(obj);
     }
 
     public boolean collision(final double x, final double y, final double z, final double w, final double h, final double d){

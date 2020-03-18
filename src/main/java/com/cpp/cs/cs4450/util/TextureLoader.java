@@ -16,11 +16,11 @@ import java.util.Map;
 public final class TextureLoader {
     private static final String PNG_TYPE = "PNG";
 
+    private TextureLoader(){}
 
     public static void load(final List<Textured> textured) throws IOException {
-
         final Map<String, InputStream> cache = new HashMap<>();
-        for(Textured texd : textured){
+        for(final Textured texd : textured){
             final Map<?, String> paths = texd.getPaths();
 
             final Map<Object, Texture> textures = new HashMap<>();
