@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.Color;
 import java.util.List;
 
-public class Block extends Cube implements Renderable, GameAreaEntity, Bounded {
+public abstract class Block extends Cube implements Renderable, GameAreaEntity, Bounded {
     protected final List<CubeSide> sides;
 
 

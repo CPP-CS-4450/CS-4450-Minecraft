@@ -7,7 +7,6 @@ import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import com.cpp.cs.cs4450.util.TextureInverter;
-import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.Vector2f;
@@ -31,7 +30,7 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
     );
 
     protected final BlockType type;
-    protected final BoundingBox boundingBox;
+    protected final Bounds bounds;
     protected Map<CubeSideType, String> paths;
     protected Map<CubeSideType, Texture> textures;
     protected Map<CubeSideType, Texture> inverts;
@@ -43,13 +42,13 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
             final float y,
             final float z,
             final BlockType type,
-            final BoundingBox boundingBox,
+            final Bounds bounds,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {
         super(x, y, z, sides);
         this.type = type;
-        this.boundingBox = boundingBox;
+        this.bounds = bounds;
         this.paths = paths;
         this.inverted = false;
     }
@@ -81,22 +80,22 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
 
     @Override
     public Bounds getBounds() {
-        return boundingBox;
+        return bounds;
     }
 
     @Override
     public double getWidth() {
-        return boundingBox.getWidth();
+        return bounds.getWidth();
     }
 
     @Override
     public double getHeight() {
-        return boundingBox.getHeight();
+        return bounds.getHeight();
     }
 
     @Override
     public double getDepth() {
-        return boundingBox.getDepth();
+        return bounds.getDepth();
     }
 
     @Override

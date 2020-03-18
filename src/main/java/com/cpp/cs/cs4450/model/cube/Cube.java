@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.Color;
 
-public class Cube implements Renderable, GameAreaEntity, Bounded {
+public class Cube implements Renderable, GameAreaEntity {
     private static final Color DEFAULT_TOP_SIDE_COLOR = Color.BLUE;
     private static final Color DEFAULT_FRONT_SIDE_COLOR = Color.GREEN;
     private static final Color DEFAULT_RIGHT_SIDE_COLOR = Color.CYAN;
@@ -179,23 +179,4 @@ public class Cube implements Renderable, GameAreaEntity, Bounded {
         return new Vector3f(x, y, z);
     }
 
-    @Override
-    public Bounds getBounds() {
-        return null;
-    }
-
-    @Override
-    public double getWidth() {
-        return 0;
-    }
-
-    @Override
-    public double getHeight() {
-        return 0;
-    }
-
-    @Override
-    public double getDepth() {
-        return 0;
-    }
 }

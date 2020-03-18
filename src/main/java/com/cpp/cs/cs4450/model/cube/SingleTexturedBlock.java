@@ -8,14 +8,13 @@ import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import com.cpp.cs.cs4450.util.TextureInverter;
 import com.cpp.cs.cs4450.util.VertexUtils;
-import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.newdawn.slick.opengl.Texture;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -31,11 +30,11 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
             final float y,
             final float z,
             final BlockType type,
-            final BoundingBox boundingBox,
+            final Bounds bounds,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {
-        super(x, y, z, type, boundingBox, sides, paths);
+        super(x, y, z, type, bounds, sides, paths);
     }
 
     @Override

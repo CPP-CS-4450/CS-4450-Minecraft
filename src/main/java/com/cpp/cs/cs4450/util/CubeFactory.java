@@ -6,6 +6,7 @@ import com.cpp.cs.cs4450.model.cube.BlockType;
 import com.cpp.cs.cs4450.model.cube.MultiTexturedBlock;
 import com.cpp.cs.cs4450.model.cube.SingleTexturedBlock;
 import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -79,7 +80,7 @@ public final class CubeFactory {
             sides.add(new CubeSide(type, calculateSideVertices(type, x, y, z, l, h, d), colorQueue.poll()));
         }
 
-        return new BlockImpl(x, y, z, sides);
+        return new BlockImpl(x, y, z, l, h, d, sides);
     }
 
     private static List<ReadableVector3f> calculateSideVertices(final CubeSideType type, final float x, final float y, final float z, final float l, final float h, final float d){
@@ -206,8 +207,37 @@ public final class CubeFactory {
     }
 
     private static class BlockImpl extends Block {
-        private BlockImpl(float x, float y, float z, List<CubeSide> sides) {
+        private final float w;
+        private final float h;
+        private final float d;
+        private final Bounds b;
+
+        private BlockImpl(float x, float y, float z, float w, float h, float d, List<CubeSide> sides) {
             super(x, y, z, sides);
+            this.w = w;
+            this.h = h;
+            this.d = d;
+            this.b = new BoundingBox(x,y,z,w,h,d);
+        }
+
+        @Override
+        public Bounds getBounds() {
+            return b;
+        }
+
+        @Override
+        public double getWidth() {
+            return w;
+        }
+
+        @Override
+        public double getHeight() {
+            return h;
+        }
+
+        @Override
+        public double getDepth() {
+            return d;
         }
     }
 

@@ -7,7 +7,7 @@ import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import com.cpp.cs.cs4450.util.VertexUtils;
-import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
@@ -27,11 +27,11 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
             final float y,
             final float z,
             final BlockType type,
-            final BoundingBox boundingBox,
+            final Bounds bounds,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {
-        super(x, y, z, type, boundingBox, sides, paths);
+        super(x, y, z, type, bounds, sides, paths);
     }
 
     @Override
