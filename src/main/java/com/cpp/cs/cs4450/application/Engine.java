@@ -62,6 +62,10 @@ public final class Engine {
 
             }
 
+            if (ui.invert()){
+                graphicsEngine.invert();
+            }
+
             final float x1 = camera.getPositionX(), y1 = camera.getPositionY(), z1 = camera.getPositionZ();
 
             graphicsEngine.updateLighting(x1 - x0, y1 - y0, z1 - z0);

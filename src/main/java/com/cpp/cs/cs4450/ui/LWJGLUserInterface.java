@@ -10,6 +10,7 @@ public class LWJGLUserInterface implements UserInterface {
     public LWJGLUserInterface() {
         try {
             Keyboard.create();
+            Keyboard.enableRepeatEvents(true);
             Mouse.create();
             Mouse.setGrabbed(true);
         } catch (LWJGLException e) {
@@ -45,6 +46,17 @@ public class LWJGLUserInterface implements UserInterface {
     @Override
     public boolean backward() {
         return Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN);
+    }
+
+    @Override
+    public boolean invert() {
+        while (Keyboard.next()){
+            if(Keyboard.getEventKey() == Keyboard.KEY_I){
+                return Keyboard.getEventKeyState();
+            }
+        }
+
+        return false;
     }
 
     @Override

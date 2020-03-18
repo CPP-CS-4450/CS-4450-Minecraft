@@ -1,5 +1,6 @@
 package com.cpp.cs.cs4450.model.cube;
 
+import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
 import com.cpp.cs.cs4450.util.Bounded;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-public class MultiTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded {
+public class MultiTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded, Invertible {
     private static final String INVALID_VERTICES_ERROR_MESSAGE = "Invalid number of vertices";
 
 
@@ -48,7 +49,7 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
                 throw new RuntimeException(INVALID_VERTICES_ERROR_MESSAGE);
             }
 
-            final Texture texture = textures.get(side.getType());
+            final Texture texture = inverted ? inverts.get(side.getType()) : textures.get(side.getType());
             texture.bind();
             GL11.glBegin(GL11.GL_QUADS);
 

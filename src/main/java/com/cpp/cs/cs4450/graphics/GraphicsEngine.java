@@ -4,6 +4,8 @@ public interface GraphicsEngine {
 
     void render();
 
+    void invert();
+
     void shutdown();
 
     void updateLighting(float x, float y, float z);

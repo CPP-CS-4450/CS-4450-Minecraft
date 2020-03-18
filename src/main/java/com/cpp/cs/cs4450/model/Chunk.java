@@ -1,5 +1,7 @@
 package com.cpp.cs.cs4450.model;
 
+import com.cpp.cs.cs4450.graphics.Invertible;
+import com.cpp.cs.cs4450.graphics.InvertibleContainer;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
 import com.cpp.cs.cs4450.graphics.Textured3D;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Chunk implements Renderable, Textured3D, BoundedContainer {
+public class Chunk implements Renderable, Textured3D, BoundedContainer, InvertibleContainer {
     private final Cube[][][] cubes;
     private final List<Cube> blocks;
     private final List<Bounds> bounds;
@@ -68,6 +70,16 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer {
         }
         
         return texs;
+    }
+
+    @Override
+    public void invert() {
+        blocks.parallelStream().filter(c -> c instanceof Invertible).map(c -> (Invertible) c).forEach(Invertible::invert);
+    }
+
+    @Override
+    public List<Invertible> getInvertibles() {
+        return blocks.stream().filter(b -> b instanceof Invertible).map(b -> (Invertible) b).collect(Collectors.toList());
     }
 
     @Override

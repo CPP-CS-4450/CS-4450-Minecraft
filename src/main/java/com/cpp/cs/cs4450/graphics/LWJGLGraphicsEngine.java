@@ -1,25 +1,30 @@
 package com.cpp.cs.cs4450.graphics;
 
+import com.cpp.cs.cs4450.util.Color;
+import com.cpp.cs.cs4450.util.TextureInverter;
 import com.cpp.cs.cs4450.util.TextureLoader;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
-import java.awt.Color;
+
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
 public class LWJGLGraphicsEngine implements GraphicsEngine {
     private static final String DEFAULT_TITLE = "LWJGL Computer Graphics Program";
-    private static final Color INIT_COLOR = Color.BLACK;
-    private static final Color SKY_COLOR = new Color(0.8f, 0.95f, 1.0f, 0.0f);
     private static final int FPS = 60;
+    private static final Color BLACK_BACKGROUND = new Color(0.2f, 1, 0.2f, 0);
+    private static final Color BACKGROUND_COLOR = new Color(0.8f, 0.95f, 1.0f, 0.0f);
     private static final List<Float> LIGHT_POSITIONS = List.of(0.0f, 0.0f, 0.0f, 1.0f);
     private static final List<Float> WHITE_LIGHT_POSITIONS = List.of(7.0f, 7.0f, 7.0f, 0.0f);
     private static final List<Float> DARK_LIGHT_POSITIONS = List.of(0.3f, 0.3f, 0.3f, 0.0f);
@@ -27,6 +32,8 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
     private final DisplayMode displayMode;
     private final List<Renderable> renders;
     private final Vector3f light;
+    private boolean inverted;
+    private boolean invertsInitialized;
 
 
     public LWJGLGraphicsEngine(final DisplayMode displayMode, final List<Renderable> renders) {
@@ -40,7 +47,9 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
     public LWJGLGraphicsEngine(final DisplayMode displayMode, final List<Renderable> renders, final String title, final boolean lighting) {
         this.displayMode = displayMode;
         this.renders = renders;
-        this.light = new Vector3f(0f, 15f,3.5f);
+        this.light = new Vector3f(2f, 15f,2f);
+        this.inverted = false;
+        this.invertsInitialized = false;
         initDisplay(title);
         initGL11();
         initTextures();
@@ -76,6 +85,43 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         Display.sync(FPS);
     }
 
+    @Override
+    public void invert(){
+        if(!invertsInitialized){
+            initInvertibles();
+            invertsInitialized = true;
+        }
+
+        final Color background = inverted ? BACKGROUND_COLOR : BLACK_BACKGROUND;
+
+        GL11.glClearColor(background.getRed(), background.getGreen(), background.getBlue(), background.getAlpha());
+
+        for(final Renderable render : renders){
+            if(render instanceof Invertible){
+                ((Invertible) render).invert();
+            }
+            if(render instanceof InvertibleContainer){
+                ((InvertibleContainer) render).invert();
+            }
+        }
+
+        inverted = !inverted;
+    }
+
+    private void initInvertibles(){
+        List<Invertible> invertibles = new ArrayList<>();
+        for(Renderable render : renders){
+            if(render instanceof Invertible){
+                invertibles.add((Invertible) render);
+            }
+            if(render instanceof InvertibleContainer){
+                invertibles.addAll(((InvertibleContainer) render).getInvertibles());
+            }
+        }
+
+        TextureInverter.invert(invertibles);
+    }
+
     private void initDisplay(final String title){
         try {
             Display.setTitle(title);
@@ -88,7 +134,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
 
     private void initGL11(){
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glClearColor(0.8f, 0.95f, 1.0f, 0.0f);
+        GL11.glClearColor(BACKGROUND_COLOR.getRed(), BACKGROUND_COLOR.getGreen(), BACKGROUND_COLOR.getBlue(),BACKGROUND_COLOR.getAlpha());
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GLU.gluPerspective(100.0f, ((float)displayMode.getWidth() / ( float) displayMode.getHeight()), 0.1f, 300.0f);

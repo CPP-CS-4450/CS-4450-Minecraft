@@ -14,6 +14,8 @@ public interface UserInterface {
 
     boolean backward();
 
+    boolean invert();
+
     boolean quit();
 
     float getMouseHorizontalChange();
