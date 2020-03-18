@@ -5,7 +5,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import java.util.Map;
 
-public interface Textured extends Invertible {
+public interface Textured {
 
     void setTextures(Map<?, ? extends Texture> textures);
 

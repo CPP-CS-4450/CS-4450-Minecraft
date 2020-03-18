@@ -2,9 +2,8 @@ package com.cpp.cs.cs4450.camera;
 
 import com.cpp.cs.cs4450.model.GameAreaEntity;
 import com.cpp.cs.cs4450.model.Movable;
-import com.cpp.cs.cs4450.util.Bounded;
 
-public interface CameraController extends GameAreaEntity, Movable, Cloneable, Bounded {
+public interface CameraController extends GameAreaEntity, Movable, Cloneable {
     float DEFAULT_DYAW = 90.0f;
 
 

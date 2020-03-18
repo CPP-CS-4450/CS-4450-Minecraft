@@ -1,41 +1,35 @@
 package com.cpp.cs.cs4450.model.cube;
 
-import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
-import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
-import com.cpp.cs.cs4450.util.TextureInverter;
 import com.cpp.cs.cs4450.util.VertexUtils;
-import javafx.geometry.BoundingBox;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.newdawn.slick.opengl.Texture;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-public class SingleTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded, Invertible {
+public class SingleTexturedBlock extends TexturedBlock implements Renderable, Textured {
     private static final String INVALID_VERTICES_ERROR_MESSAGE = "Invalid number of vertices";
 
     private Texture texture;
-    private Texture invert;
 
     public SingleTexturedBlock(
             final float x,
             final float y,
             final float z,
             final BlockType type,
-            final BoundingBox boundingBox,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {
-        super(x, y, z, type, boundingBox, sides, paths);
+        super(x, y, z, type, sides, paths);
     }
 
     @Override
@@ -48,8 +42,7 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
 
         GL11.glColor4d(1.0, 1.0, 1.0, 1.0);
 
-        Texture render = inverted ? invert : texture;
-        render.bind();
+        texture.bind();
         GL11.glBegin(GL11.GL_QUADS);
 
         for(final CubeSide side : sides){
@@ -79,12 +72,6 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
     public void setTextures(final Map<?, ? extends Texture> textures) {
         this.textures = castTexturesMapKeys(textures);
         this.texture = textures.values().iterator().next();
-    }
-
-    @Override
-    public void setInverts(final Map<?, ? extends Texture> inverts){
-        this.inverts = castTexturesMapKeys(inverts);
-        this.invert = TextureInverter.invert(textures.values().iterator().next());
     }
 
 }

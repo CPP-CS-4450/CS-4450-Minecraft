@@ -5,7 +5,6 @@ import com.cpp.cs.cs4450.model.cube.Block;
 import com.cpp.cs.cs4450.model.cube.BlockType;
 import com.cpp.cs.cs4450.model.cube.MultiTexturedBlock;
 import com.cpp.cs.cs4450.model.cube.SingleTexturedBlock;
-import javafx.geometry.BoundingBox;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -51,12 +50,9 @@ public final class CubeFactory {
             sides.add(new CubeSide(side, calculateSideVertices(side, x, y, z, l, h, d), Color.BLUE));
         }
 
-        final float minX = -(x - (l / 2)), minY = -(y - (h / 2)), minZ = -(z - (d / 2));
-        final BoundingBox boundingBox = new BoundingBox(minX, minY, minZ, l, (!type.solid() ? h : 0), d);
-
         return isMultiTextured(type)
-                ? new MultiTexturedBlock(x,y,z,type,boundingBox,sides, type.getPaths())
-                : new SingleTexturedBlock(x,y,z,type,boundingBox,sides, type.getPaths());
+                ? new MultiTexturedBlock(x,y,z,type,sides, type.getPaths())
+                : new SingleTexturedBlock(x,y,z,type,sides, type.getPaths());
     }
 
     public static Cube create(float size, Color ...colors){

@@ -2,14 +2,11 @@ package com.cpp.cs.cs4450.camera;
 
 import com.cpp.cs.cs4450.model.GameAreaEntity;
 import com.cpp.cs.cs4450.model.Movable;
-import com.cpp.cs.cs4450.util.Bounded;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class FirstPersonCameraController implements CameraController, GameAreaEntity, Movable, Cloneable, Bounded {
+public class FirstPersonCameraController implements CameraController, GameAreaEntity, Movable, Cloneable {
     private static final float HORIZONTAL_DYAW = 90.0f;
     private static final double WIDTH = 0.2;
     private static final double HEIGHT = 0.3;
@@ -157,30 +154,6 @@ public class FirstPersonCameraController implements CameraController, GameAreaEn
                 "\nX:\t" + getPositionX() +
                 "\nY:\t" + getPositionY() +
                 "\nZ:\t" + getPositionZ();
-    }
-
-    @Override
-    public Bounds getBounds() {
-        return new BoundingBox(calcMin(position.x, WIDTH), calcMin(position.y, HEIGHT), calcMin(position.z, DEPTH), WIDTH, HEIGHT, DEPTH);
-    }
-
-    @Override
-    public double getWidth() {
-        return WIDTH;
-    }
-
-    @Override
-    public double getHeight() {
-        return HEIGHT;
-    }
-
-    @Override
-    public double getDepth() {
-        return DEPTH;
-    }
-
-    private static double calcMin(double d, double n){
-        return d - (n / 2);
     }
 
 }

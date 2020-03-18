@@ -1,14 +1,9 @@
 package com.cpp.cs.cs4450.model.cube;
 
-import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
-import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
-import com.cpp.cs.cs4450.util.TextureInverter;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -18,11 +13,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 
-public abstract class TexturedBlock extends Block implements Renderable, Textured, Bounded, Invertible {
+public abstract class TexturedBlock extends Block implements Renderable, Textured {
     protected static final List<ReadableVector2f> TEX_COORDS = List.of(
             new Vector2f(1,1),
             new Vector2f(0,1),
@@ -31,11 +24,8 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
     );
 
     protected final BlockType type;
-    protected final BoundingBox boundingBox;
     protected Map<CubeSideType, String> paths;
     protected Map<CubeSideType, Texture> textures;
-    protected Map<CubeSideType, Texture> inverts;
-    protected boolean inverted;
 
 
     public TexturedBlock(
@@ -43,30 +33,17 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
             final float y,
             final float z,
             final BlockType type,
-            final BoundingBox boundingBox,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {
         super(x, y, z, sides);
         this.type = type;
-        this.boundingBox = boundingBox;
         this.paths = paths;
-        this.inverted = false;
     }
 
     @Override
     public void setTextures(final Map<?, ? extends Texture> textures) {
         this.textures = castTexturesMapKeys(textures);
-    }
-
-    @Override
-    public void setInverts(Map<?, ? extends Texture> inverts){
-        this.inverts = castTexturesMapKeys(inverts);
-    }
-
-    @Override
-    public Map<?, ? extends Texture> getInverts(){
-        return inverts;
     }
 
     @Override
@@ -77,37 +54,6 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
     @Override
     public Map<?, String> getPaths() {
         return paths;
-    }
-
-    @Override
-    public Bounds getBounds() {
-        return boundingBox;
-    }
-
-    @Override
-    public double getWidth() {
-        return boundingBox.getWidth();
-    }
-
-    @Override
-    public double getHeight() {
-        return boundingBox.getHeight();
-    }
-
-    @Override
-    public double getDepth() {
-        return boundingBox.getDepth();
-    }
-
-    @Override
-    public void invert(){ inverted = !inverted; }
-
-    @Override
-    public boolean isInverted(){ return inverted; }
-
-    @Override
-    public Object getInvertKey(){
-        return getType();
     }
 
     @Override
@@ -129,14 +75,6 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
         }
 
         return casts;
-    }
-
-    protected static Map<CubeSideType, Texture> invertTextures(final Map<CubeSideType, Texture> textures){
-        return textures.entrySet().stream().collect(Collectors.toMap(
-                Entry::getKey,
-                e -> TextureInverter.invert(e.getValue()),
-                (k0, k1) -> k0
-        ));
     }
 
 }
