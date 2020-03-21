@@ -6,9 +6,9 @@ import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
 import com.cpp.cs.cs4450.graphics.Textured3D;
 import com.cpp.cs.cs4450.model.cube.Cube;
+import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.BoundedContainer;
-import javafx.geometry.Bounds;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class Chunk implements Renderable, Textured3D, BoundedContainer, InvertibleContainer {
     private final Cube[][][] cubes;
     private final List<Cube> blocks;
-    private final List<Bounds> bounds;
+    private final List<Bound> bounds;
 
 
     public Chunk(final Cube[][][] cubes, final List<Cube> blocks) {
@@ -83,11 +83,11 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
     }
 
     @Override
-    public List<Bounds> getBounds() {
+    public List<Bound> getBounds() {
         return List.copyOf(bounds);
     }
 
-    private static List<Bounds> filterBounded(final List<?> objects){
+    private static List<Bound> filterBounded(final List<?> objects){
         return objects.stream().filter(Objects::nonNull)
                 .filter(o -> o instanceof Bounded)
                 .map(o -> (Bounded) o)

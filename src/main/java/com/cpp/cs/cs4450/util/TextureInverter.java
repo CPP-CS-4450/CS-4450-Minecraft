@@ -1,14 +1,21 @@
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.graphics.Invertible;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
-import org.newdawn.slick.ImageBuffer;
+import org.newdawn.slick.opengl.CompositeImageData;
+import org.newdawn.slick.opengl.ImageData;
 import org.newdawn.slick.opengl.InternalTextureLoader;
+import org.newdawn.slick.opengl.LoadableImageData;
 import org.newdawn.slick.opengl.Texture;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +46,26 @@ public final class TextureInverter {
 
             final int w = texture.getImageWidth(), h = texture.getImageHeight();
 
+            byte[] bytes = listToArray(invertedColors.stream().map(TextureInverter::colorToByte).flatMap(Collection::stream).collect(Collectors.toList()));
+
+            final ImageData buffer = new ImageByteBufferWrapper(bytes, w, h);
+
+
+            return loader.getTexture(buffer, GL11.GL_LINEAR);
+        } catch (IOException e){
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
+    /*
+    public static Texture invert(final Texture texture){
+        try {
+            final List<Color> invertedColors = bytesToColors(texture.getTextureData()).stream()
+                    .map(TextureInverter::invert)
+                    .collect(Collectors.toList());
+
+            final int w = texture.getImageWidth(), h = texture.getImageHeight();
+
             final ImageBuffer buffer = new ImageBuffer(w, h);
             for(int x = 0; x < w; ++x){
                 for(int y = 0; y < h; ++y){
@@ -52,6 +79,9 @@ public final class TextureInverter {
             throw new RuntimeException(e.getLocalizedMessage());
         }
     }
+
+     */
+
 
     public static Color invert(final Color color){
         return new Color(1 - color.getRed(), 1 - color.getGreen(), 1 - color.getBlue(), color.getAlpha());
@@ -109,6 +139,13 @@ public final class TextureInverter {
         return new InvertTextureWrapper(invert(textures));
     }
 
+    private static ImageData bytesToImageData(byte[] bytes) throws IOException {
+        LoadableImageData image = new CompositeImageData();
+        image.loadImage(new ByteArrayInputStream(bytes), false, true, null);
+
+        return image;
+    }
+
     private static final class InvertTextureWrapper {
         private final Map<?, ? extends Texture> inverts;
 
@@ -120,5 +157,52 @@ public final class TextureInverter {
             return inverts;
         }
     }
+
+    private static class ImageByteBufferWrapper implements ImageData {
+        private final byte[] bytes;
+        private final int width;
+        private final int height;
+
+        private ImageByteBufferWrapper(byte[] bytes, int width, int height) {
+            this.bytes = bytes;
+            this.width = width;
+            this.height = height;
+        }
+
+
+        @Override
+        public int getDepth() {
+            return 32;
+        }
+
+        @Override
+        public int getWidth() {
+            return width;
+        }
+
+        @Override
+        public int getHeight() {
+            return height;
+        }
+
+        @Override
+        public int getTexWidth() {
+            return TextureLoader.get2Power(width);
+        }
+
+        @Override
+        public int getTexHeight() {
+            return TextureLoader.get2Power(height);
+        }
+
+        @Override
+        public ByteBuffer getImageBufferData() {
+            return ByteBuffer.allocateDirect(bytes.length)
+                    .order(ByteOrder.nativeOrder())
+                    .put(bytes)
+                    .flip();
+        }
+    }
+
 
 }

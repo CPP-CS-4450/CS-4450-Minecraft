@@ -2,9 +2,9 @@ package com.cpp.cs.cs4450.camera;
 
 import com.cpp.cs.cs4450.model.GameAreaEntity;
 import com.cpp.cs.cs4450.model.Movable;
+import com.cpp.cs.cs4450.util.Bound;
+import com.cpp.cs.cs4450.util.BoundBox;
 import com.cpp.cs.cs4450.util.Bounded;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
@@ -160,8 +160,8 @@ public class FirstPersonCameraController implements CameraController, GameAreaEn
     }
 
     @Override
-    public Bounds getBounds() {
-        return new BoundingBox(calcMin(position.x, WIDTH), calcMin(position.y, HEIGHT), calcMin(position.z, DEPTH), WIDTH, HEIGHT, DEPTH);
+    public Bound getBounds() {
+        return new BoundBox(calcMin(position.x, WIDTH), calcMin(position.y, HEIGHT), calcMin(position.z, DEPTH), WIDTH, HEIGHT, DEPTH);
     }
 
     @Override

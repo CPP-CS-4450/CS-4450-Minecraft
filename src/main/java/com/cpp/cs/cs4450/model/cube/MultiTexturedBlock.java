@@ -3,11 +3,11 @@ package com.cpp.cs.cs4450.model.cube;
 import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
+import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import com.cpp.cs.cs4450.util.VertexUtils;
-import javafx.geometry.Bounds;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
@@ -27,7 +27,7 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
             final float y,
             final float z,
             final BlockType type,
-            final Bounds bounds,
+            final Bound bounds,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {

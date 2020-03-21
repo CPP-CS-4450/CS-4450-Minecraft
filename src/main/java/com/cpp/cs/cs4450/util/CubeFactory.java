@@ -5,8 +5,6 @@ import com.cpp.cs.cs4450.model.cube.Block;
 import com.cpp.cs.cs4450.model.cube.BlockType;
 import com.cpp.cs.cs4450.model.cube.MultiTexturedBlock;
 import com.cpp.cs.cs4450.model.cube.SingleTexturedBlock;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -55,11 +53,11 @@ public final class CubeFactory {
         }
 
         final float minX = -(x - (l / 2)), minY = -(y - (h / 2)), minZ = -(z - (d / 2));
-        final BoundingBox boundingBox = new BoundingBox(minX, minY, minZ, l, (!type.solid() ? h : 0), d);
+        final BoundBox bounds = new BoundBox(minX, minY, minZ, l, (!type.solid() ? h : 0), d);
 
         return isMultiTextured(type)
-                ? new MultiTexturedBlock(x,y,z,type,boundingBox,sides, type.getPaths())
-                : new SingleTexturedBlock(x,y,z,type,boundingBox,sides, type.getPaths());
+                ? new MultiTexturedBlock(x,y,z,type,bounds,sides, type.getPaths())
+                : new SingleTexturedBlock(x,y,z,type,bounds,sides, type.getPaths());
     }
 
     public static Cube create(float size, Color ...colors){
@@ -212,18 +210,18 @@ public final class CubeFactory {
         private final float w;
         private final float h;
         private final float d;
-        private final Bounds b;
+        private final Bound b;
 
         private BlockImpl(final float x, final float y, final float z, final float w, final float h, final float d, final List<CubeSide> sides) {
             super(x, y, z, sides);
             this.w = w;
             this.h = h;
             this.d = d;
-            this.b = new BoundingBox(x,y,z,w,h,d);
+            this.b = new BoundBox(x,y,z,w,h,d);
         }
 
         @Override
-        public Bounds getBounds() {
+        public Bound getBounds() {
             return b;
         }
 

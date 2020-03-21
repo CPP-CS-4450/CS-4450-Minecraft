@@ -3,11 +3,11 @@ package com.cpp.cs.cs4450.model.cube;
 import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
+import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import com.cpp.cs.cs4450.util.TextureInverter;
-import javafx.geometry.Bounds;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
@@ -30,7 +30,7 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
     );
 
     protected final BlockType type;
-    protected final Bounds bounds;
+    protected final Bound bounds;
     protected Map<CubeSideType, String> paths;
     protected Map<CubeSideType, Texture> textures;
     protected Map<CubeSideType, Texture> inverts;
@@ -42,7 +42,7 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
             final float y,
             final float z,
             final BlockType type,
-            final Bounds bounds,
+            final Bound bounds,
             final List<CubeSide> sides,
             final Map<CubeSideType, String> paths
     ) {
@@ -79,7 +79,7 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
     }
 
     @Override
-    public Bounds getBounds() {
+    public Bound getBounds() {
         return bounds;
     }
 

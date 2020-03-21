@@ -8,7 +8,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.ReadableColor;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -56,10 +55,12 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         if(lighting) initLighting();
     }
 
+    @Override
     public void render(){
         renders.forEach(Renderable::render);
     }
 
+    @Override
     public void shutdown(){
         Display.destroy();
     }
