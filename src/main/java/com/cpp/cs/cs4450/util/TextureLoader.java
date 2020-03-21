@@ -41,12 +41,4 @@ public final class TextureLoader {
         }
     }
 
-    public static int get2Power(int n){
-        int i = 2;
-        while(i < n){
-            i *= 2;
-        }
-        return i;
-    }
-
 }
