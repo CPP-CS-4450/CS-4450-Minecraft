@@ -7,12 +7,13 @@ import com.cpp.cs.cs4450.noise.SimplexNoise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public final class ChunkFactory {
     private static final int LARGEST_FEATURE = 32;
-    private static final List<BlockType> CUBE_BOX_TYPES = List.copyOf(Arrays.asList(BlockType.values()));
+    private static final List<BlockType> CUBE_BOX_TYPES = Collections.unmodifiableList(Arrays.asList(BlockType.values()));
 
     private static final Random random = new Random();
 

@@ -4,8 +4,12 @@ import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 
 import java.util.Arrays;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class TexturesConfiguration {
     private static final String GRASS_TOP_TEXTURE_PATH = "assets/grass-top-tex.png";
@@ -18,15 +22,17 @@ public final class TexturesConfiguration {
     private static final String BEDROCK_TEXTURE_PATH = "assets/bedrock-tex.png";
 
 
-    public static final Map<CubeSideType, String> GRASS_TEXTURES = Map.of(
-            CubeSideType.TOP, GRASS_TOP_TEXTURE_PATH,
-            CubeSideType.BOTTOM, DIRT_TEXTURE_PATH,
-            CubeSideType.LEFT, GRASS_SIDE_1_TEXTURE_PATH,
-            CubeSideType.RIGHT, GRASS_SIDE_1_TEXTURE_PATH,
-            CubeSideType.FRONT, GRASS_SIDE_2_TEXTURE_PATH,
-            CubeSideType.BACK, GRASS_SIDE_2_TEXTURE_PATH
-
-    );
+    public static final Map<CubeSideType, String> GRASS_TEXTURES = Stream.of(
+            new SimpleImmutableEntry<>(CubeSideType.TOP, GRASS_TOP_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(CubeSideType.BOTTOM, DIRT_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(CubeSideType.LEFT, GRASS_SIDE_1_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(CubeSideType.RIGHT, GRASS_SIDE_1_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(CubeSideType.FRONT, GRASS_SIDE_2_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(CubeSideType.BACK, GRASS_SIDE_2_TEXTURE_PATH)
+    ).collect(Collectors.collectingAndThen(
+            Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
+            Collections::unmodifiableMap
+    ));
 
     public static final Map<CubeSideType, String> DIRT_TEXTURES = generateSingleTextureMap(DIRT_TEXTURE_PATH);
 
@@ -41,15 +47,12 @@ public final class TexturesConfiguration {
     private TexturesConfiguration(){}
 
     private static Map<CubeSideType, String> generateSingleTextureMap(final String path){
-        return Map.copyOf(
-                Arrays.stream(CubeSideType.values()).collect(
-                        Collectors.toMap(
-                                cst -> cst,
-                                cst -> path,
-                                (cst0, cst1) -> cst0
-                        )
-                )
-        );
+        return Arrays.stream(CubeSideType.values())
+                .map(cst -> new SimpleImmutableEntry<>(cst, path))
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
+                        Collections::unmodifiableMap
+                ));
     }
 
 }

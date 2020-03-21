@@ -1,6 +1,8 @@
 package com.cpp.cs.cs4450.util;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CollisionDetector {
     private static final double VERTICAL_COLLISION_DETECTING_LIMIT = 6.0 * .1;
@@ -17,7 +19,7 @@ public class CollisionDetector {
     private final double maxZ;
 
     public CollisionDetector(final List<Bound> bounds){
-        this.bounds = List.copyOf(bounds);
+        this.bounds = bounds.stream().collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
 
         double minX = Double.MAX_VALUE, minY = Double.MIN_VALUE, minZ = Double.MAX_VALUE;
         double maxX = Double.MAX_VALUE, maxY = Double.MIN_VALUE, maxZ = Double.MAX_VALUE;

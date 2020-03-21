@@ -15,7 +15,9 @@ import org.lwjgl.util.vector.Vector3f;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -24,9 +26,9 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
     private static final int FPS = 60;
     private static final Color BLACK_BACKGROUND = new Color(0.2f, 1, 0.2f, 0);
     private static final Color BACKGROUND_COLOR = new Color(0.8f, 0.95f, 1.0f, 0.0f);
-    private static final List<Float> LIGHT_POSITIONS = List.of(0.0f, 0.0f, 0.0f, 1.0f);
-    private static final List<Float> WHITE_LIGHT_POSITIONS = List.of(7.0f, 7.0f, 7.0f, 0.0f);
-    private static final List<Float> DARK_LIGHT_POSITIONS = List.of(0.3f, 0.3f, 0.3f, 0.0f);
+    private static final List<Float> LIGHT_POSITIONS = Collections.unmodifiableList(Arrays.asList(0.0f, 0.0f, 0.0f, 1.0f));
+    private static final List<Float> WHITE_LIGHT_POSITIONS = Collections.unmodifiableList(Arrays.asList(7.0f, 7.0f, 7.0f, 0.0f));
+    private static final List<Float> DARK_LIGHT_POSITIONS = Collections.unmodifiableList(Arrays.asList(0.3f, 0.3f, 0.3f, 0.0f));
 
     private final DisplayMode displayMode;
     private final List<Renderable> renders;
@@ -67,7 +69,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
 
     @Override
     public void updateLighting(final float dx, final float dy, final float dz){
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, initBuffer(List.of((light.x += dx), (light.y), (light.z += dz), 1.0f)));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, initBuffer(Arrays.asList((light.x += dx), (light.y), (light.z += dz), 1.0f)));
     }
 
     @Override
@@ -76,7 +78,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         GL11.glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         GL11.glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         GL11.glTranslatef(x, y, z);
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, initBuffer(List.of(light.x, light.y, light.z, 1.0f)));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, initBuffer(Arrays.asList(light.x, light.y, light.z, 1.0f)));
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     }
 
@@ -165,7 +167,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
             buffer.put(value.floatValue());
         }
 
-        return buffer.flip();
+        return (FloatBuffer) buffer.flip();
     }
 
 

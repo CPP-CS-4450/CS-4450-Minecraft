@@ -2,8 +2,6 @@ package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.model.GameAreaEntity;
-import com.cpp.cs.cs4450.util.Bounded;
-import javafx.geometry.Bounds;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;

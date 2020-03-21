@@ -14,6 +14,8 @@ import com.cpp.cs.cs4450.util.CollisionDetector;
 
 import org.lwjgl.opengl.DisplayMode;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class GraphicsApplication {
@@ -32,7 +34,7 @@ public abstract class GraphicsApplication {
 
 
     public static void launch(final String ...args){
-        launch(List.of(args));
+        launch(Collections.unmodifiableList(Arrays.asList(args)));
     }
 
     public static void launch(final List<String> args){
@@ -44,7 +46,7 @@ public abstract class GraphicsApplication {
 
     private static void launch(boolean lighting, boolean random){
         final Chunk chunk = ChunkFactory.createChunk(SIZE, CUBE_SIZE, PERSISTENCE, random);
-        final List<Renderable> renders = List.of(chunk);
+        final List<Renderable> renders = Collections.unmodifiableList(Collections.singletonList(chunk));
         final DisplayMode displayMode = new DisplayMode(Configuration.DISPLAY_WINDOW_WIDTH, Configuration.DISPLAY_WINDOW_HEIGHT);
 
         final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(displayMode, renders, Configuration.DISPLAY_WINDOW_TITLE, lighting);

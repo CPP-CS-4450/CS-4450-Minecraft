@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +99,7 @@ public final class TextureInverter {
     }
 
     private static List<Byte> colorToByte(final Color color){
-        return List.of(color.getRedByte(), color.getGreenByte(), color.getBlueByte(), color.getAlphaByte());
+        return Collections.unmodifiableList(Arrays.asList(color.getRedByte(), color.getGreenByte(), color.getBlueByte(), color.getAlphaByte()));
     }
 
     private static byte[] byteListToArray(final List<Byte> list){
@@ -178,7 +180,7 @@ public final class TextureInverter {
 
         @Override
         public ByteBuffer getImageBufferData() {
-            return ByteBuffer.allocateDirect(bytes.length)
+            return (ByteBuffer) ByteBuffer.allocateDirect(bytes.length)
                     .order(ByteOrder.nativeOrder())
                     .put(bytes)
                     .flip();

@@ -20,10 +20,11 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public final class CubeFactory {
     private static final int CUBE_SIDES = CubeSideType.values().length;
-    private static final List<Color> COLORS = List.of(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE);
+    private static final List<Color> COLORS = Collections.unmodifiableList(Arrays.asList(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE));
 
     private static final Random random = new Random();
 
@@ -106,57 +107,57 @@ public final class CubeFactory {
                 break;
         }
 
-        return List.copyOf(vertices);
+        return Collections.unmodifiableList(vertices);
     }
 
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
-        return List.of(
+        return Stream.of(
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x - l, y + h, z - d)
-        );
+        ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
-        return List.of(
+        return Stream.of(
                 new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y - h, z - d),
                 new Vector3f(x - l, y - h, z - d)
-        );
+        ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
-        return List.of(
+        return Stream.of(
                 new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x - l, y + h, z - d),
                 new Vector3f(x - l, y - h, z - d)
-        );
+        ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
-        return List.of(
+        return Stream.of(
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y - h, z - d)
-        );
+        ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
-        return List.of(
+        return Stream.of(
                 new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x - l, y - h, z + d)
-        );
+        ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
-        return List.of(
+        return Stream.of(
                 new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y - h, z - d),
                 new Vector3f(x - l, y - h, z - d),
                 new Vector3f(x - l, y + h, z - d)
-        );
+        ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     private static Queue<Color> generateColors(final Color ...colors){
@@ -258,7 +259,7 @@ public final class CubeFactory {
         }
 
         public List<ReadableVector3f> getVertices() {
-            return List.copyOf(vertices);
+            return Collections.unmodifiableList(vertices);
         }
 
         public Color getColor() {

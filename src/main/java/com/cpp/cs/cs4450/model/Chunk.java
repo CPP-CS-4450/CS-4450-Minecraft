@@ -10,6 +10,7 @@ import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.BoundedContainer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
 
     @Override
     public List<Bound> getBounds() {
-        return List.copyOf(bounds);
+        return Collections.unmodifiableList(bounds);
     }
 
     private static List<Bound> filterBounded(final List<?> objects){

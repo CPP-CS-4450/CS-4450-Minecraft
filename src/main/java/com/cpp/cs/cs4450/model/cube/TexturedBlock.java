@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +23,13 @@ import java.util.stream.Collectors;
 
 
 public abstract class TexturedBlock extends Block implements Renderable, Textured, Bounded, Invertible {
-    protected static final List<ReadableVector2f> TEX_COORDS = List.of(
-            new Vector2f(1,1),
-            new Vector2f(0,1),
-            new Vector2f(0,0),
-            new Vector2f(1,0)
+    protected static final List<ReadableVector2f> TEX_COORDS = Collections.unmodifiableList(
+            Arrays.asList(
+                    new Vector2f(1,1),
+                    new Vector2f(0,1),
+                    new Vector2f(0,0),
+                    new Vector2f(1,0)
+            )
     );
 
     protected final BlockType type;
