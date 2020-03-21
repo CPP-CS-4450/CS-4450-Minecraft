@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 
 public final class CubeFactory {
     private static final int CUBE_SIDES = CubeSideType.values().length;
-    private static final List<Color> COLORS = List.of(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE);
+    private static final List<Color> COLORS = Collections.unmodifiableList(Arrays.asList(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE));
 
     private static final Random random = new Random();
 
