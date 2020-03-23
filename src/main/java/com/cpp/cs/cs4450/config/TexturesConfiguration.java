@@ -47,7 +47,7 @@ public final class TexturesConfiguration {
     private TexturesConfiguration(){}
 
     private static Map<CubeSideType, String> generateSingleTextureMap(final String path){
-        return Arrays.stream(CubeSideType.values())
+        return Stream.of(CubeSideType.FRONT)
                 .map(cst -> new SimpleImmutableEntry<>(cst, path))
                 .collect(Collectors.collectingAndThen(
                         Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
