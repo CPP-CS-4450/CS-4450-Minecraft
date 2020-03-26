@@ -7,13 +7,13 @@ import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
-import com.cpp.cs.cs4450.util.VertexUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.newdawn.slick.opengl.Texture;
 
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -55,7 +55,7 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
 
             final float offset = texture.getWidth() / texture.getHeight();
 
-            final Queue<ReadableVector3f> queue = VertexUtils.renderQueue(side.getType(), side.getVertices());
+            final Queue<ReadableVector3f> queue = new ArrayDeque<>(side.getVertices());
 
             while(!queue.isEmpty()) {
                 for (final ReadableVector2f tex : TEX_COORDS) {

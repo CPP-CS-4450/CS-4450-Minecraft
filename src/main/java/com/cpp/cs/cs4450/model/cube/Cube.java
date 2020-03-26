@@ -2,11 +2,16 @@ package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.model.GameAreaEntity;
+import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
+import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Cube implements Renderable, GameAreaEntity {
     private static final Color DEFAULT_TOP_SIDE_COLOR = Color.BLUE;
@@ -176,5 +181,8 @@ public class Cube implements Renderable, GameAreaEntity {
     public ReadableVector3f getPosition3f() {
         return new Vector3f(x, y, z);
     }
+
+    @Override
+    public void init(){}
 
 }

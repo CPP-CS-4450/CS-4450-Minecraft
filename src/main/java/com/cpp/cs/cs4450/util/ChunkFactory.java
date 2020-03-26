@@ -1,7 +1,7 @@
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.model.Chunk;
-import com.cpp.cs.cs4450.model.cube.Cube;
+import com.cpp.cs.cs4450.model.cube.Block;
 import com.cpp.cs.cs4450.model.cube.BlockType;
 import com.cpp.cs.cs4450.noise.SimplexNoise;
 
@@ -25,9 +25,9 @@ public final class ChunkFactory {
     public static Chunk createChunk(final int size, final float scale, final double persistence, final boolean random){
         final SimplexNoise noise = new SimplexNoise(LARGEST_FEATURE, persistence, (int) System.currentTimeMillis());
 
-        final List<Cube> blocks = new ArrayList<>();
+        final List<Block> blocks = new ArrayList<>();
 
-        final Cube[][][] cubes = new Cube[size][size][size];
+        final Block[][][] cubes = new Block[size][size][size];
         for(int i = 0; i < size; ++i){
             for(int k = 0; k < size; ++k){
                 final float x = (i * scale);
@@ -37,7 +37,7 @@ public final class ChunkFactory {
                 for(int j = 0; j < h; ++j){
                     final float y = (j * scale);
 
-                    cubes[i][j][k] = CubeFactory.createTexturedCube(calculateCubeBoxType(random, size, i, j, k), x, y, z, scale);
+                    cubes[i][j][k] = CubeFactory.createTexturedBlock(calculateCubeBoxType(random, size, i, j, k), x, y, z, scale);
 
                     if(hasViewableRender(size, i, j, k)) {
                         blocks.add(cubes[i][j][k]);

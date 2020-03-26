@@ -24,7 +24,17 @@ import java.util.stream.Stream;
 
 public final class CubeFactory {
     private static final int CUBE_SIDES = CubeSideType.values().length;
-    private static final List<Color> COLORS = Collections.unmodifiableList(Arrays.asList(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE));
+    public static final List<Color> COLORS = Collections.unmodifiableList(
+            Arrays.asList(
+                    Color.BLUE,
+                    Color.GREEN,
+                    Color.RED,
+                    Color.YELLOW,
+                    Color.MAGENTA,
+                    Color.CYAN,
+                    Color.ORANGE
+            )
+    );
 
     private static final Random random = new Random();
 
@@ -39,15 +49,15 @@ public final class CubeFactory {
 
     private CubeFactory(){}
 
-    public static Cube createRandomTexturedCube(final float x, final float y, final float z, final float size){
-        return createTexturedCube(BlockType.values()[random.nextInt(BlockType.values().length)], x, y, z, size);
+    public static Block createRandomTexturedBlock(final float x, final float y, final float z, final float size){
+        return createTexturedBlock(BlockType.values()[random.nextInt(BlockType.values().length)], x, y, z, size);
     }
 
-    public static Cube createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size){
-        return createTexturedCube(type, x, y, z, size, size, size);
+    public static Block createTexturedBlock(final BlockType type, final float x, final float y, final float z, final float size){
+        return createTexturedBlock(type, x, y, z, size, size, size);
     }
 
-    public static Cube createTexturedCube(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d){
+    public static Block createTexturedBlock(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d){
         final List<CubeSide> sides = new ArrayList<>(CUBE_SIDES);
         for(CubeSideType side : CubeSideType.values()){
             sides.add(new CubeSide(side, calculateSideVertices(side, x, y, z, l, h, d), Color.BLUE));
@@ -112,51 +122,52 @@ public final class CubeFactory {
 
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x + l, y + h, z + d),
-                new Vector3f(x + l, y + h, z - d),
-                new Vector3f(x - l, y + h, z - d)
+                new Vector3f(x - l, y + h, z + d),
+                new Vector3f(x - l, y + h, z - d),
+                new Vector3f(x + l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x + l, y - h, z + d),
-                new Vector3f(x + l, y - h, z - d),
-                new Vector3f(x - l, y - h, z - d)
+                new Vector3f(x - l, y - h, z + d),
+                new Vector3f(x - l, y - h, z - d),
+                new Vector3f(x + l, y - h, z - d)
+
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x - l, y + h, z + d),
-                new Vector3f(x - l, y + h, z - d),
-                new Vector3f(x - l, y - h, z - d)
+                new Vector3f(x - l, y - h, z + d),
+                new Vector3f(x - l, y - h, z - d),
+                new Vector3f(x - l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y - h, z + d),
-                new Vector3f(x + l, y - h, z - d)
+                new Vector3f(x + l, y - h, z - d),
+                new Vector3f(x + l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x - l, y + h, z + d),
-                new Vector3f(x - l, y - h, z + d)
+                new Vector3f(x - l, y - h, z + d),
+                new Vector3f(x + l, y - h, z + d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y + h, z - d),
-                new Vector3f(x + l, y - h, z - d),
+                new Vector3f(x - l, y + h, z - d),
                 new Vector3f(x - l, y - h, z - d),
-                new Vector3f(x - l, y + h, z - d)
+                new Vector3f(x + l, y - h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
@@ -240,6 +251,11 @@ public final class CubeFactory {
         public double getDepth() {
             return d;
         }
+
+        @Override
+        public BlockType getType() {
+            return null;
+        }
     }
 
     private static boolean isMultiTextured(final BlockType type){
@@ -268,6 +284,18 @@ public final class CubeFactory {
 
         public CubeSideType getType() {
             return type;
+        }
+
+        public List<Float> getVerticesFloatArray(){
+            List<Float> floats = new ArrayList<>(vertices.size() * 3);
+            for(ReadableVector3f vector : vertices){
+                floats.add(vector.getX());
+                floats.add(vector.getY());
+                floats.add(vector.getZ());
+            }
+
+            return floats;
+            //return vertices.stream().map(v -> Arrays.asList(v.getX(), v.getY(), v.getZ())).flatMap(Collection::stream).collect(Collectors.toList());
         }
 
     }
