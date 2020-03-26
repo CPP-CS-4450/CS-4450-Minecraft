@@ -10,9 +10,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
+
 
 public final class ChunkFactory {
     private static final int LARGEST_FEATURE = 32;
+    private static final int MINIMUM_HEIGHT = 9;
     private static final List<BlockType> CUBE_BOX_TYPES = Collections.unmodifiableList(Arrays.asList(BlockType.values()));
 
     private static final Random random = new Random();
@@ -33,7 +36,7 @@ public final class ChunkFactory {
                 final float x = (i * scale);
                 final float z = (k * scale);
 
-                final double h = ((((noise.getNoise(i,k) + 1) >= size) ? (size - 1) : (noise.getNoise(i,k) + 1)) / scale);
+                final double h = calculateHeight(noise.getNoise(i,k), size, scale);
                 for(int j = 0; j < h; ++j){
                     final float y = (j * scale);
 
@@ -74,6 +77,12 @@ public final class ChunkFactory {
         } else {
             return BlockType.GRASS;
         }
+    }
+
+    private static Function<Double, Double> calculateHeight = h -> h >= MINIMUM_HEIGHT ? h : MINIMUM_HEIGHT;
+
+    private static double calculateHeight(double noise, int size, float scale){
+        return calculateHeight.apply(++noise >= size ? --size : noise / scale);
     }
 
 }
