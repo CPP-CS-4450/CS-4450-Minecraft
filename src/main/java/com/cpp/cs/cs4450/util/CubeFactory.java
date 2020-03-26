@@ -112,51 +112,52 @@ public final class CubeFactory {
 
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x - l, y + h, z + d),
                 new Vector3f(x + l, y + h, z + d),
-                new Vector3f(x + l, y + h, z - d),
-                new Vector3f(x - l, y + h, z - d)
+                new Vector3f(x - l, y + h, z + d),
+                new Vector3f(x - l, y + h, z - d),
+                new Vector3f(x + l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x + l, y - h, z + d),
-                new Vector3f(x + l, y - h, z - d),
-                new Vector3f(x - l, y - h, z - d)
+                new Vector3f(x - l, y - h, z + d),
+                new Vector3f(x - l, y - h, z - d),
+                new Vector3f(x + l, y - h, z - d)
+
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x - l, y - h, z + d),
                 new Vector3f(x - l, y + h, z + d),
-                new Vector3f(x - l, y + h, z - d),
-                new Vector3f(x - l, y - h, z - d)
+                new Vector3f(x - l, y - h, z + d),
+                new Vector3f(x - l, y - h, z - d),
+                new Vector3f(x - l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x + l, y + h, z - d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x + l, y - h, z + d),
-                new Vector3f(x + l, y - h, z - d)
+                new Vector3f(x + l, y - h, z - d),
+                new Vector3f(x + l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
-                new Vector3f(x + l, y - h, z + d),
                 new Vector3f(x + l, y + h, z + d),
                 new Vector3f(x - l, y + h, z + d),
-                new Vector3f(x - l, y - h, z + d)
+                new Vector3f(x - l, y - h, z + d),
+                new Vector3f(x + l, y - h, z + d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y + h, z - d),
-                new Vector3f(x + l, y - h, z - d),
+                new Vector3f(x - l, y + h, z - d),
                 new Vector3f(x - l, y - h, z - d),
-                new Vector3f(x - l, y + h, z - d)
+                new Vector3f(x + l, y - h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
