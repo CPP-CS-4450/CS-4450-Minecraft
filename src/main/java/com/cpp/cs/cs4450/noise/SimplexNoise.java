@@ -42,7 +42,7 @@ public class SimplexNoise {
             //double frequency = Math.pow(2,i);
             //double amplitude = Math.pow(persistence,octaves.length-i);
 
-            result = result + octaves[i].noise(x / frequencies[i], y / frequencies[i]) * amplitudes[i];
+            result += octaves[i].noise(x / frequencies[i], y / frequencies[i]) * amplitudes[i];
         }
         return result;
     }
@@ -55,7 +55,7 @@ public class SimplexNoise {
             double frequency = Math.pow(2, i);
             double amplitude = Math.pow(persistence, octaves.length - i);
 
-            result = result + octaves[i].noise(x / frequency, y / frequency, z / frequency) * amplitude;
+            result +=octaves[i].noise(x / frequency, y / frequency, z / frequency) * amplitude;
         }
         return result;
     }
