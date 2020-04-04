@@ -11,7 +11,9 @@ import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.ReadableVector2f;
+import org.newdawn.slick.opengl.InternalTextureLoader;
 
+import java.awt.image.RenderedImage;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +27,11 @@ import java.util.stream.Collectors;
 
 
 public final class ChunkFactory {
+    private static final int BASE_NUMBER = 4;
+    private static final int DIMENSIONS = 3;
     private static final int LARGEST_FEATURE = 32;
     private static final int MINIMUM_HEIGHT = 9;
+    private static final int PLANES = CubeSideType.values().length;
     private static final String DEFAULT_TEXTURE_PATH = TexturesConfiguration.TERRAIN_TEXTURE_PATH;
     private static final List<BlockType> CUBE_BOX_TYPES = Collections.unmodifiableList(Arrays.asList(BlockType.values()));
 
@@ -80,25 +85,26 @@ public final class ChunkFactory {
         final List<Bound> bounds = optimized ? getBounds(blocks) : getBounds(cubes);
 
         if(bufferRendering){
-            final int count = optimized ? blocks.size() : (cubes.length * cubes[0].length * cubes[0][0].length);
-            final ChunkFloatBuffers buffers = optimized ? createChunkRenderBuffers(blocks) : createChunkRenderBuffers(cubes);
+            final List<Block> data = optimized ? blocks : Arrays.stream(cubes).flatMap(Arrays::stream).flatMap(Arrays::stream).filter(Objects::nonNull).collect(Collectors.toList());
+            final ChunkFloatBuffers buffers = createChunkRenderBuffers(data, TextureLoader.readImage(path));
 
-            return new VBOArrayChunk(cubes, bounds, buffers.vertexPositionData, buffers.colorData, buffers.textureData, path, count);
+            return new VBOArrayChunk(cubes, bounds, buffers.vertexPositionData, buffers.colorData, buffers.textureData, path, data.size());
         }
 
         return optimized ? new OptimizedChunk(cubes, bounds, blocks) : new Chunk(cubes, bounds);
     }
 
 
-    private static ChunkFloatBuffers createChunkRenderBuffers(final List<Block> blocks){
-        final float w = 192f, h = 384f;
+    private static ChunkFloatBuffers createChunkRenderBuffers(final List<Block> blocks, final RenderedImage image){
+        final float w = InternalTextureLoader.get2Fold(image.getWidth()), h = InternalTextureLoader.get2Fold(image.getHeight());
 
-        final int size = blocks.size() * 6 * 12;
+        final int size = blocks.size() * BASE_NUMBER * DIMENSIONS * PLANES;
 
         final FloatBuffer vertexPositionData = BufferUtils.createFloatBuffer(size);
         final FloatBuffer colorData = BufferUtils.createFloatBuffer(size);
         final FloatBuffer textureData = BufferUtils.createFloatBuffer(size);
 
+        final float d = (float) Math.pow(BASE_NUMBER, DIMENSIONS);
         for(final Block block : blocks){
             if(Objects.nonNull(block)){
                 final Map<CubeSideType, List<ReadableVector2f>> texVertex = block.getType().getTextureVertices();
@@ -107,28 +113,17 @@ public final class ChunkFactory {
                         vertexPositionData.put(vertex);
                     }
                     for(final ReadableVector2f vertex : texVertex.get(side.getType())){
-                        final float tx = ((vertex.getX() * 64.0f) / w) ;
-                        final float ty = ((vertex.getY() * 64.0f) / h);
+                        float tx = ((vertex.getX() * d) / w);
+                        float ty = ((vertex.getY() * d) / h);
 
                         textureData.put(tx);
                         textureData.put(ty);
                     }
                 }
-                float[] color = new float[3*4*6];
-                Arrays.fill(color, 1f);
-                colorData.put(color);
             }
         }
 
-        vertexPositionData.flip();
-        colorData.flip();
-        textureData.flip();
-
-        return ChunkFloatBuffers.wrap(vertexPositionData, colorData, textureData);
-    }
-
-    private static ChunkFloatBuffers createChunkRenderBuffers(final Block[][][] blocks){
-        return createChunkRenderBuffers(Arrays.stream(blocks).flatMap(Arrays::stream).flatMap(Arrays::stream).collect(Collectors.toList()));
+        return ChunkFloatBuffers.wrap(vertexPositionData, colorData.put(generateColorArray(size)), textureData).flip();
     }
 
     private static boolean hasViewableRender(final int n, final int l, final int h, final int d){
@@ -191,12 +186,18 @@ public final class ChunkFactory {
         return bounds;
     }
 
+    private static float[] generateColorArray(final int size){
+        final float[] a = new float[size];
+        Arrays.fill(a, 1f);
+        return a;
+    }
+
     public static final class ChunkOptions {
         public static final String SIZE_FLAG = "--n";
         public static final String SCALE_FLAG = "--s";
         public static final String PERSISTENCE_FLAG = "--p";
         public static final String ENABLE_OPTIMIZED_FLAG = "--o";
-        public static final String DISABLE_OPTIMIZED_FLAG = "-do";
+        public static final String DISABLE_OPTIMIZED_FLAG = "--do";
         public static final String ENABLE_BUFFER_RENDERING_FLAG = "--br";
         public static final String DISABLE_BUFFER_RENDERING_FLAG = "--dbr";
         public static final String RANDOM_FLAG = "--r";
@@ -378,13 +379,13 @@ public final class ChunkFactory {
         private final FloatBuffer colorData;
         private final FloatBuffer textureData;
 
-        private ChunkFloatBuffers(FloatBuffer vertexPositionData, FloatBuffer colorData, FloatBuffer textureData) {
+        private ChunkFloatBuffers(final FloatBuffer vertexPositionData, final FloatBuffer colorData, final FloatBuffer textureData) {
             this.vertexPositionData = vertexPositionData;
             this.colorData = colorData;
             this.textureData = textureData;
         }
 
-        private static ChunkFloatBuffers wrap(FloatBuffer vertexPositionData, FloatBuffer colorData, FloatBuffer textureData){
+        private static ChunkFloatBuffers wrap(final FloatBuffer vertexPositionData, final FloatBuffer colorData, final FloatBuffer textureData){
             return new ChunkFloatBuffers(vertexPositionData, colorData, textureData);
         }
 

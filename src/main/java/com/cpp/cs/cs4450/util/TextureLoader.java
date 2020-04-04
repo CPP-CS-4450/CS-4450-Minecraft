@@ -3,6 +3,9 @@ package com.cpp.cs.cs4450.util;
 import com.cpp.cs.cs4450.graphics.Textured;
 import org.newdawn.slick.opengl.Texture;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -46,6 +49,18 @@ public final class TextureLoader {
             return Files.newInputStream(Paths.get(path), StandardOpenOption.READ);
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage());
+        }
+    }
+
+    public static RenderedImage readImage(final String file){
+        return readImage(new File(file));
+    }
+
+    public static RenderedImage readImage(final File file){
+        try {
+            return ImageIO.read(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 

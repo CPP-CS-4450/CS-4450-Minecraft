@@ -57,22 +57,18 @@ public abstract class GraphicsApplication {
         }
 
         private void launch(){
-            final boolean lighting = parseArgBooleanValue(ENABLE_LIGHTING_FLAG, DISABLE_LIGHTING_FLAG);
+            final boolean lighting = !parseArgBooleanValue(DISABLE_LIGHTING_FLAG);
             final ChunkOptions options = ChunkOptions.builder()
                     .withSize(parseArgIntValue(ChunkOptions.SIZE_FLAG))
                     .withScale(parseArgFloatValue(ChunkOptions.SCALE_FLAG))
                     .withPersistence(parseArgDoubleValue(ChunkOptions.PERSISTENCE_FLAG))
-                    //.withOptimized(!parseArgBooleanValue(ChunkOptions.DISABLE_OPTIMIZED_FLAG))
-                    .withOptimized(false)
+                    .withOptimized(!parseArgBooleanValue(ChunkOptions.DISABLE_OPTIMIZED_FLAG))
                     .withBufferRendering(parseArgBooleanValue(ChunkOptions.ENABLE_BUFFER_RENDERING_FLAG, ChunkOptions.DISABLE_BUFFER_RENDERING_FLAG))
                     .withRandom(parseArgBooleanValue(ChunkOptions.RANDOM_FLAG))
                     .withPath(parseArgValue(ChunkOptions.TEXTURE_PATH_FLAG))
                     .build();
 
-            System.out.println(options);
-
             final Chunk chunk = ChunkFactory.createChunk(options);
-            //Chunk chunk = ChunkFactory.createChunk(30, 0.1f, 0.25);
             final List<Renderable> renders = Collections.unmodifiableList(Collections.singletonList(chunk));
             final DisplayMode displayMode = new DisplayMode(Configuration.DISPLAY_WINDOW_WIDTH, Configuration.DISPLAY_WINDOW_HEIGHT);
 

@@ -54,15 +54,11 @@ public final class TexturesConfiguration {
     );
 
     private static final List<ReadableVector2f> GRASS_SIDE_1_TEXTURE_VERTICES_LIST = Collections.unmodifiableList(
-            Arrays.asList(new Vector2f(1,0), new Vector2f(0,0), new Vector2f(0,1), new Vector2f(1,1))
+            Arrays.asList(new Vector2f(0,0), new Vector2f(0,1), new Vector2f(1,1), new Vector2f(1,0))
     );
 
     private static final List<ReadableVector2f> GRASS_SIDE_2_TEXTURE_VERTICES_LIST = Collections.unmodifiableList(
             Arrays.asList(new Vector2f(1,0), new Vector2f(0,0), new Vector2f(0,1), new Vector2f(1,1))
-    );
-
-    private static final List<ReadableVector2f> GRASS_SIDE_3_TEXTURE_VERTICES_LIST = Collections.unmodifiableList(
-            Arrays.asList(new Vector2f(0,0), new Vector2f(0,1), new Vector2f(1,1), new Vector2f(1,0))
     );
 
     private static final List<ReadableVector2f> DIRT_TEXTURE_VERTICES_LIST = Collections.unmodifiableList(
@@ -88,10 +84,10 @@ public final class TexturesConfiguration {
     public static final Map<CubeSideType, List<ReadableVector2f>> GRASS_TEXTURE_VERTICES = Stream.of(
             new SimpleImmutableEntry<>(CubeSideType.TOP, GRASS_TOP_TEXTURE_VERTICES_LIST),
             new SimpleImmutableEntry<>(CubeSideType.BOTTOM, DIRT_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.LEFT, GRASS_SIDE_3_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.RIGHT, GRASS_SIDE_3_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(CubeSideType.LEFT, GRASS_SIDE_1_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(CubeSideType.RIGHT, GRASS_SIDE_1_TEXTURE_VERTICES_LIST),
             new SimpleImmutableEntry<>(CubeSideType.FRONT, GRASS_SIDE_2_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.BACK, GRASS_SIDE_1_TEXTURE_VERTICES_LIST)
+            new SimpleImmutableEntry<>(CubeSideType.BACK, GRASS_SIDE_2_TEXTURE_VERTICES_LIST)
     ).collect(Collectors.collectingAndThen(
             Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
             Collections::unmodifiableMap
@@ -127,6 +123,5 @@ public final class TexturesConfiguration {
                         Collections::unmodifiableMap
                 ));
     }
-
 
 }

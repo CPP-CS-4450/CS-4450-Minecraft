@@ -13,7 +13,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +48,8 @@ public final class TextureInverter {
             final List<Color> colors = bytesToColors(texture.getTextureData());
 
             final int m = 4;
-            final int w = texture.getImageWidth();
-            final int h = texture.getImageHeight();
+            final int w = texture.getTextureWidth();
+            final int h = texture.getTextureHeight();
 
             final byte[] inverted = new byte[w * h * m];
             for(int x = 0; x < w; ++x){
@@ -184,6 +183,7 @@ public final class TextureInverter {
                     .order(ByteOrder.nativeOrder())
                     .put(bytes)
                     .flip();
+
         }
     }
 
