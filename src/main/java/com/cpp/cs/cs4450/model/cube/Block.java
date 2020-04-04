@@ -7,6 +7,8 @@ import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Block extends Cube implements Renderable, GameAreaEntity, Bounded {
@@ -28,5 +30,20 @@ public abstract class Block extends Cube implements Renderable, GameAreaEntity, 
         }
         GL11.glEnd();
     }
+
+    public List<CubeSide> getSides(){
+        return Collections.unmodifiableList(sides);
+    }
+
+    public List<Float> getVerticesArray(){
+        List<Float> floats = new ArrayList<>(sides.size() * 12);
+        for(CubeSide side : sides){
+            floats.addAll(side.getVerticesArray());
+        }
+
+        return floats;
+    }
+
+    public abstract BlockType getType();
 
 }

@@ -55,6 +55,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         initGL11();
         initTextures();
         if(lighting) initLighting();
+        renders.forEach(Renderable::init);
     }
 
     @Override
@@ -141,10 +142,27 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GLU.gluPerspective(100.0f, ((float)displayMode.getWidth() / ( float) displayMode.getHeight()), 0.1f, 300.0f);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+
+        GL11.glDepthFunc(GL11.GL_LESS);
+
+        /*
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glClearColor(BACKGROUND_COLOR.getRed(), BACKGROUND_COLOR.getGreen(), BACKGROUND_COLOR.getBlue(),BACKGROUND_COLOR.getAlpha());
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GLU.gluPerspective(100.0f, ((float)displayMode.getWidth() / ( float) displayMode.getHeight()), 0.1f, 300.0f);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
         GL11.glDepthFunc(GL11.GL_LESS);
+         */
     }
 
     private void initLighting(){

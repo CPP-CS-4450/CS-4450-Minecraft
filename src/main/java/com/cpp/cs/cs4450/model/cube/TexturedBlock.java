@@ -120,6 +120,7 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
                 "\nZ:\t" + getPositionZ();
     }
 
+    @Override
     public BlockType getType() {
         return type;
     }

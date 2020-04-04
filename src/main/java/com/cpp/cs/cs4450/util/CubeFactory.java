@@ -43,11 +43,11 @@ public final class CubeFactory {
         return createTexturedCube(BlockType.values()[random.nextInt(BlockType.values().length)], x, y, z, size);
     }
 
-    public static Cube createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size){
+    public static Block createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size){
         return createTexturedCube(type, x, y, z, size, size, size);
     }
 
-    public static Cube createTexturedCube(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d){
+    public static Block createTexturedCube(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d){
         final List<CubeSide> sides = new ArrayList<>(CUBE_SIDES);
         for(CubeSideType side : CubeSideType.values()){
             sides.add(new CubeSide(side, calculateSideVertices(side, x, y, z, l, h, d), Color.BLUE));
@@ -241,6 +241,11 @@ public final class CubeFactory {
         public double getDepth() {
             return d;
         }
+
+        @Override
+        public BlockType getType() {
+            return null;
+        }
     }
 
     private static boolean isMultiTextured(final BlockType type){
@@ -270,6 +275,17 @@ public final class CubeFactory {
         public CubeSideType getType() {
             return type;
         }
+
+        public List<Float> getVerticesArray(){
+            final List<Float> floats = new ArrayList<>(vertices.size() * 3);
+            for(final ReadableVector3f vector : vertices){
+                floats.add(vector.getX());
+                floats.add(vector.getY());
+                floats.add(vector.getZ());
+            }
+
+            return floats;
+         }
 
     }
 

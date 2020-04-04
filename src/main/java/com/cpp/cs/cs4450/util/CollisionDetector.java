@@ -54,9 +54,9 @@ public class CollisionDetector {
     }
 
     public boolean collision(final Bound obj){
-        if(!inBounds(obj)) return true;
-
-        return checkForCollision(obj) && collisionLinear(obj);
+        //if(!inBounds(obj)) return true;
+        return false;
+        //return checkForCollision(obj) && collisionLinear(obj);
     }
 
     private boolean collisionLinear(final Bound obj){

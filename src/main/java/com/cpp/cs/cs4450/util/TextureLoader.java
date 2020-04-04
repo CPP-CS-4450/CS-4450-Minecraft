@@ -18,6 +18,14 @@ public final class TextureLoader {
 
     private TextureLoader(){}
 
+    public static Texture getTexture(String path){
+        try {
+            return org.newdawn.slick.opengl.TextureLoader.getTexture(PNG_TYPE, readFile(path));
+        } catch (IOException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public static void load(final List<Textured> textured) throws IOException {
         final Map<String, InputStream> cache = new HashMap<>();
         for(final Textured texd : textured){

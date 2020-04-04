@@ -1,50 +1,36 @@
-package com.cpp.cs.cs4450.model;
+package com.cpp.cs.cs4450.model.chunk;
 
 import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.InvertibleContainer;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
 import com.cpp.cs.cs4450.graphics.Textured3D;
+import com.cpp.cs.cs4450.model.cube.Block;
 import com.cpp.cs.cs4450.model.cube.Cube;
 import com.cpp.cs.cs4450.util.Bound;
-import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.BoundedContainer;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Chunk implements Renderable, Textured3D, BoundedContainer, InvertibleContainer {
-    private final Cube[][][] cubes;
-    private final List<Cube> blocks;
-    private final List<Bound> bounds;
+    protected final Block[][][] cubes;
+    protected final List<Bound> bounds;
 
 
-    public Chunk(final Cube[][][] cubes, final List<Cube> blocks) {
+    public Chunk(final Block[][][] cubes, final List<Bound> bounds) {
         this.cubes = cubes;
-        this.blocks = blocks;
-        this.bounds = filterBounded(this.blocks);
+        this.bounds = bounds;
     }
 
     @Override
     public void render() {
-        renderOptimized();
-    }
-
-    private void renderOptimized(){
-        for(Cube block : blocks){
-            if(block != null){
-                block.render();
-            }
-        }
-    }
-
-    private void renderAll(){
         for(final Cube[][] matrix : cubes){
             for(final Cube[] array : matrix){
-                for(Cube cube : array){
-                    if(cube != null){
+                for(final Cube cube : array){
+                    if(Objects.nonNull(cube)){
                         cube.render();
                     }
                 }
@@ -52,7 +38,10 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
         }
     }
 
-    public Cube[][][] getCubes(){ return cubes; }
+    @Override
+    public void init() { }
+
+    public Block[][][] getCubes(){ return cubes; }
 
 
     @Override
@@ -75,25 +64,28 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
 
     @Override
     public void invert() {
-        blocks.parallelStream().filter(c -> c instanceof Invertible).map(c -> (Invertible) c).forEach(Invertible::invert);
+        getInvertibles().parallelStream().forEach(Invertible::invert);
     }
 
     @Override
     public List<Invertible> getInvertibles() {
-        return blocks.stream().filter(b -> b instanceof Invertible).map(b -> (Invertible) b).collect(Collectors.toList());
+        final List<Invertible> invertibles = new ArrayList<>();
+        for(final Cube[][] matrix : cubes){
+            for(final Cube[] array : matrix){
+                for(Cube cube : array){
+                    if(cube instanceof Invertible){
+                        invertibles.add((Invertible) cube);
+                    }
+                }
+            }
+        }
+
+        return invertibles;
     }
 
     @Override
     public List<Bound> getBounds() {
         return Collections.unmodifiableList(bounds);
-    }
-
-    private static List<Bound> filterBounded(final List<?> objects){
-        return objects.stream().filter(Objects::nonNull)
-                .filter(o -> o instanceof Bounded)
-                .map(o -> (Bounded) o)
-                .map(Bounded::getBounds)
-                .collect(Collectors.toList());
     }
 
 }
