@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: TexturesConfiguration.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Acts as the programs configuration file for the textures used in the program
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.config;
 
 import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
@@ -45,6 +57,9 @@ public final class TexturesConfiguration {
 
     private TexturesConfiguration(){}
 
+    /*
+    Makes a map from a single texture file. Used when a type only has one texture
+     */
     private static Map<CubeSideType, String> generateSingleTextureMap(final String path){
         return Collections.unmodifiableMap(
                 Arrays.stream(CubeSideType.values()).collect(

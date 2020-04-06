@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: TexturedBlock.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Class that represents a block that is textured
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
@@ -67,10 +79,16 @@ public abstract class TexturedBlock extends Block implements Renderable, Texture
                 "\nZ:\t" + getPositionZ();
     }
 
+    /*
+    Returns the type of block
+     */
     public BlockType getType() {
         return type;
     }
 
+    /*
+    Type casts the textured types keys
+     */
     protected static Map<CubeSideType, Texture> castTexturesMapKeys(final Map<?, ? extends Texture> textures){
         Map<CubeSideType, Texture> casts = Collections.checkedMap(new HashMap<>(), CubeSideType.class, Texture.class);
         for(Object key : textures.keySet()){

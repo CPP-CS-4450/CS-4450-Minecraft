@@ -1,9 +1,20 @@
+/***************************************************************
+ * file: Engine.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: The class that is responsible for acting as a controller between all the systems of the program
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.application;
 
 import com.cpp.cs.cs4450.camera.CameraController;
 import com.cpp.cs.cs4450.graphics.GraphicsEngine;
 import com.cpp.cs.cs4450.ui.UserInterface;
-
 
 public final class Engine {
     private static final float MOVEMENT_SPEED = 0.1f;
@@ -20,6 +31,10 @@ public final class Engine {
         this.camera = camera;
     }
 
+    /*
+     * This method is responsible for running the game loop and calling on the other systems
+     * for the program when needed
+     */
     public void run(){
         while(!ui.quit()) {
             final float dx = ui.getMouseHorizontalChange();
@@ -67,6 +82,9 @@ public final class Engine {
         shutdown();
     }
 
+    /*
+     * This Method Shuts down the program.
+     */
     public void shutdown(){
         ui.shutdown();
         graphicsEngine.shutdown();

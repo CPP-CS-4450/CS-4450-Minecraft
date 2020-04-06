@@ -1,3 +1,16 @@
+/***************************************************************
+ * file: GraphicsApplication.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: This is the class that represents the application and is responsible for launching the program,
+ * as well as initialize all the different classes and handle dependency injection
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.application;
 
 import com.cpp.cs.cs4450.camera.CameraController;
@@ -22,10 +35,16 @@ public abstract class GraphicsApplication {
     private static final double PERSISTENCE = .25;
     private static final float CUBE_SIZE = 0.1f;
 
+    /*
+    * launches the program
+    */
     public static void launch(final String ...args){
         launch(Collections.unmodifiableList(Arrays.asList(args)));
     }
 
+    /*
+    Overloaded method that also launches the program, this time accepting a list of args
+     */
     public static void launch(final List<String> args){
         final Chunk chunk = ChunkFactory.createChunk(SIZE, CUBE_SIZE, PERSISTENCE);
         final List<Renderable> renders = Collections.unmodifiableList(Collections.singletonList(chunk));

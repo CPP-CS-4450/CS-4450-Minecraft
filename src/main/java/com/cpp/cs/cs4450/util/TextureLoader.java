@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: TextureLoader.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Util class that loaders textures into the program
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.graphics.Textured;
@@ -16,7 +28,9 @@ import java.util.Map;
 public final class TextureLoader {
     private static final String PNG_TYPE = "PNG";
 
-
+    /*
+    Loads the textures of the textured items in list
+     */
     public static void load(final List<Textured> textured) throws IOException {
 
         final Map<String, InputStream> cache = new HashMap<>();
@@ -33,6 +47,9 @@ public final class TextureLoader {
         }
     }
 
+    /*
+    Reads the file for the given path
+     */
     private static InputStream readFile(final String path){
         try {
             return Files.newInputStream(Paths.get(path), StandardOpenOption.READ);

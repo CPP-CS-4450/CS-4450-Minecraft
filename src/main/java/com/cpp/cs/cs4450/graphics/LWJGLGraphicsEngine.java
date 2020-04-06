@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: LWJGLGraphicsEngine.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Implementation of GraphicsEngine interface
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.graphics;
 
 import com.cpp.cs.cs4450.util.Color;
@@ -58,16 +70,22 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         Display.sync(FPS);
     }
 
+    /*
+    Initializes the programs display
+     */
     private void initDisplay(final String title){
         try {
             Display.setTitle(title);
             Display.setDisplayMode(displayMode);
             Display.create();
         } catch (LWJGLException e) {
-            throw new GraphicsException(e.getLocalizedMessage());
+            throw new RuntimeException(e.getLocalizedMessage());
         }
     }
 
+    /*
+    Initializes the OpenGL for the program
+     */
     private void initGL11(){
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glClearColor(BACKGROUND_COLOR.getRed(), BACKGROUND_COLOR.getGreen(), BACKGROUND_COLOR.getBlue(),BACKGROUND_COLOR.getAlpha());
@@ -80,6 +98,9 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         GL11.glDepthFunc(GL11.GL_LESS);
     }
 
+    /*
+    Initializes any textured
+     */
     private void initTextures(){
         try {
             TextureLoader.load(TexturedObjectConverter.convert(renders));

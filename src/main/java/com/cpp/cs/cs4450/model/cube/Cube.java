@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: Cube.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Class responsible for representing a cube in the game
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
@@ -103,6 +115,9 @@ public class Cube implements Renderable, GameAreaEntity {
         GL11.glEnd();
     }
 
+    /*
+    Renders the top side of the cube
+     */
     private void renderTopSide(){
         GL11.glColor4f(topSideColor.getRed(), topSideColor.getGreen(), topSideColor.getBlue(), topSideColor.getAlpha());
         GL11.glNormal3f(0.0f, 1.0f, 0.0f);
@@ -112,6 +127,9 @@ public class Cube implements Renderable, GameAreaEntity {
         GL11.glVertex3f(x - 1.0f, y + 1.0f, z - 1.0f);
     }
 
+    /*
+    Renders the bottom side of the cube
+     */
     private void renderBottomSide(){
         GL11.glColor4f(bottomSideColor.getRed(), bottomSideColor.getGreen(), bottomSideColor.getBlue(), bottomSideColor.getAlpha());
         GL11.glNormal3f(0.0f, -1.0f, 0.0f);
@@ -121,6 +139,9 @@ public class Cube implements Renderable, GameAreaEntity {
         GL11.glVertex3f(x - 1.0f, y - 1.0f, z - 1.0f);
     }
 
+    /*
+    Renders the left side of the cube
+     */
     private void renderLeftSide(){
         GL11.glColor4f(leftSideColor.getRed(), leftSideColor.getGreen(), leftSideColor.getBlue(), leftSideColor.getAlpha());
         GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
@@ -130,6 +151,9 @@ public class Cube implements Renderable, GameAreaEntity {
         GL11.glVertex3f(x - 1.0f, y - 1.0f, z - 1.0f);
     }
 
+    /*
+    Renders the right side of the cube
+     */
     private void renderRightSide(){
         GL11.glColor4f(rightSideColor.getRed(), rightSideColor.getGreen(), rightSideColor.getBlue(), rightSideColor.getAlpha());
         GL11.glNormal3f(1.0f, 0.0f, 0.0f);
@@ -139,6 +163,9 @@ public class Cube implements Renderable, GameAreaEntity {
         GL11.glVertex3f(x + 1.0f, y - 1.0f, z - 1.0f);
     }
 
+    /*
+    Renders the front side of the cube
+     */
     private void renderFrontSide(){
         GL11.glColor4f(frontSideColor.getRed(), frontSideColor.getGreen(), frontSideColor.getBlue(), frontSideColor.getAlpha());
         GL11.glNormal3f(0.0f, 0.0f, 1.0f);
@@ -148,6 +175,9 @@ public class Cube implements Renderable, GameAreaEntity {
         GL11.glVertex3f(x - 1.0f, y - 1.0f, z + 1.0f);
     }
 
+    /*
+    Renders the back side of the cube
+     */
     private void renderBackSide(){
         GL11.glColor4f(backSideColor.getRed(), backSideColor.getGreen(), backSideColor.getBlue(), backSideColor.getAlpha());
         GL11.glNormal3f(0.0f, 0.0f, -1.0f);

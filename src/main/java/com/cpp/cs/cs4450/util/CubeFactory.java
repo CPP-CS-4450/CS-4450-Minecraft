@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: CubeFactory.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Utility factory class responible for instantiating cube objects
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.model.cube.Cube;
@@ -36,14 +48,23 @@ public final class CubeFactory {
         BACK
     }
 
+    /*
+    Creates a random textured cube
+     */
     public static Cube createRandomTexturedCube(final float x, final float y, final float z, final float size){
         return createTexturedCube(BlockType.values()[random.nextInt(BlockType.values().length)], x, y, z, size);
     }
 
+    /*
+    Crates a textured cube based on parameters passed in
+     */
     public static Cube createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size){
         return createTexturedCube(type, x, y, z, size, size, size);
     }
 
+    /*
+    Crates a textured cube based on parameters passed in
+     */
     public static Cube createTexturedCube(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d){
         final List<CubeSide> sides = new ArrayList<>(CUBE_SIDES);
         for(CubeSideType side : CubeSideType.values()){
@@ -55,18 +76,30 @@ public final class CubeFactory {
                 : new SingleTexturedBlock(x,y,z,type,sides, type.getPaths());
     }
 
+    /*
+    Creates a standard cube based on parameters passed in
+     */
     public static Cube create(float size, Color ...colors){
         return create(0,0,0, size, colors);
     }
 
+    /*
+    Creates a standard cube based on parameters passed in
+     */
     public static Cube create(final ReadableVector3f center, final float size, final Color ...colors){
         return create(center.getX(), center.getY(), center.getZ(), size, colors);
     }
 
+    /*
+    Creates a standard cube based on parameters passed in
+     */
     public static Cube create(final float x, final float y, final float z, final float size, final Color ...colors){
         return create(x, y, z, size, size, size, colors);
     }
 
+    /*
+    Creates a standard cube based on parameters passed in
+     */
     public static Cube create(final float x, final float y, final float z, final float l, final float h, final float d, final Color ...colors){
         final Queue<Color> colorQueue = generateColors(colors);
 
@@ -78,6 +111,9 @@ public final class CubeFactory {
         return new BlockImpl(x, y, z, sides);
     }
 
+    /*
+    Calculates vertices of cube sides
+     */
     private static List<ReadableVector3f> calculateSideVertices(final CubeSideType type, final float x, final float y, final float z, final float l, final float h, final float d){
         final float a = l / 2;
         final float b = h / 2;
@@ -104,6 +140,9 @@ public final class CubeFactory {
         return Collections.unmodifiableList(vertices);
     }
 
+    /*
+    Calculates top vertices
+     */
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
         return Arrays.asList(
                 new Vector3f(x - l, y + h, z + d),
@@ -113,6 +152,9 @@ public final class CubeFactory {
         );
     }
 
+    /*
+    Calculates bottom vertices
+     */
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
         return Arrays.asList(
                 new Vector3f(x - l, y - h, z + d),
@@ -121,6 +163,10 @@ public final class CubeFactory {
                 new Vector3f(x - l, y - h, z - d)
         );
     }
+
+    /*
+    Calculates left vertices
+     */
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
         return Arrays.asList(
                 new Vector3f(x - l, y - h, z + d),
@@ -129,6 +175,10 @@ public final class CubeFactory {
                 new Vector3f(x - l, y - h, z - d)
         );
     }
+
+    /*
+    Calculates right vertices
+     */
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
         return Arrays.asList(
                 new Vector3f(x + l, y + h, z - d),
@@ -137,6 +187,10 @@ public final class CubeFactory {
                 new Vector3f(x + l, y - h, z - d)
         );
     }
+
+    /*
+    Calculates front vertices
+     */
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
         return Arrays.asList(
                 new Vector3f(x + l, y - h, z + d),
@@ -145,6 +199,10 @@ public final class CubeFactory {
                 new Vector3f(x - l, y - h, z + d)
         );
     }
+
+    /*
+    Calculates back vertices
+     */
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
         return Arrays.asList(
                 new Vector3f(x + l, y + h, z - d),
@@ -154,6 +212,9 @@ public final class CubeFactory {
         );
     }
 
+    /*
+    Generates color queue
+     */
     private static Queue<Color> generateColors(final Color ...colors){
         if(colors == null || colors.length < 1){
             return generateUniqueColors();
@@ -176,6 +237,9 @@ public final class CubeFactory {
         return queue;
     }
 
+    /*
+    Generates color queue of unique colors
+     */
     private static Queue<Color> generateUniqueColors(){
         if(COLORS.size() < CUBE_SIDES){
             return generateColors(COLORS.toArray(new Color[0]));
@@ -197,20 +261,32 @@ public final class CubeFactory {
         return new ArrayDeque<>(set);
     }
 
+    /*
+    Generates color queue of single color
+     */
     private static Queue<Color> generateSingleColor(final Color color){
         return IntStream.range(0, CUBE_SIDES).mapToObj(i -> color).collect(Collectors.toCollection(ArrayDeque::new));
     }
 
+    /*
+    Basic block implementaions
+     */
     private static class BlockImpl extends Block {
         private BlockImpl(float x, float y, float z, List<CubeSide> sides) {
             super(x, y, z, sides);
         }
     }
 
+    /*
+    Checks if type is multitextured
+     */
     private static boolean isMultiTextured(final BlockType type){
         return type.getPaths().values().stream().distinct().count() > 1;
     }
 
+    /*
+    Inner class representing a Cube's Side
+     */
     public static final class CubeSide {
         private final CubeSideType type;
         private final List<ReadableVector3f> vertices;

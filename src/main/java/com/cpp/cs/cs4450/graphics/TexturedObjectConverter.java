@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: TexturedObjectConverted.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Utility class used to filter and convert Textured Objects
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.graphics;
 
 
@@ -14,7 +26,9 @@ final class TexturedObjectConverter {
 
     private TexturedObjectConverter(){}
 
-
+    /*
+    Conertes a list of objects to textured objects
+     */
     static List<Textured> convert(final List<?> objects){
         final List<?> checked = filter(objects);
         final List<Textured> textured  = Collections.checkedList(new ArrayList<>(), Textured.class);
@@ -30,10 +44,16 @@ final class TexturedObjectConverter {
         return textured;
     }
 
+    /*
+    Conertes Textured2D object to textured objects
+     */
     private static List<Textured> convert(final Textured2D matrix){
         return convert(matrix.getMatrix());
     }
 
+    /*
+    Conertes a 2D array of objects to textured objects
+     */
     private static List<Textured> convert(final Textured[][] matrix){
         return Arrays.stream(matrix)
                 .flatMap(Arrays::stream)
@@ -41,10 +61,16 @@ final class TexturedObjectConverter {
                 .collect(Collectors.toList());
     }
 
+    /*
+    Conertes Textured3D object to textured objects
+     */
     private static List<Textured> convert(final Textured3D textured){
         return convert(textured.getTensor());
     }
 
+    /*
+    Conertes a 3D array of objects to textured objects
+     */
     private static List<Textured> convert(final Textured[][][] tensor){
         return Arrays.stream(tensor)
                 .map(TexturedObjectConverter::convert)
@@ -52,6 +78,9 @@ final class TexturedObjectConverter {
                 .collect(Collectors.toList());
     }
 
+    /*
+    Filters list of objects to only textured objects
+     */
     private static List<?> filter(final List<?> objects){
         return objects.stream()
                 .filter(Objects::nonNull)
@@ -59,6 +88,9 @@ final class TexturedObjectConverter {
                 .collect(Collectors.toList());
     }
 
+    /*
+    Checks if objects are textured
+     */
     private static boolean isTexturedType(final Object obj){
         return obj instanceof Textured
                 || obj instanceof Textured2D

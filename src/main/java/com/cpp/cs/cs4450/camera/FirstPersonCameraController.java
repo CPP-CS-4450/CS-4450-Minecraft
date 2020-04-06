@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: FirstPersonCameraController.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Impelentation of CameraController interface using a first person perspective
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.camera;
 
 import com.cpp.cs.cs4450.model.GameAreaEntity;
@@ -136,14 +148,23 @@ public class FirstPersonCameraController implements CameraController, GameAreaEn
         }
     }
 
+    /*
+    calculates the x offset when moved
+     */
     private static float calculateXOffset(final float distance, final float offset){
         return (float) (distance * Math.sin(Math.toRadians(offset)));
     }
 
+    /*
+    calculates the z plane offset when moved
+     */
     private static float calculateZOffset(final float distance, final float offset){
         return (float) (distance * Math.cos(Math.toRadians(offset)));
     }
 
+    /*
+    Makes a copy of this object
+     */
     public FirstPersonCameraController copyOf(final FirstPersonCameraController firstPersonCameraController){
         return new FirstPersonCameraController(firstPersonCameraController.getPosition3f());
     }

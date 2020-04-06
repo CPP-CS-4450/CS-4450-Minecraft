@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: LWJGLUserInterface.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Implementaion of UserInterface that uses LWJGL
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.ui;
 
 import org.lwjgl.LWJGLException;
@@ -14,7 +26,7 @@ public class LWJGLUserInterface implements UserInterface {
             Mouse.create();
             Mouse.setGrabbed(true);
         } catch (LWJGLException e) {
-            throw new UserInterfaceException(e.getLocalizedMessage());
+            throw new RuntimeException(e.getLocalizedMessage());
         }
     }
 
@@ -46,17 +58,6 @@ public class LWJGLUserInterface implements UserInterface {
     @Override
     public boolean backward() {
         return Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN);
-    }
-
-    @Override
-    public boolean invert() {
-        while (Keyboard.next()){
-            if(Keyboard.getEventKey() == Keyboard.KEY_I){
-                return Keyboard.getEventKeyState();
-            }
-        }
-
-        return false;
     }
 
     @Override

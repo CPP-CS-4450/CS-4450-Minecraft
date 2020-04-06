@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: SimplexNoise_octave.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Class provided by professor to randomly generate terrain
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.noise;
 
 import java.util.Random;

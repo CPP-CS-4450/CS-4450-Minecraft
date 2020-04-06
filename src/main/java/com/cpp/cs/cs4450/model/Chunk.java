@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: Chunk.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Checkpoint 2
+ * date last modified: 04/06/2020
+ *
+ * purpose: Class that acts as a container for the programs blocks or cubes
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.model;
 
 import com.cpp.cs.cs4450.graphics.Renderable;
@@ -22,6 +34,9 @@ public class Chunk implements Renderable, Textured3D {
         renderOptimized();
     }
 
+    /*
+    Renders list of viewable blocks
+     */
     private void renderOptimized(){
         for(Cube block : blocks){
             if(block != null){
@@ -30,6 +45,9 @@ public class Chunk implements Renderable, Textured3D {
         }
     }
 
+    /*
+    Renders all blocks in chunk
+     */
     private void renderAll(){
         for(final Cube[][] matrix : cubes){
             for(final Cube[] array : matrix){
@@ -42,6 +60,9 @@ public class Chunk implements Renderable, Textured3D {
         }
     }
 
+    /*
+    Getter for all the cubes in the chunk
+     */
     public Cube[][][] getCubes(){ return cubes; }
 
 
