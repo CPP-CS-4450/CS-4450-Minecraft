@@ -113,7 +113,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
     }
 
     private void initInvertibles(){
-        List<Invertible> invertibles = new ArrayList<>();
+        final List<Invertible> invertibles = Collections.checkedList(new ArrayList<>(), Invertible.class);
         for(Renderable render : renders){
             if(render instanceof Invertible){
                 invertibles.add((Invertible) render);
@@ -132,7 +132,7 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
             Display.setDisplayMode(displayMode);
             Display.create();
         } catch (LWJGLException e) {
-            throw new GraphicsException(e.getLocalizedMessage());
+            throw new RuntimeException(e.getLocalizedMessage());
         }
     }
 
@@ -151,18 +151,6 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
         GL11.glDepthFunc(GL11.GL_LESS);
-
-        /*
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glClearColor(BACKGROUND_COLOR.getRed(), BACKGROUND_COLOR.getGreen(), BACKGROUND_COLOR.getBlue(),BACKGROUND_COLOR.getAlpha());
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GLU.gluPerspective(100.0f, ((float)displayMode.getWidth() / ( float) displayMode.getHeight()), 0.1f, 300.0f);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
-        GL11.glDepthFunc(GL11.GL_LESS);
-         */
     }
 
     private void initLighting(){
@@ -191,7 +179,16 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
 
     private void initTextures(){
         try {
-            TextureLoader.load(TexturedObjectConverter.convert(renders));
+            final List<Textured> textured = Collections.checkedList(new ArrayList<>(), Textured.class);
+            for(final Renderable render : renders){
+                if(render instanceof Textured){
+                    textured.add((Textured) render);
+                } else if (render instanceof TexturedContainer){
+                    textured.addAll(((TexturedContainer) render).getTextured());
+                }
+            }
+
+            TextureLoader.load(textured);
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage());
         }

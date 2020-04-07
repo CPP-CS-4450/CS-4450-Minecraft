@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public final class TextureInverter {
 
     private TextureInverter(){}
 
-    public static void invert(final List<Invertible> invertibles){
+    public static void invert(final Collection<Invertible> invertibles){
         final Map<Object, InvertTextureWrapper> cache = new HashMap<>();
 
         for(final Invertible invertible : invertibles){

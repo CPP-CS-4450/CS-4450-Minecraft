@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -21,7 +21,7 @@ public final class TextureLoader {
 
     private TextureLoader(){}
 
-    public static Texture getTexture(String path){
+    public static Texture getTexture(final String path){
         try {
             return org.newdawn.slick.opengl.TextureLoader.getTexture(PNG_TYPE, readFile(path));
         } catch (IOException e){
@@ -29,7 +29,7 @@ public final class TextureLoader {
         }
     }
 
-    public static void load(final List<Textured> textured) throws IOException {
+    public static void load(final Collection<Textured> textured) throws IOException {
         final Map<String, InputStream> cache = new HashMap<>();
         for(final Textured texd : textured){
             final Map<?, String> paths = texd.getPaths();

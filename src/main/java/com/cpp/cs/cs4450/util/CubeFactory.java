@@ -24,7 +24,9 @@ import java.util.stream.Stream;
 
 public final class CubeFactory {
     private static final int CUBE_SIDES = CubeSideType.values().length;
-    private static final List<Color> COLORS = Collections.unmodifiableList(Arrays.asList(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE));
+    private static final List<Color> COLORS = Collections.unmodifiableList(
+            Arrays.asList(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE)
+    );
 
     private static final Random random = new Random();
 
@@ -39,7 +41,7 @@ public final class CubeFactory {
 
     private CubeFactory(){}
 
-    public static Cube createRandomTexturedCube(final float x, final float y, final float z, final float size){
+    public static Cube createTexturedCube(final float x, final float y, final float z, final float size){
         return createTexturedCube(BlockType.values()[random.nextInt(BlockType.values().length)], x, y, z, size);
     }
 

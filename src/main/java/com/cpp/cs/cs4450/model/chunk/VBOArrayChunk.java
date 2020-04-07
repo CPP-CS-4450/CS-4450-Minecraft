@@ -3,7 +3,8 @@ package com.cpp.cs.cs4450.model.chunk;
 import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.InvertibleContainer;
 import com.cpp.cs.cs4450.graphics.Renderable;
-import com.cpp.cs.cs4450.graphics.Textured3D;
+import com.cpp.cs.cs4450.graphics.Textured;
+import com.cpp.cs.cs4450.graphics.TexturedContainer;
 import com.cpp.cs.cs4450.model.cube.Block;
 import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.BoundedContainer;
@@ -18,7 +19,7 @@ import java.nio.FloatBuffer;
 import java.util.Collections;
 import java.util.List;
 
-public class VBOArrayChunk extends Chunk implements Renderable, Textured3D, BoundedContainer, InvertibleContainer {
+public class VBOArrayChunk extends Chunk implements Renderable, BoundedContainer, InvertibleContainer, TexturedContainer {
     private final int count;
     private final String texturePath;
     private final FloatBuffer vertexPositionData;
@@ -106,5 +107,8 @@ public class VBOArrayChunk extends Chunk implements Renderable, Textured3D, Boun
     public List<Invertible> getInvertibles(){
         return Collections.emptyList();
     }
+
+    @Override
+    public List<Textured> getTextured(){ return Collections.emptyList(); }
 
 }

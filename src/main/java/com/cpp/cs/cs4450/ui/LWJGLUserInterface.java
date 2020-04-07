@@ -14,7 +14,7 @@ public class LWJGLUserInterface implements UserInterface {
             Mouse.create();
             Mouse.setGrabbed(true);
         } catch (LWJGLException e) {
-            throw new UserInterfaceException(e.getLocalizedMessage());
+            throw new RuntimeException(e.getLocalizedMessage());
         }
     }
 

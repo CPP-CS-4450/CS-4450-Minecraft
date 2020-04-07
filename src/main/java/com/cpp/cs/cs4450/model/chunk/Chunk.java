@@ -4,7 +4,7 @@ import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.InvertibleContainer;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
-import com.cpp.cs.cs4450.graphics.Textured3D;
+import com.cpp.cs.cs4450.graphics.TexturedContainer;
 import com.cpp.cs.cs4450.model.cube.Block;
 import com.cpp.cs.cs4450.model.cube.Cube;
 import com.cpp.cs.cs4450.util.Bound;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Chunk implements Renderable, Textured3D, BoundedContainer, InvertibleContainer {
+public class Chunk implements Renderable, BoundedContainer, InvertibleContainer, TexturedContainer {
     protected final Block[][][] cubes;
     protected final List<Bound> bounds;
 
@@ -43,25 +43,6 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
 
     public Block[][][] getCubes(){ return cubes; }
 
-
-    @Override
-    public Textured[][][] getTensor() {
-        final int a = cubes.length;
-        final int b = cubes[0].length;
-        final int c = cubes[0][0].length;
-
-        final Textured[][][] texs = new Textured[a][b][c];
-        for(int i = 0; i < a; ++i){
-            for(int j = 0; j < b; ++j){
-                for(int k = 0; k < c; ++k){
-                    texs[i][j][k] = (Textured)  cubes[i][j][k];
-                }
-            }
-        }
-        
-        return texs;
-    }
-
     @Override
     public void invert() {
         getInvertibles().parallelStream().forEach(Invertible::invert);
@@ -69,7 +50,7 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
 
     @Override
     public List<Invertible> getInvertibles() {
-        final List<Invertible> invertibles = new ArrayList<>();
+        final List<Invertible> invertibles = Collections.checkedList(new ArrayList<>(), Invertible.class);
         for(final Cube[][] matrix : cubes){
             for(final Cube[] array : matrix){
                 for(Cube cube : array){
@@ -80,12 +61,28 @@ public class Chunk implements Renderable, Textured3D, BoundedContainer, Invertib
             }
         }
 
-        return invertibles;
+        return Collections.unmodifiableList(invertibles);
     }
 
     @Override
     public List<Bound> getBounds() {
         return Collections.unmodifiableList(bounds);
+    }
+
+    @Override
+    public List<Textured> getTextured(){
+        final List<Textured> textured = Collections.checkedList(new ArrayList<>(), Textured.class);
+        for(final Cube[][] matrix : cubes){
+            for(final Cube[] array : matrix){
+                for(Cube cube : array){
+                    if(cube instanceof Textured){
+                        textured.add((Textured) cube);
+                    }
+                }
+            }
+        }
+
+        return Collections.unmodifiableList(textured);
     }
 
 }
