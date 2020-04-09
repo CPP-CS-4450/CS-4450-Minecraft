@@ -4,7 +4,7 @@ import com.cpp.cs.cs4450.model.GameAreaEntity;
 import com.cpp.cs.cs4450.model.Movable;
 import com.cpp.cs.cs4450.util.Bounded;
 
-public interface CameraController extends GameAreaEntity, Movable, Cloneable, Bounded {
+public interface CameraController extends GameAreaEntity, Movable, Bounded {
     float DEFAULT_DYAW = 90.0f;
 
 
@@ -17,8 +17,6 @@ public interface CameraController extends GameAreaEntity, Movable, Cloneable, Bo
     float getPitch();
 
     float getYaw();
-
-    Object clone();
 
     default float xHorizontalOffset(float distance, int direction){
         return (float) (distance * Math.sin(Math.toRadians(getYaw() + (direction * DEFAULT_DYAW))));

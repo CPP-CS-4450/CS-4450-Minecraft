@@ -1,7 +1,5 @@
 package com.cpp.cs.cs4450.util;
 
-import com.cpp.cs.cs4450.graphics.Invertible;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import org.newdawn.slick.opengl.ImageData;
 import org.newdawn.slick.opengl.InternalTextureLoader;
@@ -13,9 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,47 +20,30 @@ import java.util.stream.Collectors;
 public final class TextureInverter {
     private static final String INVALID_TEXTURE_SIZE_ERROR_MESSAGE = "Texture size dimensions must be power of 2";
 
-    private static final InternalTextureLoader loader = InternalTextureLoader.get();
-
     private TextureInverter(){}
-
-    public static void invert(final Collection<Invertible> invertibles){
-        final Map<Object, InvertTextureWrapper> cache = new HashMap<>();
-
-        for(final Invertible invertible : invertibles){
-            final Object key = invertible.getInvertKey();
-            final Map<?, ? extends Texture> textures = invertible.getTextures();
-            invertible.setInverts(cache.computeIfAbsent(key, k -> wrap(textures)).getInvertsMap());
-        }
-
-    }
 
     public static Texture invert(final Texture texture){
         try {
-            final int n = texture.getTextureData().length;
+            final byte[] data = texture.getTextureData();
+
+            final int n = data.length;
             if(!(n != 0 && (( n & (n - 1)) == 0))){
                 throw new RuntimeException(INVALID_TEXTURE_SIZE_ERROR_MESSAGE);
             }
-
-            final List<Color> colors = bytesToColors(texture.getTextureData());
 
             final int m = 4;
             final int w = texture.getTextureWidth();
             final int h = texture.getTextureHeight();
 
-            final byte[] inverted = new byte[w * h * m];
-            for(int x = 0; x < w; ++x){
-                for(int y = 0; y < h; ++y){
-                    int i = ((x + (y * w)));
-                    Color c = invert(colors.get(i));
-                    inverted[i *= m] = c.getRedByte();
-                    inverted[i + 1] = c.getGreenByte();
-                    inverted[i + 2] = c.getBlueByte();
-                    inverted[i + 3] = c.getAlphaByte();
+            final byte[] inverted = new byte[n];
+            for(int i = 0; i < n; ++i){
+                for(int j = 0; j < m - 1; ++j){
+                    inverted[i] = (byte) ~data[i++];
                 }
+                inverted[i] = data[i];
             }
 
-            return loader.getTexture(wrap(inverted, w, h), GL11.GL_LINEAR);
+            return TextureLoader.getTexture(wrap(inverted, w, h));
         } catch (IOException e){
             throw new RuntimeException(e.getLocalizedMessage());
         }
@@ -114,31 +93,17 @@ public final class TextureInverter {
     }
 
     public static Map<?, ? extends Texture> invert(final Map<?, ? extends Texture> textures){
-        return textures.entrySet().stream().collect(Collectors.toMap(
-                Entry::getKey,
-                e -> invert(e.getValue()),
-                (k0, k1) -> k0
-        ));
-    }
-
-    private static InvertTextureWrapper wrap(final Map<?, ? extends Texture> textures){
-        return new InvertTextureWrapper(invert(textures));
+        return textures.entrySet().stream().collect(
+                Collectors.toMap(
+                        Entry::getKey,
+                        e -> invert(e.getValue()),
+                        (k0, k1) -> k0
+                )
+        );
     }
 
     private static ImageData wrap(final byte[] bytes, final int width, final int height){
         return new ImageByteBufferWrapper(bytes, width, height);
-    }
-
-    private static final class InvertTextureWrapper {
-        private final Map<?, ? extends Texture> inverts;
-
-        private InvertTextureWrapper(final Map<?, ? extends Texture> inverts){
-            this.inverts = inverts;
-        }
-
-        public Map<?, ? extends Texture> getInvertsMap() {
-            return inverts;
-        }
     }
 
     private static class ImageByteBufferWrapper implements ImageData {
@@ -146,7 +111,7 @@ public final class TextureInverter {
         private final int width;
         private final int height;
 
-        private ImageByteBufferWrapper(byte[] bytes, int width, int height) {
+        private ImageByteBufferWrapper(final byte[] bytes, final int width, final int height) {
             this.bytes = bytes;
             this.width = width;
             this.height = height;
@@ -187,6 +152,5 @@ public final class TextureInverter {
 
         }
     }
-
 
 }

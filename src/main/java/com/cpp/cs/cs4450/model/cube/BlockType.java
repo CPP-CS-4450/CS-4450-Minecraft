@@ -2,11 +2,16 @@ package com.cpp.cs.cs4450.model.cube;
 
 
 import com.cpp.cs.cs4450.config.TexturesConfiguration;
-import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
+import com.cpp.cs.cs4450.util.BlockFactory.BlockSideType;
 import org.lwjgl.util.vector.ReadableVector2f;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public enum BlockType {
 
@@ -18,26 +23,30 @@ public enum BlockType {
     BEDROCK(TexturesConfiguration.BEDROCK_TEXTURES, TexturesConfiguration.BEDROCK_TEXTURE_VERTICES,true);
 
 
-    private final Map<CubeSideType, String> paths;
-    private final Map<CubeSideType, List<ReadableVector2f>> textureVertices;
+    private final Map<BlockSideType, String> paths;
+    private final Map<BlockSideType, List<ReadableVector2f>> textureVertices;
     private final boolean solid;
+    private final boolean multiTextured;
 
-    BlockType(final Map<CubeSideType, String> paths, final Map<CubeSideType, List<ReadableVector2f>> textureVertices, final boolean solid) {
+    BlockType(final Map<BlockSideType, String> paths, final Map<BlockSideType, List<ReadableVector2f>> textureVertices, final boolean solid) {
         this.paths = paths;
         this.textureVertices = textureVertices;
         this.solid = solid;
+        this.multiTextured = paths.values().stream().distinct().count() > 1;
     }
 
-    public Map<CubeSideType, String> getPaths() {
+    public final Map<BlockSideType, String> getPaths() {
         return paths;
     }
 
-    public boolean solid() {
+    public final boolean isSolid() {
         return solid;
     }
 
-    public Map<CubeSideType, List<ReadableVector2f>> getTextureVertices() {
+    public final Map<BlockSideType, List<ReadableVector2f>> getTextureVertices() {
         return textureVertices;
     }
+
+    public final boolean isMultiTextured(){ return multiTextured; }
 
 }

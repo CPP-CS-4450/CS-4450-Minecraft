@@ -23,7 +23,7 @@ public final class Engine {
         this.collisionDetector = collisionDetector;
     }
 
-    public void run(){
+    public final void run(){
         final double cw = camera.getWidth(), ch = camera.getHeight(), cd = camera.getDepth();
         while(!ui.quit()) {
             final float dx = ui.getMouseHorizontalChange();
@@ -76,7 +76,7 @@ public final class Engine {
         shutdown();
     }
 
-    public void shutdown(){
+    public final void shutdown(){
         ui.shutdown();
         graphicsEngine.shutdown();
         System.exit(0);

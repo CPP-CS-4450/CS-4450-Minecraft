@@ -38,9 +38,6 @@ public class Chunk implements Renderable, BoundedContainer, InvertibleContainer,
         }
     }
 
-    @Override
-    public void init() { }
-
     public Block[][][] getCubes(){ return cubes; }
 
     @Override

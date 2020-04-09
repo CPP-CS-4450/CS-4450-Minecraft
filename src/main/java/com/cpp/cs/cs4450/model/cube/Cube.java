@@ -177,7 +177,4 @@ public class Cube implements Renderable, GameAreaEntity {
         return new Vector3f(x, y, z);
     }
 
-    @Override
-    public void init(){}
-
 }

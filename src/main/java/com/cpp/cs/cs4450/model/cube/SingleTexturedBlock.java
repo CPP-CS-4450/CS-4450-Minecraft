@@ -3,10 +3,10 @@ package com.cpp.cs.cs4450.model.cube;
 import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
+import com.cpp.cs.cs4450.util.BlockTextureLoader.BlockTexture;
 import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
-import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
-import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
+import com.cpp.cs.cs4450.util.BlockFactory.BlockSide;
 import com.cpp.cs.cs4450.util.TextureInverter;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -22,20 +22,15 @@ import java.util.Queue;
 public class SingleTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded, Invertible {
     private static final String INVALID_VERTICES_ERROR_MESSAGE = "Invalid number of vertices";
 
-    private Texture texture;
-    private Texture invert;
+    private final Texture texture;
+    private final Texture invert;
 
-    public SingleTexturedBlock(
-            final float x,
-            final float y,
-            final float z,
-            final BlockType type,
-            final Bound bounds,
-            final List<CubeSide> sides,
-            final Map<CubeSideType, String> paths
-    ) {
-        super(x, y, z, type, bounds, sides, paths);
+    public SingleTexturedBlock(float x, float y, float z, BlockType type, Bound bounds, List<BlockSide> sides, BlockTexture textures, BlockTexture inverts) {
+        super(x, y, z, type, bounds, sides, textures, inverts);
+        this.texture = textures.getTexture();
+        this.invert = inverts.getTexture();
     }
+
 
     @Override
     public void render(){
@@ -51,7 +46,7 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
         render.bind();
         GL11.glBegin(GL11.GL_QUADS);
 
-        for(final CubeSide side : sides){
+        for(final BlockSide side : sides){
             if(side.getVertices().size() != TEX_COORDS.size()){
                 throw new RuntimeException(INVALID_VERTICES_ERROR_MESSAGE);
             }
@@ -71,19 +66,6 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
             }
         }
         GL11.glEnd();
-    }
-
-
-    @Override
-    public void setTextures(final Map<?, ? extends Texture> textures) {
-        this.textures = castTexturesMapKeys(textures);
-        this.texture = textures.values().iterator().next();
-    }
-
-    @Override
-    public void setInverts(final Map<?, ? extends Texture> inverts){
-        this.inverts = castTexturesMapKeys(inverts);
-        this.invert = TextureInverter.invert(textures.values().iterator().next());
     }
 
 }

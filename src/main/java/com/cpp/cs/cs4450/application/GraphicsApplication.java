@@ -13,9 +13,12 @@ import com.cpp.cs.cs4450.util.ChunkFactory;
 import com.cpp.cs.cs4450.util.ChunkFactory.ChunkOptions;
 import com.cpp.cs.cs4450.util.CollisionDetector;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.util.Log;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,12 +28,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public abstract class GraphicsApplication {
-    private static final String FLAG_PREFIX = "--";
-    private static final String YES_FLAG_OPTION = "Y";
-    private static final String NO_FLAG_OPTION = "N";
-    private static final String ENABLE_LIGHTING_FLAG = "--l";
     private static final String DISABLE_LIGHTING_FLAG = "--dl";
-    private static final String INVALID_ARG_ERROR_MESSAGE_FORMAT = "[%s] is an invalid option for arg flag [%s]";
     private static final ReadableVector3f DEFAULT_START_COORDINATES = new Vector3f(-1.5f, -1.5f, -1.5f);
 
 
@@ -57,6 +55,14 @@ public abstract class GraphicsApplication {
         }
 
         private void launch(){
+            final String title = Configuration.DISPLAY_WINDOW_TITLE;
+
+            final int dw = Configuration.DISPLAY_WINDOW_WIDTH;
+            final int dh = Configuration.DISPLAY_WINDOW_HEIGHT;
+            final int ppi = Configuration.PIXELS_PER_INCH;
+
+            final DisplayMode display = initOpenGLContext(dw, dh, ppi, title);
+
             final boolean lighting = !parseArgBooleanValue(DISABLE_LIGHTING_FLAG);
             final ChunkOptions options = ChunkOptions.builder()
                     .withSize(parseArgIntValue(ChunkOptions.SIZE_FLAG))
@@ -70,15 +76,36 @@ public abstract class GraphicsApplication {
 
             final Chunk chunk = ChunkFactory.createChunk(options);
             final List<Renderable> renders = Collections.unmodifiableList(Collections.singletonList(chunk));
-            final DisplayMode displayMode = new DisplayMode(Configuration.DISPLAY_WINDOW_WIDTH, Configuration.DISPLAY_WINDOW_HEIGHT);
-
-            final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(displayMode, renders, Configuration.DISPLAY_WINDOW_TITLE, lighting);
+  
+            final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(display, renders, Configuration.DISPLAY_WINDOW_TITLE, lighting);
             final UserInterface ui = new LWJGLUserInterface();
             final CameraController camera = new FirstPersonCameraController(DEFAULT_START_COORDINATES);
             final CollisionDetector collisionDetector = new CollisionDetector(chunk.getBounds());
 
             final Engine engine = new Engine(ui, graphicsEngine, camera, collisionDetector);
             engine.run();
+        }
+
+        private DisplayMode initOpenGLContext(final int dw, final int dh, final int ppi, final String title){
+            try {
+                Log.setVerbose(false);
+
+                DisplayMode display = new DisplayMode(dw, dh);
+                for (final DisplayMode mode : Display.getAvailableDisplayModes()){
+                    if(mode.getWidth() == dw && mode.getHeight() == dh && mode.getBitsPerPixel() == ppi){
+                        display = mode;
+                        break;
+                    }
+                }
+
+                Display.setTitle(title);
+                Display.setDisplayMode(display);
+                Display.create();
+
+                return display;
+            } catch (LWJGLException e){
+                throw new RuntimeException(e.getLocalizedMessage());
+            }
         }
 
         private String parseArgValue(final String flag){
@@ -126,67 +153,6 @@ public abstract class GraphicsApplication {
 
         private boolean parseArgBooleanValue(final String enable, final String disable){
             return cache.contains(enable) && !cache.contains(disable);
-        }
-    }
-
-    private static boolean parseArgs(final List<String> args, final String flag){
-        final int index = args.indexOf(flag);
-        if(index == -1){
-            return false;
-        }
-
-        try {
-            final String config = args.get(index + 1);
-            if(!config.startsWith(FLAG_PREFIX)){
-                if(config.equalsIgnoreCase(YES_FLAG_OPTION)){
-                    return true;
-                } else if (config.equalsIgnoreCase(NO_FLAG_OPTION)){
-                    return false;
-                } else {
-                    throw new RuntimeException(String.format(INVALID_ARG_ERROR_MESSAGE_FORMAT, config, flag));
-                }
-            } else {
-                return true;
-            }
-        } catch (IndexOutOfBoundsException e){
-            return true;
-        }
-    }
-
-    private static String parseArgValue(final List<String> args, final String flag){
-        final int index = args.indexOf(flag);
-        if(index < 0){
-            return null;
-        }
-
-        try {
-            return args.get(index + 1);
-        } catch (ArrayIndexOutOfBoundsException e){
-            return null;
-        }
-    }
-
-    private static int parseArgIntValue(final List<String> args, final String flag){
-        try {
-            return Integer.parseInt(Objects.requireNonNull(parseArgValue(args, flag)));
-        } catch (NumberFormatException | NullPointerException e){
-            return -1;
-        }
-    }
-
-    private static double parseArgDoubleValue(final List<String> args, final String flag){
-        try {
-            return Double.parseDouble(Objects.requireNonNull(parseArgValue(args, flag)));
-        } catch (NumberFormatException | NullPointerException e){
-            return -1;
-        }
-    }
-
-    private static float parseArgFloatValue(final List<String> args, final String flag){
-        try {
-            return Float.parseFloat(Objects.requireNonNull(parseArgValue(args, flag)));
-        } catch (NumberFormatException | NullPointerException e){
-            return -1;
         }
     }
 

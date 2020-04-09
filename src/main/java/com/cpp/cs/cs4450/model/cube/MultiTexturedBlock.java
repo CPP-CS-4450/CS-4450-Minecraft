@@ -3,10 +3,10 @@ package com.cpp.cs.cs4450.model.cube;
 import com.cpp.cs.cs4450.graphics.Invertible;
 import com.cpp.cs.cs4450.graphics.Renderable;
 import com.cpp.cs.cs4450.graphics.Textured;
+import com.cpp.cs.cs4450.util.BlockTextureLoader.BlockTexture;
 import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
-import com.cpp.cs.cs4450.util.CubeFactory.CubeSide;
-import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
+import com.cpp.cs.cs4450.util.BlockFactory.BlockSide;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
@@ -15,24 +15,15 @@ import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
 public class MultiTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded, Invertible {
     private static final String INVALID_VERTICES_ERROR_MESSAGE = "Invalid number of vertices";
 
-
-    public MultiTexturedBlock(
-            final float x,
-            final float y,
-            final float z,
-            final BlockType type,
-            final Bound bounds,
-            final List<CubeSide> sides,
-            final Map<CubeSideType, String> paths
-    ) {
-        super(x, y, z, type, bounds, sides, paths);
+    public MultiTexturedBlock(float x, float y, float z, BlockType type, Bound bounds, List<BlockSide> sides, BlockTexture textures, BlockTexture inverts) {
+        super(x, y, z, type, bounds, sides, textures, inverts);
     }
+
 
     @Override
     public void render(){
@@ -44,12 +35,12 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
 
         GL11.glColor4d(1.0, 1.0, 1.0, 1.0);
 
-        for(final CubeSide side : sides){
+        for(final BlockSide side : sides){
             if(side.getVertices().size() != TEX_COORDS.size()){
                 throw new RuntimeException(INVALID_VERTICES_ERROR_MESSAGE);
             }
 
-            final Texture texture = inverted ? inverts.get(side.getType()) : textures.get(side.getType());
+            final Texture texture = inverted ? inverts.getTexture(side) : textures.getTexture(side);
             texture.bind();
             GL11.glBegin(GL11.GL_QUADS);
 

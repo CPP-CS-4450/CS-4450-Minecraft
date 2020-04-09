@@ -1,10 +1,7 @@
 package com.cpp.cs.cs4450.graphics;
 
 import com.cpp.cs.cs4450.util.Color;
-import com.cpp.cs.cs4450.util.TextureInverter;
-import com.cpp.cs.cs4450.util.TextureLoader;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -12,9 +9,7 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
 
-import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,7 +29,6 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
     private final List<Renderable> renders;
     private final Vector3f light;
     private boolean inverted;
-    private boolean invertsInitialized;
 
 
     public LWJGLGraphicsEngine(final DisplayMode displayMode, final List<Renderable> renders) {
@@ -50,12 +44,8 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         this.renders = renders;
         this.light = new Vector3f(2f, 15f,2f);
         this.inverted = false;
-        this.invertsInitialized = false;
-        initDisplay(title);
         initGL11();
-        initTextures();
         if(lighting) initLighting();
-        renders.forEach(Renderable::init);
     }
 
     @Override
@@ -91,11 +81,6 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
 
     @Override
     public void invert(){
-        if(!invertsInitialized){
-            initInvertibles();
-            invertsInitialized = true;
-        }
-
         final Color background = inverted ? BACKGROUND_COLOR : BLACK_BACKGROUND;
 
         GL11.glClearColor(background.getRed(), background.getGreen(), background.getBlue(), background.getAlpha());
@@ -112,39 +97,19 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         inverted = !inverted;
     }
 
-    private void initInvertibles(){
-        final List<Invertible> invertibles = Collections.checkedList(new ArrayList<>(), Invertible.class);
-        for(Renderable render : renders){
-            if(render instanceof Invertible){
-                invertibles.add((Invertible) render);
-            }
-            if(render instanceof InvertibleContainer){
-                invertibles.addAll(((InvertibleContainer) render).getInvertibles());
-            }
-        }
-
-        TextureInverter.invert(invertibles);
-    }
-
-    private void initDisplay(final String title){
-        try {
-            Display.setTitle(title);
-            Display.setDisplayMode(displayMode);
-            Display.create();
-        } catch (LWJGLException e) {
-            throw new RuntimeException(e.getLocalizedMessage());
-        }
-    }
-
     private void initGL11(){
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glClearColor(BACKGROUND_COLOR.getRed(), BACKGROUND_COLOR.getGreen(), BACKGROUND_COLOR.getBlue(),BACKGROUND_COLOR.getAlpha());
+
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
+
         GLU.gluPerspective(100.0f, ((float)displayMode.getWidth() / ( float) displayMode.getHeight()), 0.1f, 300.0f);
+
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+
         GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
         GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
@@ -174,24 +139,6 @@ public class LWJGLGraphicsEngine implements GraphicsEngine {
         }
 
         return (FloatBuffer) buffer.flip();
-    }
-
-
-    private void initTextures(){
-        try {
-            final List<Textured> textured = Collections.checkedList(new ArrayList<>(), Textured.class);
-            for(final Renderable render : renders){
-                if(render instanceof Textured){
-                    textured.add((Textured) render);
-                } else if (render instanceof TexturedContainer){
-                    textured.addAll(((TexturedContainer) render).getTextured());
-                }
-            }
-
-            TextureLoader.load(textured);
-        } catch (IOException e) {
-            throw new RuntimeException(e.getLocalizedMessage());
-        }
     }
 
 }

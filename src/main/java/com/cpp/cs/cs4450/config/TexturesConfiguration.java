@@ -1,12 +1,13 @@
 package com.cpp.cs.cs4450.config;
 
-import com.cpp.cs.cs4450.util.CubeFactory.CubeSideType;
+import com.cpp.cs.cs4450.util.BlockFactory.BlockSideType;
 import org.lwjgl.util.vector.ReadableVector2f;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.Arrays;
 
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -26,27 +27,27 @@ public final class TexturesConfiguration {
 
     public static final String TERRAIN_TEXTURE_PATH = "assets/terrain.png";
 
-    public static final Map<CubeSideType, String> GRASS_TEXTURES = Stream.of(
-            new SimpleImmutableEntry<>(CubeSideType.TOP, GRASS_TOP_TEXTURE_PATH),
-            new SimpleImmutableEntry<>(CubeSideType.BOTTOM, DIRT_TEXTURE_PATH),
-            new SimpleImmutableEntry<>(CubeSideType.LEFT, GRASS_SIDE_1_TEXTURE_PATH),
-            new SimpleImmutableEntry<>(CubeSideType.RIGHT, GRASS_SIDE_1_TEXTURE_PATH),
-            new SimpleImmutableEntry<>(CubeSideType.FRONT, GRASS_SIDE_2_TEXTURE_PATH),
-            new SimpleImmutableEntry<>(CubeSideType.BACK, GRASS_SIDE_2_TEXTURE_PATH)
+    public static final Map<BlockSideType, String> GRASS_TEXTURES = Stream.of(
+            new SimpleImmutableEntry<>(BlockSideType.TOP, GRASS_TOP_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(BlockSideType.BOTTOM, DIRT_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(BlockSideType.LEFT, GRASS_SIDE_1_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(BlockSideType.RIGHT, GRASS_SIDE_1_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(BlockSideType.FRONT, GRASS_SIDE_2_TEXTURE_PATH),
+            new SimpleImmutableEntry<>(BlockSideType.BACK, GRASS_SIDE_2_TEXTURE_PATH)
     ).collect(Collectors.collectingAndThen(
-            Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
+            Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0, () -> new EnumMap<>(BlockSideType.class)),
             Collections::unmodifiableMap
     ));
 
-    public static final Map<CubeSideType, String> DIRT_TEXTURES = generateSingleTextureMap(DIRT_TEXTURE_PATH);
+    public static final Map<BlockSideType, String> DIRT_TEXTURES = generateSingleTextureMap(DIRT_TEXTURE_PATH);
 
-    public static final Map<CubeSideType, String> WATER_TEXTURES = generateSingleTextureMap(WATER_TEXTURE_PATH);
+    public static final Map<BlockSideType, String> WATER_TEXTURES = generateSingleTextureMap(WATER_TEXTURE_PATH);
 
-    public static final Map<CubeSideType, String> SAND_TEXTURES = generateSingleTextureMap(SAND_TEXTURE_PATH);
+    public static final Map<BlockSideType, String> SAND_TEXTURES = generateSingleTextureMap(SAND_TEXTURE_PATH);
 
-    public static final Map<CubeSideType, String> STONE_TEXTURES = generateSingleTextureMap(STONE_TEXTURE_PATH);
+    public static final Map<BlockSideType, String> STONE_TEXTURES = generateSingleTextureMap(STONE_TEXTURE_PATH);
 
-    public static final Map<CubeSideType, String> BEDROCK_TEXTURES = generateSingleTextureMap(BEDROCK_TEXTURE_PATH);
+    public static final Map<BlockSideType, String> BEDROCK_TEXTURES = generateSingleTextureMap(BEDROCK_TEXTURE_PATH);
 
 
     private static final List<ReadableVector2f> GRASS_TOP_TEXTURE_VERTICES_LIST = Collections.unmodifiableList(
@@ -81,45 +82,55 @@ public final class TexturesConfiguration {
             Arrays.asList(new Vector2f(1,5), new Vector2f(0,5), new Vector2f(0,6), new Vector2f(1,6))
     );
 
-    public static final Map<CubeSideType, List<ReadableVector2f>> GRASS_TEXTURE_VERTICES = Stream.of(
-            new SimpleImmutableEntry<>(CubeSideType.TOP, GRASS_TOP_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.BOTTOM, DIRT_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.LEFT, GRASS_SIDE_1_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.RIGHT, GRASS_SIDE_1_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.FRONT, GRASS_SIDE_2_TEXTURE_VERTICES_LIST),
-            new SimpleImmutableEntry<>(CubeSideType.BACK, GRASS_SIDE_2_TEXTURE_VERTICES_LIST)
+    public static final Map<BlockSideType, List<ReadableVector2f>> GRASS_TEXTURE_VERTICES = Stream.of(
+            new SimpleImmutableEntry<>(BlockSideType.TOP, GRASS_TOP_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(BlockSideType.BOTTOM, DIRT_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(BlockSideType.LEFT, GRASS_SIDE_1_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(BlockSideType.RIGHT, GRASS_SIDE_1_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(BlockSideType.FRONT, GRASS_SIDE_2_TEXTURE_VERTICES_LIST),
+            new SimpleImmutableEntry<>(BlockSideType.BACK, GRASS_SIDE_2_TEXTURE_VERTICES_LIST)
     ).collect(Collectors.collectingAndThen(
-            Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
+            Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0, () -> new EnumMap<>(BlockSideType.class)),
             Collections::unmodifiableMap
     ));
 
-    public static final Map<CubeSideType, List<ReadableVector2f>> DIRT_TEXTURE_VERTICES = generateSingleTextureVerticesMap(DIRT_TEXTURE_VERTICES_LIST);
+    public static final Map<BlockSideType, List<ReadableVector2f>> DIRT_TEXTURE_VERTICES = generateSingleTextureVerticesMap(DIRT_TEXTURE_VERTICES_LIST);
 
-    public static final Map<CubeSideType, List<ReadableVector2f>> WATER_TEXTURE_VERTICES = generateSingleTextureVerticesMap(WATER_TEXTURE_VERTICES_LIST);
+    public static final Map<BlockSideType, List<ReadableVector2f>> WATER_TEXTURE_VERTICES = generateSingleTextureVerticesMap(WATER_TEXTURE_VERTICES_LIST);
 
-    public static final Map<CubeSideType, List<ReadableVector2f>> SAND_TEXTURE_VERTICES = generateSingleTextureVerticesMap(SAND_TEXTURE_VERTICES_LIST);
+    public static final Map<BlockSideType, List<ReadableVector2f>> SAND_TEXTURE_VERTICES = generateSingleTextureVerticesMap(SAND_TEXTURE_VERTICES_LIST);
 
-    public static final Map<CubeSideType, List<ReadableVector2f>> STONE_TEXTURE_VERTICES = generateSingleTextureVerticesMap(STONE_TEXTURE_VERTICES_LIST);
+    public static final Map<BlockSideType, List<ReadableVector2f>> STONE_TEXTURE_VERTICES = generateSingleTextureVerticesMap(STONE_TEXTURE_VERTICES_LIST);
 
-    public static final Map<CubeSideType, List<ReadableVector2f>> BEDROCK_TEXTURE_VERTICES = generateSingleTextureVerticesMap(BEDROCK_TEXTURE_VERTICES_LIST);
+    public static final Map<BlockSideType, List<ReadableVector2f>> BEDROCK_TEXTURE_VERTICES = generateSingleTextureVerticesMap(BEDROCK_TEXTURE_VERTICES_LIST);
 
 
     private TexturesConfiguration(){}
 
-    private static Map<CubeSideType, String> generateSingleTextureMap(final String path){
-        return Stream.of(CubeSideType.FRONT)
+    private static Map<BlockSideType, String> generateSingleTextureMap(final String path){
+        return Stream.of(BlockSideType.FRONT)
                 .map(cst -> new SimpleImmutableEntry<>(cst, path))
                 .collect(Collectors.collectingAndThen(
-                        Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
+                        Collectors.toMap(
+                                Entry::getKey,
+                                Entry::getValue,
+                                (k0, k1) -> k0,
+                                () -> new EnumMap<>(BlockSideType.class)
+                        ),
                         Collections::unmodifiableMap
                 ));
     }
 
-    private static Map<CubeSideType, List<ReadableVector2f>> generateSingleTextureVerticesMap(List<ReadableVector2f> vertices){
-        return Arrays.stream(CubeSideType.values())
+    private static Map<BlockSideType, List<ReadableVector2f>> generateSingleTextureVerticesMap(List<ReadableVector2f> vertices){
+        return Arrays.stream(BlockSideType.values())
                 .map(cst -> new SimpleImmutableEntry<>(cst, vertices))
                 .collect(Collectors.collectingAndThen(
-                        Collectors.toMap(Entry::getKey, Entry::getValue, (k0, k1) -> k0),
+                        Collectors.toMap(
+                                Entry::getKey,
+                                Entry::getValue,
+                                (k0, k1) -> k0,
+                                () -> new EnumMap<>(BlockSideType.class)
+                        ),
                         Collections::unmodifiableMap
                 ));
     }

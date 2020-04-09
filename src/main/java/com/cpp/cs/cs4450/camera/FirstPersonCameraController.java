@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class FirstPersonCameraController implements CameraController, GameAreaEntity, Movable, Cloneable, Bounded {
+public class FirstPersonCameraController implements CameraController, GameAreaEntity, Movable, Bounded {
     private static final float HORIZONTAL_DYAW = 90.0f;
     private static final double WIDTH = 0.2;
     private static final double HEIGHT = 0.3;
@@ -130,25 +130,12 @@ public class FirstPersonCameraController implements CameraController, GameAreaEn
         return position;
     }
 
-    @Override
-    public Object clone(){
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e){
-            return copyOf(this);
-        }
-    }
-
     private static float calculateXOffset(final float distance, final float offset){
         return (float) (distance * Math.sin(Math.toRadians(offset)));
     }
 
     private static float calculateZOffset(final float distance, final float offset){
         return (float) (distance * Math.cos(Math.toRadians(offset)));
-    }
-
-    public FirstPersonCameraController copyOf(final FirstPersonCameraController firstPersonCameraController){
-        return new FirstPersonCameraController(firstPersonCameraController.getPosition3f());
     }
 
     @Override

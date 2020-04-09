@@ -8,6 +8,7 @@ public final class Configuration {
 
     public static final int DISPLAY_WINDOW_HEIGHT = 480;
 
+    public static final int PIXELS_PER_INCH = 32;
 
     private Configuration(){}
 
