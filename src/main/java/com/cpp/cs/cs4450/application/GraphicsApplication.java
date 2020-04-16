@@ -1,3 +1,17 @@
+/***************************************************************
+ * file: GraphicsApplication.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Final Checkpoint
+ * date last modified: 04/25/2020
+ *
+ * purpose: Class that is an implementation of an application for displaying graphics.
+ *
+ *
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.application;
 
 import com.cpp.cs.cs4450.camera.CameraController;
@@ -27,33 +41,77 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * This class that is an implementation of an application for displaying graphics.
+ * It is responsible for instantiating all the systems of the program as well as
+ * configuring it.
+ */
 public abstract class GraphicsApplication {
+    /**
+     * Command line flag to disable lighting
+     */
     private static final String DISABLE_LIGHTING_FLAG = "--dl";
+    /**
+     * The programs default start coordinates
+     */
     private static final ReadableVector3f DEFAULT_START_COORDINATES = new Vector3f(-1.5f, -1.5f, -1.5f);
 
-
+    /**
+     * Launches the application
+     *
+     * @param args command line arguments
+     */
     public static void launch(final String ...args){
         launch(Arrays.asList(args));
     }
 
+    /**
+     * Launches the application
+     *
+     * @param args List of arguments
+     */
     public static void launch(final List<String> args){
         launch(args, new HashSet<>(args));
     }
 
+    /**
+     * Launches the application
+     *
+     * @param args List of arguments
+     * @param cache Cache of hashed arguments
+     */
     private static void launch(final List<String> args, final Set<String> cache){
         final GraphicsApplicationImpl application = new GraphicsApplicationImpl(args, cache);
         application.launch();
     }
 
+    /**
+     * Internal implementation of the GraphicsApplication class
+     */
     private static final class GraphicsApplicationImpl extends GraphicsApplication {
+        /**
+         * Arguments list
+         */
         private final List<String> args;
+        /**
+         * Arguments cache
+         */
         private final Set<String> cache;
 
+        /**
+         * Constructor
+         *
+         * @param args List of arguments
+         * @param cache Cache of hashed arguments
+         */
         private GraphicsApplicationImpl(final List<String> args, final Set<String> cache) {
             this.args = Collections.unmodifiableList(args);
             this.cache = Collections.unmodifiableSet(cache);
         }
 
+        /**
+         * Launches the Application
+         */
         private void launch(){
             final String title = Configuration.DISPLAY_WINDOW_TITLE;
 
@@ -86,6 +144,15 @@ public abstract class GraphicsApplication {
             engine.run();
         }
 
+        /**
+         * Initializes the OpenGL context for graphics rendering
+         *
+         * @param dw Display width
+         * @param dh Display height
+         * @param ppi Display pixels per inch
+         * @param title Display title
+         * @return Programs Display
+         */
         private DisplayMode initOpenGLContext(final int dw, final int dh, final int ppi, final String title){
             try {
                 Log.setVerbose(false);
@@ -108,6 +175,12 @@ public abstract class GraphicsApplication {
             }
         }
 
+        /**
+         * Parses args for flag
+         *
+         * @param flag Argument to look for
+         * @return Argument value
+         */
         private String parseArgValue(final String flag){
             if(!cache.contains(flag)) return null;
 
@@ -123,6 +196,12 @@ public abstract class GraphicsApplication {
             }
         }
 
+        /**
+         * Parses args for flag
+         *
+         * @param flag Argument to look for
+         * @return Argument value
+         */
         private int parseArgIntValue(final String flag){
             try {
                 return Integer.parseInt(Objects.requireNonNull(parseArgValue(flag)));
@@ -131,6 +210,12 @@ public abstract class GraphicsApplication {
             }
         }
 
+        /**
+         * Parses args for flag
+         *
+         * @param flag Argument to look for
+         * @return Argument value
+         */
         private double parseArgDoubleValue(final String flag){
             try {
                 return Double.parseDouble(Objects.requireNonNull(parseArgValue(flag)));
@@ -139,6 +224,12 @@ public abstract class GraphicsApplication {
             }
         }
 
+        /**
+         * Parses args for flag
+         *
+         * @param flag Argument to look for
+         * @return Argument value
+         */
         private float parseArgFloatValue(final String flag){
             try {
                 return Float.parseFloat(Objects.requireNonNull(parseArgValue(flag)));
@@ -147,10 +238,23 @@ public abstract class GraphicsApplication {
             }
         }
 
+        /**
+         * Checks if argument exists
+         *
+         * @param flag Argument to look for
+         * @return True if argument exists, false otherwise
+         */
         private boolean parseArgBooleanValue(final String flag){
             return cache.contains(flag);
         }
 
+        /**
+         * Checks for enabling/disabling argument flags
+         *
+         * @param enable Flag to enable
+         * @param disable Flag to disable
+         * @return True if enable, false otherwise
+         */
         private boolean parseArgBooleanValue(final String enable, final String disable){
             return cache.contains(enable) && !cache.contains(disable);
         }

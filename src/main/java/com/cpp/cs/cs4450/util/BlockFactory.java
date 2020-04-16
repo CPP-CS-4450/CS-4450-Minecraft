@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: BlockFactory.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Final Checkpoint
+ * date last modified: 04/25/2020
+ *
+ * purpose: Factory to create Blocks
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.util;
 
 import com.cpp.cs.cs4450.model.cube.Cube;
@@ -17,18 +29,29 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Queue;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * Utility Factory Class to create blocks
+ */
 public final class BlockFactory {
+    /**
+     * Number of cube sides
+     */
     private static final int CUBE_SIDES = BlockSideType.values().length;
+    /**
+     * Supported colors
+     */
     private static final List<Color> COLORS = Collections.unmodifiableList(
             Arrays.asList(Color.BLUE, Color.GREEN, Color.RED, Color.YELLOW, Color.MAGENTA, Color.CYAN, Color.ORANGE)
     );
 
+    /**
+     * Block side types
+     */
     public enum BlockSideType {
         TOP,
         BOTTOM,
@@ -38,12 +61,41 @@ public final class BlockFactory {
         BACK
     }
 
+    /**
+     * Private constructor
+     */
     private BlockFactory(){}
 
+    /**
+     * Creates textured block
+     *
+     * @param type blocks
+     * @param x blocks x-axis position
+     * @param y blocks y-axis position
+     * @param z blocks z-axis position
+     * @param size blocks size
+     * @param texture blocks texture
+     * @param invert blocks
+     * @return new textured block
+     */
     public static Block createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size, final BlockTexture texture, final BlockTexture invert){
         return createTexturedBlock(type, x, y, z, size, size, size, texture, invert);
     }
 
+    /**
+     * Creates Textured Block
+     *
+     * @param type blocks
+     * @param x blocks x-axis position
+     * @param y blocks y-axis position
+     * @param z blocks z-axis position
+     * @param l blocks length
+     * @param h blocks height
+     * @param d blocks depth
+     * @param texture blocks texture
+     * @param invert blocks
+     * @return new textured block
+     */
     public static Block createTexturedBlock(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d, final BlockTexture texture, final BlockTexture invert){
         final List<BlockSide> sides = new ArrayList<>(CUBE_SIDES);
         for(final BlockSideType side : BlockSideType.values()){
@@ -58,26 +110,87 @@ public final class BlockFactory {
                 : new SingleTexturedBlock(x,y,z,type,bounds,sides, texture, invert);
     }
 
+    /**
+     * Creates textured block
+     *
+     * @param type blocks
+     * @param x blocks x-axis position
+     * @param y blocks y-axis position
+     * @param z blocks z-axis position
+     * @param size blocks size
+     * @param texture blocks texture
+     * @return new textured block
+     */
     public static Block createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size, final BlockTexture texture){
         return createTexturedBlock(type, x, y, z, size, size, size, texture);
     }
 
+    /**
+     * Creates Textured Block
+     *
+     * @param type blocks
+     * @param x blocks x-axis position
+     * @param y blocks y-axis position
+     * @param z blocks z-axis position
+     * @param l blocks length
+     * @param h blocks height
+     * @param d blocks depth
+     * @param texture blocks texture
+     * @return new textured block
+     */
     public static Block createTexturedBlock(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d, final BlockTexture texture){
         return createTexturedBlock(type, x, y, z, l, h, d, texture, BlockTextureLoader.invertBlockTexture(texture));
     }
 
+    /**
+     * Creates block
+     *
+     * @param size block size
+     * @param colors block colors
+     * @return new block
+     */
     public static Cube createCube(float size, Color ...colors){
         return createCube(0,0,0, size, colors);
     }
 
+    /**
+     * Creates block
+     *
+     * @param center position
+     * @param size block size
+     * @param colors block colors
+     * @return new block
+     */
     public static Cube createCube(final ReadableVector3f center, final float size, final Color ...colors){
         return createCube(center.getX(), center.getY(), center.getZ(), size, colors);
     }
 
+    /**
+     * Creates Block
+     *
+     * @param x x-axis
+     * @param y y-axis
+     * @param z z-axis
+     * @param size size
+     * @param colors colors
+     * @return new block
+     */
     public static Cube createCube(final float x, final float y, final float z, final float size, final Color ...colors){
         return createBlock(x, y, z, size, size, size, colors);
     }
 
+    /**
+     * Creates block
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @param colors colors
+     * @return new block
+     */
     public static Block createBlock(final float x, final float y, final float z, final float l, final float h, final float d, final Color ...colors){
         final Queue<Color> colorQueue = generateColors(colors);
 
@@ -89,6 +202,18 @@ public final class BlockFactory {
         return new BlockImpl(x, y, z, l, h, d, sides);
     }
 
+    /**
+     * Calculates block's vertices
+     *
+     * @param type block type
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<ReadableVector3f> calculateSideVertices(final BlockSideType type, final float x, final float y, final float z, final float l, final float h, final float d){
         final float a = l / 2;
         final float b = h / 2;
@@ -115,6 +240,17 @@ public final class BlockFactory {
         return Collections.unmodifiableList(vertices);
     }
 
+    /**
+     * Calculates block's top vertices
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<Vector3f> calculateTopSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y + h, z + d),
@@ -124,6 +260,17 @@ public final class BlockFactory {
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
+    /**
+     * Calculates block's bottom vertices
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<Vector3f> calculateBottomSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y - h, z + d),
@@ -133,6 +280,18 @@ public final class BlockFactory {
 
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
+
+    /**
+     * Calculates block's left vertices
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<Vector3f> calculateLeftSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x - l, y + h, z + d),
@@ -141,6 +300,18 @@ public final class BlockFactory {
                 new Vector3f(x - l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
+
+    /**
+     * Calculates block's right vertices
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<Vector3f> calculateRightSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y + h, z + d),
@@ -149,6 +320,18 @@ public final class BlockFactory {
                 new Vector3f(x + l, y + h, z - d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
+
+    /**
+     * Calculates block's front vertices
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<Vector3f> calculateFrontSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y + h, z + d),
@@ -157,6 +340,18 @@ public final class BlockFactory {
                 new Vector3f(x + l, y - h, z + d)
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
+
+    /**
+     * Calculates block's back side vertices
+     *
+     * @param x x position
+     * @param y y position
+     * @param z z position
+     * @param l length
+     * @param h height
+     * @param d depth
+     * @return block's vertices
+     */
     private static List<Vector3f> calculateBackSideVertices(float x, float y, float z, float l, float h, float d){
         return Stream.of(
                 new Vector3f(x + l, y + h, z - d),
@@ -166,6 +361,12 @@ public final class BlockFactory {
         ).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
+    /**
+     * Generates colors
+     *
+     * @param colors colors
+     * @return color queue
+     */
     private static Queue<Color> generateColors(final Color ...colors){
         if(colors == null || colors.length < 1){
             return generateUniqueColors();
@@ -188,6 +389,11 @@ public final class BlockFactory {
         return queue;
     }
 
+    /**
+     * Generates colors
+     *
+     * @return color queue
+     */
     private static Queue<Color> generateUniqueColors(){
         if(COLORS.size() < CUBE_SIDES){
             return generateColors(COLORS.toArray(new Color[0]));
@@ -209,16 +415,47 @@ public final class BlockFactory {
         return new ArrayDeque<>(set);
     }
 
+    /**
+     * Generates color
+     * @param color color
+     * @return color queue
+     */
     private static Queue<Color> generateSingleColor(final Color color){
         return IntStream.range(0, CUBE_SIDES).mapToObj(i -> color).collect(Collectors.toCollection(ArrayDeque::new));
     }
 
+    /**
+     * Internal block implementation
+     */
     private static class BlockImpl extends Block {
+        /**
+         * width
+         */
         private final float w;
+        /**
+         * height
+         */
         private final float h;
+        /**
+         * depth
+         */
         private final float d;
+        /**
+         * bounds
+         */
         private final Bound b;
 
+        /**
+         * Constructor
+         *
+         * @param x x axis
+         * @param y y axis
+         * @param z z axis
+         * @param w width
+         * @param h height
+         * @param d depth
+         * @param sides sides
+         */
         private BlockImpl(final float x, final float y, final float z, final float w, final float h, final float d, final List<BlockSide> sides) {
             super(x, y, z, sides);
             this.w = w;
@@ -227,56 +464,119 @@ public final class BlockFactory {
             this.b = new BoundBox(x,y,z,w,h,d);
         }
 
+        /**
+         * Getter for bounds
+         *
+         * @return bounds
+         */
         @Override
         public Bound getBounds() {
             return b;
         }
 
+        /**
+         * Getter for length
+         *
+         * @return length
+         */
         @Override
         public double getWidth() {
             return w;
         }
 
+        /**
+         * Getter for height
+         *
+         * @return height
+         */
         @Override
         public double getHeight() {
             return h;
         }
 
+        /**
+         * Getter for depth
+         *
+         * @return depth
+         */
         @Override
         public double getDepth() {
             return d;
         }
 
+        /**
+         * Getter for type
+         *
+         * @return type
+         */
         @Override
         public BlockType getType() {
             return null;
         }
     }
 
+    /**
+     * Class to represent a blocks side
+     */
     public static final class BlockSide {
+        /**
+         * type
+         */
         private final BlockSideType type;
+        /**
+         * vertices
+         */
         private final List<ReadableVector3f> vertices;
+        /**
+         * color
+         */
         private final Color color;
 
-
+        /**
+         * Constructor
+         *
+         * @param type block side type
+         * @param vertices side vertices
+         * @param color side's color
+         */
         private BlockSide(final BlockSideType type, final List<ReadableVector3f> vertices, final Color color) {
             this.type = type;
             this.vertices = vertices;
             this.color = color;
         }
 
+        /**
+         * Getter for vertices
+         *
+         * @return list of sides vertices
+         */
         public List<ReadableVector3f> getVertices() {
             return Collections.unmodifiableList(vertices);
         }
 
+        /**
+         * Getter for color
+         *
+         * @return sides color
+         */
         public Color getColor() {
             return color;
         }
 
+        /**
+         * Getter for type
+         *
+         * @return side's type
+         */
         public BlockSideType getType() {
             return type;
         }
 
+        /**
+         * Getter for vertices
+         *
+         * @return side vertices
+         */
         public List<Float> getVerticesArray(){
             final List<Float> floats = new ArrayList<>(vertices.size() * 3);
             for(final ReadableVector3f vector : vertices){
@@ -287,220 +587,6 @@ public final class BlockFactory {
 
             return floats;
          }
-
-    }
-
-    public static final class BlockOptions {
-        private final BlockType type;
-        private final ReadableVector3f position;
-        private final float l;
-        private final float h;
-        private final float d;
-
-
-        private BlockOptions(final BlockType type, final ReadableVector3f position, final float l, final float h, final float d) {
-            this.type = type;
-            this.position = position;
-            this.l = l;
-            this.h = h;
-            this.d = d;
-        }
-
-        public BlockType getType() {
-            return type;
-        }
-
-        public float getXPosition() {
-            return position.getX();
-        }
-
-        public float getYPosition() {
-            return position.getY();
-        }
-
-        public float getZPosition() {
-            return position.getZ();
-        }
-
-        public ReadableVector3f getPosition(){
-            return position;
-        }
-
-        public float getLength() {
-            return l;
-        }
-
-        public float getHeight() {
-            return h;
-        }
-
-        public float getDepth() {
-            return d;
-        }
-
-        public static Builder builder(){
-            return new Builder();
-        }
-
-        public static final class Builder {
-            private BlockType type;
-            private Vector3f position;
-            private float l;
-            private float h;
-            private float d;
-
-            private Builder(){
-                position = new Vector3f();
-            }
-
-
-            public BlockType getType() {
-                return type;
-            }
-
-            public void setType(BlockType type) {
-                this.type = type;
-            }
-
-            public Builder withType(BlockType type) {
-                setType(type);
-                return this;
-            }
-
-            public float getXPosition() {
-                return position.getX();
-            }
-
-            public void setXPosition(float x){
-                this.position.setX(x);
-            }
-
-            public Builder withXPosition(float x){
-                setXPosition(x);
-                return this;
-            }
-
-            public float getYPosition() {
-                return position.getY();
-            }
-
-            public void setYPosition(float y){
-                this.position.setY(y);
-            }
-
-            public Builder withYPosition(float y){
-                setYPosition(y);
-                return this;
-            }
-
-            public float getZPosition() {
-                return position.getZ();
-            }
-
-            public void setZPosition(float z){
-                this.position.setZ(z);
-            }
-
-            public Builder withZPosition(float z){
-                setZPosition(z);
-                return this;
-            }
-
-            public ReadableVector3f getPosition() {
-                return position;
-            }
-
-            public void setPosition(ReadableVector3f position) {
-                this.position.set(position);
-            }
-
-            public Builder withPosition(ReadableVector3f position) {
-                setPosition(position);
-                return this;
-            }
-
-            public void setPosition(float x, float y){
-                this.position.set(x, y);
-            }
-
-            public Builder withPosition(float x, float y){
-                setPosition(x, y);
-                return this;
-            }
-
-            public void setPosition(float x, float y, float z){
-                this.position.set(x, y, z);
-            }
-
-            public Builder withPosition(float x, float y, float z){
-                setPosition(x, y, z);
-                return this;
-            }
-
-            public float getLength() {
-                return l;
-            }
-
-            public void setLength(float l) {
-                this.l = l;
-            }
-
-            public Builder withLength(float l) {
-                setLength(l);
-                return this;
-            }
-
-            public float getHeight() {
-                return h;
-            }
-
-            public void setHeight(float h) {
-                this.h = h;
-            }
-
-            public Builder withHeight(float h) {
-                setHeight(h);
-                return this;
-            }
-
-            public float getDepth() {
-                return d;
-            }
-
-            public void setDepth(float d) {
-                this.d = d;
-            }
-
-            public Builder withDepth(float d) {
-                setDepth(d);
-                return this;
-            }
-
-            public void setSize(float size){
-                setSize(size, size, size);
-            }
-
-            public Builder withSize(float size){
-                setSize(size);
-                return this;
-            }
-
-            public void setSize(float l, float h, float d){
-                setLength(l);
-                setHeight(h);
-                setDepth(d);
-            }
-
-            public Builder withSize(float l, float h, float d){
-                setSize(l, h, d);
-                return this;
-            }
-
-            public BlockOptions build(){
-                return new BlockOptions(type, position, l, h, d);
-            }
-
-        }
 
     }
 

@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: MultiTexturedBlock.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Final Checkpoint
+ * date last modified: 04/25/2020
+ *
+ * purpose: Textured block with multiple textures for sides
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Invertible;
@@ -17,14 +29,34 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * Implementation of a TexturedBlock that has multiple textures
+ */
 public class MultiTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded, Invertible {
+    /**
+     * Invalid vertices size error message
+     */
     private static final String INVALID_VERTICES_ERROR_MESSAGE = "Invalid number of vertices";
 
+    /**
+     * Constructor
+     *
+     * @param x x-axis position
+     * @param y y-axis position
+     * @param z z-axis position
+     * @param type block type
+     * @param bounds block bounds
+     * @param sides block sides
+     * @param textures blocks textures
+     * @param inverts block texture inverts
+     */
     public MultiTexturedBlock(float x, float y, float z, BlockType type, Bound bounds, List<BlockSide> sides, BlockTexture textures, BlockTexture inverts) {
         super(x, y, z, type, bounds, sides, textures, inverts);
     }
 
-
+    /**
+     * Renders the block and it's multiple textures
+     */
     @Override
     public void render(){
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
@@ -59,6 +91,7 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
             }
             GL11.glEnd();
         }
+
     }
 
 }

@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: SingleTexturedBlock.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Final Checkpoint
+ * date last modified: 04/25/2020
+ *
+ * purpose: Block that only has one texture for all slides
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.model.cube;
 
 import com.cpp.cs.cs4450.graphics.Invertible;
@@ -7,7 +19,6 @@ import com.cpp.cs.cs4450.util.BlockTextureLoader.BlockTexture;
 import com.cpp.cs.cs4450.util.Bound;
 import com.cpp.cs.cs4450.util.Bounded;
 import com.cpp.cs.cs4450.util.BlockFactory.BlockSide;
-import com.cpp.cs.cs4450.util.TextureInverter;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.ReadableVector2f;
@@ -16,22 +27,47 @@ import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
+/**
+ * Implementation of TexturedBlock with only a single texture
+ */
 public class SingleTexturedBlock extends TexturedBlock implements Renderable, Textured, Bounded, Invertible {
+    /**
+     * Invalid vertices size error message
+     */
     private static final String INVALID_VERTICES_ERROR_MESSAGE = "Invalid number of vertices";
 
+    /**
+     * Block's texture
+     */
     private final Texture texture;
+    /**
+     * Block's inverted texture
+     */
     private final Texture invert;
 
+    /**
+     * Constructor
+     *
+     * @param x x-axis position
+     * @param y y-axis position
+     * @param z z-axis position
+     * @param type block type
+     * @param bounds block bounds
+     * @param sides block sides
+     * @param textures blocks textures
+     * @param inverts block texture inverts
+     */
     public SingleTexturedBlock(float x, float y, float z, BlockType type, Bound bounds, List<BlockSide> sides, BlockTexture textures, BlockTexture inverts) {
         super(x, y, z, type, bounds, sides, textures, inverts);
         this.texture = textures.getTexture();
         this.invert = inverts.getTexture();
     }
 
-
+    /**
+     * Renders the Cube and it's single textured
+     */
     @Override
     public void render(){
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);

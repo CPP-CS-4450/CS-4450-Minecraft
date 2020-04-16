@@ -1,11 +1,44 @@
+/***************************************************************
+ * file: Bound.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Final Checkpoint
+ * date last modified: 04/25/2020
+ *
+ * purpose: Class to represent an objects bounds for collision detection
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.util;
 
+/**
+ * Class to represent object bounds
+ */
 public abstract class Bound {
+    /**
+     * Min x axis position
+     */
     private final double minX;
+    /**
+     * Min y axis position
+     */
     private final double minY;
+    /**
+     * Min z axis position
+     */
     private final double minZ;
+    /**
+     * width
+     */
     private final double width;
+    /**
+     * height
+     */
     private final double height;
+    /**
+     * depth
+     */
     private final double depth;
     private final double maxX;
     private final double maxY;

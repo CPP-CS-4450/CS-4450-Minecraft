@@ -1,3 +1,15 @@
+/***************************************************************
+ * file: TextureInverter.java
+ * team: Team Dood
+ * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
+ * class: CS 4450 – Computer Graphics
+ *
+ * assignment: Semester Project - Final Checkpoint
+ * date last modified: 04/25/2020
+ *
+ * purpose: Inverts textures
+ *
+ ****************************************************************/
 package com.cpp.cs.cs4450.util;
 
 import org.lwjgl.util.Color;
