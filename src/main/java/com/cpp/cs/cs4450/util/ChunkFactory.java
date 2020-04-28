@@ -201,7 +201,7 @@ public final class ChunkFactory {
         return new VBOArrayChunk(cubes, bounds, count, proxy.vboVertexHandle, proxy.vboColorHandle, proxy.vboTextureHandle, proxy.texture, proxy.invert);
     }
 
-    private static Function<Double, Double> calculateHeight = h -> h >= MINIMUM_HEIGHT ? h : MINIMUM_HEIGHT;
+    private static final Function<Double, Double> calculateHeight = h -> h >= MINIMUM_HEIGHT ? h : MINIMUM_HEIGHT;
 
     private static double calculateHeight(double noise, int size, float scale){
         return calculateHeight.apply(++noise >= size ? --size : noise / scale);
