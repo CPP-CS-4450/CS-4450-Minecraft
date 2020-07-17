@@ -22,42 +22,42 @@ public interface UserInterface {
      *
      * @return True if user signals to move up, false otherwise
      */
-    boolean up();
+    boolean moveUp();
 
     /**
      * Signals program to move camera down
      *
      * @return True if user signals to move down, false otherwise
      */
-    boolean down();
+    boolean moveDown();
 
     /**
      * Signals program to move camera left
      *
      * @return True if user signals to move left, false otherwise
      */
-    boolean left();
+    boolean moveLeft();
 
     /**
      * Signals program to move camera right
      *
      * @return True if user signals to move right, false otherwise
      */
-    boolean right();
+    boolean moveRight();
 
     /**
      * Signals program to move camera forward
      *
      * @return True if user signals to move forward, false otherwise
      */
-    boolean forward();
+    boolean moveForward();
 
     /**
      * Signals program to move camera backward
      *
      * @return True if user signals to move backward, false otherwise
      */
-    boolean backward();
+    boolean moveBackward();
 
     /**
      * Signals program to invert
@@ -78,14 +78,14 @@ public interface UserInterface {
      *
      * @return horizontal mouse change amount
      */
-    float getMouseHorizontalChange();
+    float getHorizontalChange();
 
     /**
      * Getter for vertical mouse change
      *
      * @return vertical mouse change amount
      */
-    float getMouseVerticalChange();
+    float getVerticalChange();
 
     /**
      * Shuts down the UserInterface

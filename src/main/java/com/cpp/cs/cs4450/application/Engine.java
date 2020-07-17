@@ -27,7 +27,7 @@ public final class Engine {
     /**
      * Default camera movement speed
      */
-    private static final float MOVEMENT_SPEED = 0.1f;
+    private static final float MOVEMENT_SPEED = 0.05f;
     /**
      * Default mouse sensitivity
      */
@@ -71,38 +71,38 @@ public final class Engine {
     public final void run(){
         final double cw = camera.getWidth(), ch = camera.getHeight(), cd = camera.getDepth();
         while(!ui.quit()) {
-            final float dx = ui.getMouseHorizontalChange();
-            final float dy = ui.getMouseVerticalChange();
+            final float dx = ui.getHorizontalChange();
+            final float dy = ui.getVerticalChange();
 
             camera.yaw(dx * MOUSE_SENSITIVITY);
             camera.pitch(dy * MOUSE_SENSITIVITY);
 
             final float x0 = camera.getPositionX(), y0 = camera.getPositionY(), z0 = camera.getPositionZ();
 
-            if (ui.up() && collisionDetector.noCollision(x0, y0 - MOVEMENT_SPEED, z0, cw, ch, cd)) {
+            if (ui.moveUp() && collisionDetector.noCollision(x0, y0 - MOVEMENT_SPEED, z0, cw, ch, cd)) {
                 camera.moveUp(MOVEMENT_SPEED);
             }
 
-            if (ui.down() && collisionDetector.noCollision(x0, y0 + MOVEMENT_SPEED, z0, cw, ch, cd)) {
+            if (ui.moveDown() && collisionDetector.noCollision(x0, y0 + MOVEMENT_SPEED, z0, cw, ch, cd)) {
                 camera.moveDown(MOVEMENT_SPEED);
 
             }
 
-            if (ui.left() && collisionDetector.noCollision(x0 - camera.xHorizontalOffset(MOVEMENT_SPEED, -1), y0, z0 + camera.zHorizontalOffset(MOVEMENT_SPEED, -1), cw, ch, cd)) {
+            if (ui.moveLeft() && collisionDetector.noCollision(x0 - camera.xHorizontalOffset(MOVEMENT_SPEED, -1), y0, z0 + camera.zHorizontalOffset(MOVEMENT_SPEED, -1), cw, ch, cd)) {
                 camera.moveLeft(MOVEMENT_SPEED);
 
             }
 
-            if (ui.right() && collisionDetector.noCollision(x0 - camera.xHorizontalOffset(MOVEMENT_SPEED, 1), y0, z0 + camera.zHorizontalOffset(MOVEMENT_SPEED, 1), cw, ch, cd)) {
+            if (ui.moveRight() && collisionDetector.noCollision(x0 - camera.xHorizontalOffset(MOVEMENT_SPEED, 1), y0, z0 + camera.zHorizontalOffset(MOVEMENT_SPEED, 1), cw, ch, cd)) {
                 camera.moveRight(MOVEMENT_SPEED);
 
             }
 
-            if (ui.forward() && collisionDetector.noCollision(x0 + camera.xApplicateOffset(MOVEMENT_SPEED, -1), y0, z0 + camera.zApplicateOffset(MOVEMENT_SPEED, 1), cw, ch, cd)) {
+            if (ui.moveForward() && collisionDetector.noCollision(x0 + camera.xApplicateOffset(MOVEMENT_SPEED, -1), y0, z0 + camera.zApplicateOffset(MOVEMENT_SPEED, 1), cw, ch, cd)) {
                 camera.moveForward(MOVEMENT_SPEED);
             }
 
-            if (ui.backward() && collisionDetector.noCollision(x0 + camera.xApplicateOffset(MOVEMENT_SPEED, 1), y0, z0 + camera.zApplicateOffset(MOVEMENT_SPEED, -1), cw, ch, cd)) {
+            if (ui.moveBackward() && collisionDetector.noCollision(x0 + camera.xApplicateOffset(MOVEMENT_SPEED, 1), y0, z0 + camera.zApplicateOffset(MOVEMENT_SPEED, -1), cw, ch, cd)) {
                 camera.moveBackwards(MOVEMENT_SPEED);
 
             }

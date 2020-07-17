@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -64,7 +65,9 @@ public final class BlockFactory {
     /**
      * Private constructor
      */
-    private BlockFactory(){}
+    private BlockFactory(){
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Creates textured block
@@ -78,7 +81,15 @@ public final class BlockFactory {
      * @param invert blocks
      * @return new textured block
      */
-    public static Block createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size, final BlockTexture texture, final BlockTexture invert){
+    public static Block createTexturedCube(
+            final BlockType type,
+            final float x,
+            final float y,
+            final float z,
+            final float size,
+            final BlockTexture texture,
+            final BlockTexture invert
+    ){
         return createTexturedBlock(type, x, y, z, size, size, size, texture, invert);
     }
 
@@ -96,7 +107,17 @@ public final class BlockFactory {
      * @param invert blocks
      * @return new textured block
      */
-    public static Block createTexturedBlock(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d, final BlockTexture texture, final BlockTexture invert){
+    public static Block createTexturedBlock(
+            final BlockType type,
+            final float x,
+            final float y,
+            final float z,
+            final float l,
+            final float h,
+            final float d,
+            final BlockTexture texture,
+            final BlockTexture invert
+    ){
         final List<BlockSide> sides = new ArrayList<>(CUBE_SIDES);
         for(final BlockSideType side : BlockSideType.values()){
             sides.add(new BlockSide(side, calculateSideVertices(side, x, y, z, l, h, d), Color.BLUE));
@@ -121,7 +142,14 @@ public final class BlockFactory {
      * @param texture blocks texture
      * @return new textured block
      */
-    public static Block createTexturedCube(final BlockType type, final float x, final float y, final float z, final float size, final BlockTexture texture){
+    public static Block createTexturedCube(
+            final BlockType type,
+            final float x,
+            final float y,
+            final float z,
+            final float size,
+            final BlockTexture texture
+    ){
         return createTexturedBlock(type, x, y, z, size, size, size, texture);
     }
 
@@ -138,7 +166,16 @@ public final class BlockFactory {
      * @param texture blocks texture
      * @return new textured block
      */
-    public static Block createTexturedBlock(final BlockType type, final float x, final float y, final float z, final float l, final float h, final float d, final BlockTexture texture){
+    public static Block createTexturedBlock(
+            final BlockType type,
+            final float x,
+            final float y,
+            final float z,
+            final float l,
+            final float h,
+            final float d,
+            final BlockTexture texture
+    ){
         return createTexturedBlock(type, x, y, z, l, h, d, texture, BlockTextureLoader.invertBlockTexture(texture));
     }
 
@@ -175,7 +212,13 @@ public final class BlockFactory {
      * @param colors colors
      * @return new block
      */
-    public static Cube createCube(final float x, final float y, final float z, final float size, final Color ...colors){
+    public static Cube createCube(
+            final float x,
+            final float y,
+            final float z,
+            final float size,
+            final Color ...colors
+    ){
         return createBlock(x, y, z, size, size, size, colors);
     }
 
@@ -191,11 +234,19 @@ public final class BlockFactory {
      * @param colors colors
      * @return new block
      */
-    public static Block createBlock(final float x, final float y, final float z, final float l, final float h, final float d, final Color ...colors){
+    public static Block createBlock(
+            final float x,
+            final float y,
+            final float z,
+            final float l,
+            final float h,
+            final float d,
+            final Color ...colors
+    ){
         final Queue<Color> colorQueue = generateColors(colors);
 
         final List<BlockSide> sides = new ArrayList<>(CUBE_SIDES);
-        for(BlockSideType type : BlockSideType.values()){
+        for(final BlockSideType type : BlockSideType.values()){
             sides.add(new BlockSide(type, calculateSideVertices(type, x, y, z, l, h, d), colorQueue.poll()));
         }
 
@@ -214,7 +265,15 @@ public final class BlockFactory {
      * @param d depth
      * @return block's vertices
      */
-    private static List<ReadableVector3f> calculateSideVertices(final BlockSideType type, final float x, final float y, final float z, final float l, final float h, final float d){
+    private static List<ReadableVector3f> calculateSideVertices(
+            final BlockSideType type,
+            final float x,
+            final float y,
+            final float z,
+            final float l,
+            final float h,
+            final float d
+    ){
         final float a = l / 2;
         final float b = h / 2;
         final float c = d / 2;
@@ -368,7 +427,7 @@ public final class BlockFactory {
      * @return color queue
      */
     private static Queue<Color> generateColors(final Color ...colors){
-        if(colors == null || colors.length < 1){
+        if(Objects.isNull(colors) || colors.length < 1){
             return generateUniqueColors();
         }
 
@@ -427,7 +486,7 @@ public final class BlockFactory {
     /**
      * Internal block implementation
      */
-    private static class BlockImpl extends Block {
+    private static final class BlockImpl extends Block {
         /**
          * width
          */
@@ -456,7 +515,15 @@ public final class BlockFactory {
          * @param d depth
          * @param sides sides
          */
-        private BlockImpl(final float x, final float y, final float z, final float w, final float h, final float d, final List<BlockSide> sides) {
+        private BlockImpl(
+                final float x,
+                final float y,
+                final float z,
+                final float w,
+                final float h,
+                final float d,
+                final List<BlockSide> sides
+        ) {
             super(x, y, z, sides);
             this.w = w;
             this.h = h;

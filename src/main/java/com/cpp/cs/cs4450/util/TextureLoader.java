@@ -20,7 +20,6 @@ import org.newdawn.slick.opengl.Texture;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -33,7 +32,9 @@ public final class TextureLoader {
         loader.setDeferredLoading(true);
     }
 
-    private TextureLoader(){}
+    private TextureLoader(){
+        throw new UnsupportedOperationException();
+    }
 
     public static Texture getTexture(final String path) throws IOException {
         return getTexture(new File(path));
@@ -51,10 +52,10 @@ public final class TextureLoader {
         return loader.getTexture(image, GL11.GL_LINEAR);
     }
 
-    private static InputStream readFileToStream(File file){
+    private static InputStream readFileToStream(final File file){
         try {
             return new FileInputStream(file);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -63,15 +64,15 @@ public final class TextureLoader {
         return readFileToStream(new File(path));
     }
 
-    static Texture computeTexture(String path){
+    static Texture computeTexture(final String path){
         return computeTexture(new File(path));
     }
 
-    static Texture computeTexture(File file){
+    static Texture computeTexture(final File file){
         return computeTexture(readFileToStream(file));
     }
 
-    static Texture computeTexture(InputStream is){
+    static Texture computeTexture(final InputStream is){
         try {
             return getTexture(is);
         } catch (IOException e){

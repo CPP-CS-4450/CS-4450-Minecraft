@@ -24,12 +24,12 @@ public final class Configuration {
     /**
      * Programs display width
      */
-    public static final int DISPLAY_WINDOW_WIDTH = 640;
+    public static final int DISPLAY_WINDOW_WIDTH = 1280;//640;
 
     /**
      * Programs display height
      */
-    public static final int DISPLAY_WINDOW_HEIGHT = 480;
+    public static final int DISPLAY_WINDOW_HEIGHT = 720;//480;
 
     /**
      * Programs display pixels per inch
@@ -39,6 +39,8 @@ public final class Configuration {
     /**
      * Private Constructor
      */
-    private Configuration(){}
+    private Configuration(){
+        throw new UnsupportedOperationException();
+    }
 
 }

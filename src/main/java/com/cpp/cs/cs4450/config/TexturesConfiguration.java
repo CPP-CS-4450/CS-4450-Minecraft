@@ -215,7 +215,9 @@ public final class TexturesConfiguration {
     /**
      * Private Constructor
      */
-    private TexturesConfiguration(){}
+    private TexturesConfiguration(){
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Builds map for all sides from single path

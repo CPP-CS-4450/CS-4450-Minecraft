@@ -1,154 +1,70 @@
-/***************************************************************
- * file: LWJGLUserInterface.java
- * team: Team Dood
- * author: Bryan Ayala, Laween Piromari, Rigoberto Canales Maldonado, Jaewon Hong
- * class: CS 4450 – Computer Graphics
- *
- * assignment: Semester Project - Final Checkpoint
- * date last modified: 04/25/2020
- *
- * purpose: Interacts with the user and interfaces with the game
- *
- ****************************************************************/
 package com.cpp.cs.cs4450.ui;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
+import com.cpp.cs.cs4450.input.UserInput;
 
-/**
- * UserInterface implementation that uses LWJGL
- */
 public class LWJGLUserInterface implements UserInterface {
 
-    /**
-     * Default Constructor
-     */
-    public LWJGLUserInterface() {
-        try {
-            Keyboard.create();
-            Keyboard.enableRepeatEvents(true);
-            Mouse.create();
-            Mouse.setGrabbed(true);
-        } catch (LWJGLException e) {
-            throw new RuntimeException(e.getLocalizedMessage());
-        }
+    private final UserInput input;
+
+
+    public LWJGLUserInterface(final UserInput input) {
+        this.input = input;
     }
 
-    /**
-     * Signals program to move camera up
-     *
-     * @return True if user signals to move up, false otherwise
-     */
+
     @Override
-    public boolean up() {
-        return Keyboard.isKeyDown(Keyboard.KEY_SPACE);
+    public boolean moveUp() {
+        return input.up();
     }
 
-    /**
-     * Signals program to move camera down
-     *
-     * @return True if user signals to move down, false otherwise
-     */
     @Override
-    public boolean down() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    public boolean moveDown() {
+        return input.down();
     }
 
-    /**
-     * Signals program to move camera left
-     *
-     * @return True if user signals to move left, false otherwise
-     */
     @Override
-    public boolean left() {
-        return Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT);
+    public boolean moveLeft() {
+        return input.left();
     }
 
-    /**
-     * Signals program to move camera right
-     *
-     * @return True if user signals to move right, false otherwise
-     */
     @Override
-    public boolean right() {
-        return Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT);
+    public boolean moveRight() {
+        return input.right();
     }
 
-    /**
-     * Signals program to move camera forward
-     *
-     * @return True if user signals to move forward, false otherwise
-     */
     @Override
-    public boolean forward() {
-        return Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP);
+    public boolean moveForward() {
+        return input.forward();
     }
 
-    /**
-     * Signals program to move camera backward
-     *
-     * @return True if user signals to move backward, false otherwise
-     */
     @Override
-    public boolean backward() {
-        return Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN);
+    public boolean moveBackward() {
+        return input.backward();
     }
 
-    /**
-     * Signals program to invert
-     *
-     * @return True if user signals to invert, false otherwise
-     */
     @Override
     public boolean invert() {
-        while (Keyboard.next()){
-            if(Keyboard.getEventKey() == Keyboard.KEY_I){
-                return Keyboard.getEventKeyState();
-            }
-        }
-
-        return false;
+        return input.invert();
     }
 
-    /**
-     * Signals program to quit
-     *
-     * @return True if user signals to quit, false otherwise
-     */
     @Override
     public boolean quit() {
-        return Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
+        return input.quit();
     }
 
-    /**
-     * Getter for horizontal mouse change
-     *
-     * @return horizontal mouse change amount
-     */
     @Override
-    public float getMouseHorizontalChange() {
-        return Mouse.getDX();
+    public float getHorizontalChange() {
+        return input.horizontalDelta();
     }
 
-    /**
-     * Getter for vertical mouse change
-     *
-     * @return vertical mouse change amount
-     */
     @Override
-    public float getMouseVerticalChange() {
-        return Mouse.getDY();
+    public float getVerticalChange() {
+        return input.verticalDelta();
     }
 
-    /**
-     * Shuts down the UserInterface
-     */
     @Override
-    public void shutdown(){
-        Keyboard.destroy();
-        Mouse.destroy();
+    public void shutdown() {
+
     }
 
 }

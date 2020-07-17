@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CollisionDetector {
     private static final double VERTICAL_COLLISION_DETECTING_LIMIT = 6.0 * .1;
-    private static final double INBOUNDS = 10;
+    private static final double INBOUNDS = Double.MAX_VALUE;
 
     private static final Bound inbounds = new BoundBox(-(INBOUNDS / 2),-(INBOUNDS / 2),-(INBOUNDS / 2), INBOUNDS, INBOUNDS, INBOUNDS);
 
@@ -32,8 +32,8 @@ public class CollisionDetector {
     public CollisionDetector(final List<Bound> bounds){
         this.bounds = new ArrayList<>(bounds);
 
-        double minX = Double.MAX_VALUE, minY = Double.MIN_VALUE, minZ = Double.MAX_VALUE;
-        double maxX = Double.MAX_VALUE, maxY = Double.MIN_VALUE, maxZ = Double.MAX_VALUE;
+        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE, minZ = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE, maxZ = Double.MIN_VALUE;
         for(final Bound bound : this.bounds){
             minX = Math.min(minX, bound.getMinX());
             minY = Math.min(minY, bound.getMinY());
@@ -52,7 +52,14 @@ public class CollisionDetector {
 
     }
 
-    public boolean noCollision(final double x, final double y, final double z, final double w, final double h, final double d){
+    public boolean noCollision(
+            final double x,
+            final double y,
+            final double z,
+            final double w,
+            final double h,
+            final double d
+    ){
         return !collision(new BoundBox(x, y, z, w, h, d));
     }
 
@@ -60,7 +67,14 @@ public class CollisionDetector {
         return !collision(obj);
     }
 
-    public boolean collision(final double x, final double y, final double z, final double w, final double h, final double d){
+    public boolean collision(
+            final double x,
+            final double y,
+            final double z,
+            final double w,
+            final double h,
+            final double d
+    ){
         return collision(new BoundBox(x, y, z, w, h, d));
     }
 

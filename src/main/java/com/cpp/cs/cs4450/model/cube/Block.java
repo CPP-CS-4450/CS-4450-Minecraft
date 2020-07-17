@@ -51,7 +51,7 @@ public abstract class Block extends Cube implements Renderable, GameAreaEntity, 
     @Override
     public void render() {
         GL11.glBegin(GL11.GL_QUADS);
-        for(BlockSide side : sides){
+        for(final BlockSide side : sides){
             final Color color = side.getColor();
             GL11.glColor4f(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
             side.getVertices().forEach(v -> GL11.glVertex3f(v.getX(), v.getY(), v.getZ()));
@@ -72,7 +72,7 @@ public abstract class Block extends Cube implements Renderable, GameAreaEntity, 
      * @return List of block's vertices
      */
     public List<Float> getVerticesArray(){
-        List<Float> floats = new ArrayList<>(sides.size() * 12);
+        final List<Float> floats = new ArrayList<>(sides.size() * 12);
         for(BlockSide side : sides){
             floats.addAll(side.getVerticesArray());
         }

@@ -32,7 +32,9 @@ import java.util.stream.Collectors;
 public final class TextureInverter {
     private static final String INVALID_TEXTURE_SIZE_ERROR_MESSAGE = "Texture size dimensions must be power of 2";
 
-    private TextureInverter(){}
+    private TextureInverter(){
+        throw new UnsupportedOperationException();
+    }
 
     public static Texture invert(final Texture texture){
         try {
@@ -118,7 +120,7 @@ public final class TextureInverter {
         return new ImageByteBufferWrapper(bytes, width, height);
     }
 
-    private static class ImageByteBufferWrapper implements ImageData {
+    private static final class ImageByteBufferWrapper implements ImageData {
         private final byte[] bytes;
         private final int width;
         private final int height;

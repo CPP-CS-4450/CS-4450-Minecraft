@@ -33,7 +33,9 @@ public final class BlockTextureLoader {
     /**
      * Constructor
      */
-    private BlockTextureLoader(){}
+    private BlockTextureLoader(){
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Creates block texture

@@ -20,13 +20,17 @@ import com.cpp.cs.cs4450.config.Configuration;
 import com.cpp.cs.cs4450.graphics.GraphicsEngine;
 import com.cpp.cs.cs4450.graphics.LWJGLGraphicsEngine;
 import com.cpp.cs.cs4450.graphics.Renderable;
+import com.cpp.cs.cs4450.input.KeyboardMouseUserInput;
+import com.cpp.cs.cs4450.input.UserInput;
 import com.cpp.cs.cs4450.model.chunk.Chunk;
 import com.cpp.cs.cs4450.ui.LWJGLUserInterface;
+import com.cpp.cs.cs4450.ui.LWJGLUserInterfacePrev;
 import com.cpp.cs.cs4450.ui.UserInterface;
 import com.cpp.cs.cs4450.util.ChunkFactory;
 import com.cpp.cs.cs4450.util.ChunkFactory.ChunkOptions;
 import com.cpp.cs.cs4450.util.CollisionDetector;
 
+import com.cpp.cs.cs4450.util.UserInputFactory;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -136,7 +140,8 @@ public abstract class GraphicsApplication {
             final List<Renderable> renders = Collections.unmodifiableList(Collections.singletonList(chunk));
   
             final GraphicsEngine graphicsEngine = new LWJGLGraphicsEngine(display, renders, Configuration.DISPLAY_WINDOW_TITLE, lighting);
-            final UserInterface ui = new LWJGLUserInterface();
+            final UserInput input = UserInputFactory.getUserInput(cache);
+            final UserInterface ui = new LWJGLUserInterface(input);
             final CameraController camera = new FirstPersonCameraController(DEFAULT_START_COORDINATES);
             final CollisionDetector collisionDetector = new CollisionDetector(chunk.getBounds());
 
@@ -167,6 +172,7 @@ public abstract class GraphicsApplication {
 
                 Display.setTitle(title);
                 Display.setDisplayMode(display);
+                Display.setFullscreen(true);
                 Display.create();
 
                 return display;

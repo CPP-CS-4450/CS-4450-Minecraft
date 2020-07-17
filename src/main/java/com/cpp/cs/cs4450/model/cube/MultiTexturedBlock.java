@@ -27,6 +27,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -50,7 +51,16 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
      * @param textures blocks textures
      * @param inverts block texture inverts
      */
-    public MultiTexturedBlock(float x, float y, float z, BlockType type, Bound bounds, List<BlockSide> sides, BlockTexture textures, BlockTexture inverts) {
+    public MultiTexturedBlock(
+            final float x,
+            final float y,
+            final float z,
+            final BlockType type,
+            final Bound bounds,
+            final List<BlockSide> sides,
+            final BlockTexture textures,
+            final BlockTexture inverts
+    ) {
         super(x, y, z, type, bounds, sides, textures, inverts);
     }
 
@@ -83,7 +93,7 @@ public class MultiTexturedBlock extends TexturedBlock implements Renderable, Tex
             while(!queue.isEmpty()) {
                 for (final ReadableVector2f tex : TEX_COORDS) {
                     final ReadableVector3f vertex = queue.poll();
-                    if (vertex != null) {
+                    if (Objects.nonNull(vertex)) {
                         GL11.glTexCoord2f(tex.getX() * offset, tex.getY() * offset);
                         GL11.glVertex3f(vertex.getX(), vertex.getY(), vertex.getZ());
                     }

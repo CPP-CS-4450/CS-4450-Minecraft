@@ -92,7 +92,7 @@ public class Chunk implements Renderable, BoundedContainer, InvertibleContainer,
         final List<Invertible> invertibles = Collections.checkedList(new ArrayList<>(), Invertible.class);
         for(final Cube[][] matrix : cubes){
             for(final Cube[] array : matrix){
-                for(Cube cube : array){
+                for(final Cube cube : array){
                     if(cube instanceof Invertible){
                         invertibles.add((Invertible) cube);
                     }
@@ -123,7 +123,7 @@ public class Chunk implements Renderable, BoundedContainer, InvertibleContainer,
         final List<Textured> textured = Collections.checkedList(new ArrayList<>(), Textured.class);
         for(final Cube[][] matrix : cubes){
             for(final Cube[] array : matrix){
-                for(Cube cube : array){
+                for(final Cube cube : array){
                     if(cube instanceof Textured){
                         textured.add((Textured) cube);
                     }

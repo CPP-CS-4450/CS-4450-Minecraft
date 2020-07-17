@@ -51,6 +51,9 @@ public final class ChunkFactory {
 
     private static final Random rand = new Random();
 
+    private ChunkFactory(){
+        throw new UnsupportedOperationException();
+    }
 
     public static Chunk createChunk(final int size, final float scale, final double persistence){
         return createChunk(size, scale, persistence, false);
@@ -107,7 +110,7 @@ public final class ChunkFactory {
         final List<Bound> bounds = optimized ? getBounds(blocks) : getBounds(cubes);
 
         if(bufferRendering){
-            final List<Block> data = optimized ? blocks : Arrays.stream(cubes).flatMap(Arrays::stream).flatMap(Arrays::stream).filter(Objects::nonNull).collect(Collectors.toList());
+            final List<Block> data = optimized ? blocks : convertTensorToList(cubes);
             final ChunkTextureProxy proxy = initChunkTexture(data, path);
 
             return createVBOArrayChunk(cubes, bounds, data.size(), proxy);
@@ -232,6 +235,10 @@ public final class ChunkFactory {
         }
 
         return bounds;
+    }
+
+    private static List<Block> convertTensorToList(final Block[][][] tensor){
+        return Arrays.stream(tensor).flatMap(Arrays::stream).flatMap(Arrays::stream).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private static float[] generateColorArray(final int size){

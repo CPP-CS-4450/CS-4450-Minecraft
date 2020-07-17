@@ -27,6 +27,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -59,7 +60,16 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
      * @param textures blocks textures
      * @param inverts block texture inverts
      */
-    public SingleTexturedBlock(float x, float y, float z, BlockType type, Bound bounds, List<BlockSide> sides, BlockTexture textures, BlockTexture inverts) {
+    public SingleTexturedBlock(
+            final float x,
+            final float y,
+            final float z,
+            final BlockType type,
+            final Bound bounds,
+            final List<BlockSide> sides,
+            final BlockTexture textures,
+            final BlockTexture inverts
+    ) {
         super(x, y, z, type, bounds, sides, textures, inverts);
         this.texture = textures.getTexture();
         this.invert = inverts.getTexture();
@@ -78,7 +88,7 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
 
         GL11.glColor4d(1.0, 1.0, 1.0, 1.0);
 
-        Texture render = inverted ? invert : texture;
+        final Texture render = inverted ? invert : texture;
         render.bind();
         GL11.glBegin(GL11.GL_QUADS);
 
@@ -94,7 +104,7 @@ public class SingleTexturedBlock extends TexturedBlock implements Renderable, Te
             while(!queue.isEmpty()) {
                 for (final ReadableVector2f tex : TEX_COORDS) {
                     final ReadableVector3f vertex = queue.poll();
-                    if (vertex != null) {
+                    if (Objects.nonNull(vertex)) {
                         GL11.glTexCoord2f(tex.getX() * offset, tex.getY() * offset);
                         GL11.glVertex3f(vertex.getX(), vertex.getY(), vertex.getZ());
                     }
